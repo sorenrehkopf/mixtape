@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon && webpack-dev-server",
+    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sorenrehkopf",
@@ -20,8 +20,10 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "sequelize": "^4.32.3",
-    "spotify-web-api-node": "^2.5.0"
+    "spotify-web-api-node": "^2.5.0",
+    "webpack": "^3.10.0"
   },
   "devDependencies": {
     "auto-prefixer": "^0.4.2",
@@ -36,7 +38,6 @@
     "nodemon": "^1.14.11",
     "postcss-loader": "^2.1.0",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.20.1",
-    "webpack": "^3.10.0"
+    "style-loader": "^0.20.1"
   }
 }
