@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon && webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sorenrehkopf",
@@ -30,10 +30,13 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.9",
+    "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.30.1",
+    "node-sass": "^4.7.2",
     "nodemon": "^1.14.11",
     "postcss-loader": "^2.1.0",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.20.1"
+    "style-loader": "^0.20.1",
+    "webpack": "^3.10.0"
   }
 }
