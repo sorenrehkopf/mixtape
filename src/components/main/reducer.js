@@ -10,9 +10,17 @@ const initialState = {
 const mainReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case AUTHENTICATE_START:
-			return state;
+			return { 
+				...state,
+				authenticating: true
+			};
 		case AUTHENTICATE_FINISH:
-			return state;
+			return {
+				...state,
+				authenticating: false,
+				authenticated: !payload.error && payload.user,
+				currentUser: payload.user
+			}
 		default:
 			return state;
 	};
