@@ -19,8 +19,10 @@
     "pg-hstore": "^2.3.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
     "sequelize": "^4.32.3",
     "spotify-web-api-node": "^2.5.0",
     "webpack": "^3.10.0"
