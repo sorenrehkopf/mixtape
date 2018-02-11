@@ -8,20 +8,20 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      displayName: {
         type: Sequelize.STRING
       },
-      lastName: {
+      displayPhoto: {
+        type: Sequelize.STRING(500)
+      },
+      spotifyAccessToken: {
         type: Sequelize.STRING
       },
-      email: {
+      spotifyId: {
         type: Sequelize.STRING
       },
-      authToken: {
+      spotifyRefreshToken: {
         type: Sequelize.STRING
-      },
-      photo: {
-        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,

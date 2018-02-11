@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login Succeeded!</title>
+</head>
+<body>
+	<p>Login succeeded!</p>
+
+	<script type="text/javascript">
+		window.opener.postMessage(<%= data %>, '*');
+	</script>
+</body>
+</html>
