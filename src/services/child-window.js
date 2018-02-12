@@ -5,24 +5,26 @@ class ChildWindow {
 	}
 
 	initializeMessageHandler() {
+		window.addEventListener('message', (event) => this.messageHandler(event));
+	}
+
+	messageHandler(event) {
 		const { onMessage, url } = this;
-		window.addEventListener('message', event => {
-			if(url.includes(event.origin)) {
-				onMessage(event);
-			}
-		});
+		if(url.includes(event.origin)) {
+			onMessage(event);
+		}
 	}
 
 	open() {
 		const { url } = this;
-		this.window = window.open(url, 'mixtape login', 'height=500, width=500');
+		this.childWindow = window.open(url, 'mixtape login', 'height=500, width=500');
 		this.initializeMessageHandler();
-		return this.window;
 	}
 
 	close() {
-		const { window } = this;
-		window.close();
+		const { childWindow } = this;
+		window.removeEventListener('message', this.messageHandler);
+		childWindow.close();
 	}
 }
 

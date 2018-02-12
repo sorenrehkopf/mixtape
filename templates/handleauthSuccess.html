@@ -7,7 +7,7 @@
 	<p>Login succeeded!</p>
 
 	<script type="text/javascript">
-		window.opener.postMessage(<%= data %>, '*');
+		window.opener.postMessage(<%= data %>, '<%= targetOrigin %>');
 	</script>
 </body>
 </html>

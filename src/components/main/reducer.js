@@ -9,8 +9,8 @@ const initialState = {
 	authenticated: false
 };
 
-const mainReducer = (state = initialState, action) => {
-	switch (action.type) {
+const mainReducer = (state = initialState, { type, payload }) => {
+	switch (type) {
 		case AUTHENTICATE_START:
 			return { 
 				...state,

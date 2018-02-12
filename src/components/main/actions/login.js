@@ -4,14 +4,24 @@ import {
 } from './types.js';
 
 import ChildWindow from '../../../services/child-window.js';
+import Api from '../../../services/api.js';
 
 const login = () => (dispatch, getState) => {
 	dispatch({ type: LOGIN_START });
 
 	const loginWindow = new ChildWindow({
 		url: 'http://localhost:3000/api/auth/login',
-		onMessage: event => {
-			console.log('the event!', event);
+		onMessage: ({ data: { authToken, displayName, displayPhoto } }) => {
+			const payload = {
+				user: {
+					displayName,
+					displayPhoto
+				}
+			};
+
+			Api.setAuthToken(authToken);
+			dispatch({ type: LOGIN_FINISH, payload })
+			loginWindow.close();
 		}
 	});
 

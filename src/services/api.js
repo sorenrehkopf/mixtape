@@ -7,6 +7,10 @@ class Api {
 		return window.localStorage.getItem('authtoken');
 	}
 
+	static setAuthToken(token) {
+		window.localStorage.setItem('authtoken', token);
+	}
+
 	static get(path) {
 		return this.executeHttpReqest({ path })
 	}
@@ -37,3 +41,5 @@ class Api {
 		})
 	}
 }
+
+export default Api;

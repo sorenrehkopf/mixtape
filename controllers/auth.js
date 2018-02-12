@@ -1,6 +1,6 @@
 const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
-const User = require('../models/user.js');
+const { User } = require('../models/index.js');
 const template = require('lodash/template');
 const fs = require('fs');
 const jwtSimple = require('jwt-simple');
@@ -32,8 +32,7 @@ router.get('/handleauth', (req, res) => {
 			spotifyApi.setAccessToken(access_token);
 		  spotifyApi.setRefreshToken(refresh_token);
 
-	    const { body: { displayName, id, images: [{ url }] } } = await spotifyApi.getMe();
-	    
+	    const { body: { display_name: displayName, id, images: [{ url }] } } = await spotifyApi.getMe();
 	    User.findOrCreate({
 	    	where: {
 	    		spotifyId: id
@@ -45,40 +44,24 @@ router.get('/handleauth', (req, res) => {
 	    }).spread(({ displayName, displayPhoto, id }, created) => {
 	    	const authToken = jwtSimple.encode({ id }, process.env.AUTH_TOKEN_SECRET);
 	    	const data = JSON.stringify({ authToken, displayName, displayPhoto });
-	    	const handleAuthPage = handleAuthCompiler({ data });
+	    	const handleAuthPage = handleAuthSuccessCompiler({
+	    		data, 
+	    		targetOrigin: process.env.CLIENT_BASE_URL
+	    	});
 	    	
-	    	res.sendFile(handleAuthPage);
-		  }).catch(error => {
-		  	console.log(`There was an error: ${error}`);
-		  	res.set('Content-Type', 'text/html');
-		  	res.send(handleauthFailureHTML);
+	    	res.set('Content-Type', 'text/html');
+	    	res.send(handleAuthPage);
 		  });
-		}).catch(error=> {
-			console.log(`There was an error: ${error}`);
-		  res.set('Content-Type', 'text/html');
-		  res.send(handleauthFailureHTML);
-		});
+		}).catch(authErrorHandler);
 	}else{
-		console.log('error setting query');
-		res.set('Content-Type', 'text/html');
-		res.send(handleauthFailureHTML);
+		authErrorHandler('Did not get query from spotify redirect.');
 	}
 });
 
-router.get('/check',(req, res) => {
-	var loggedIn = req.session.checkToken(req.headers.authtoken);
-	console.log(req.headers.authtoken);
-	console.log('loggedIn',loggedIn);
-	var resp = loggedIn?{toList:votingService.toList,fromList:req.session.getFromList()}:false;
-	console.log(resp);
-	res.send(resp);
-});
-
-router.get('/logout',function(req,res){
-	spotifyApi.resetAccessToken();
-	spotifyApi.resetRefreshToken();
-	req.session.clearToken();
-	res.send({message:'logged out!'});
-})
+const authErrorHandler = error => {
+	console.log(`There was an error: ${error}`);
+	res.set('Content-Type', 'text/html');
+	res.send(handleauthFailureHTML);
+}
 
 module.exports = router;
