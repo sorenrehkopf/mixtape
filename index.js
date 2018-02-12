@@ -14,6 +14,7 @@ app.use(cors());
 app.use(express.static('public'));
 
 const authController = require('./controllers/auth.js');
+// const spotifyController = require('./controllers/spotify.js');
 
 app.use('/api/auth', authController);
 

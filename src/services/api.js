@@ -11,6 +11,10 @@ class Api {
 		window.localStorage.setItem('authtoken', token);
 	}
 
+	static clearAuthToken() {
+		window.localStorage.removeItem('authtoken');
+	}
+
 	static get(path) {
 		return this.executeHttpReqest({ path })
 	}
