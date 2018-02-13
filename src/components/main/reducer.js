@@ -1,6 +1,4 @@
 import {
-	AUTHENTICATE_START,
-	AUTHENTICATE_FINISH,
 	LOGIN_START,
 	LOGIN_FINISH,
 	LOGOUT
@@ -12,18 +10,6 @@ const initialState = {
 
 const mainReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case AUTHENTICATE_START:
-			return { 
-				...state,
-				authenticating: true
-			};
-		case AUTHENTICATE_FINISH:
-			return {
-				...state,
-				authenticating: false,
-				authenticated: !payload.error && payload.user,
-				currentUser: payload.user
-			}
 		case LOGIN_START:
 			return { 
 				...state,

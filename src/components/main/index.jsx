@@ -16,13 +16,19 @@ class Main extends Component {
 	}
 
 	render() {
-		const { authenticated } = this.props;
+		const { authenticated, authenticating } = this.props;
+
+		if (authenticating) {
+			return <p>loading...</p>
+		}
+
 		return(authenticated? this.renderHomePage() : this.renderLoginPage());
 	}
 }
 
-const mapStateToProps = ({ main: { authenticated } }) => ({
-	authenticated
+const mapStateToProps = ({ main: { authenticated, authenticating } }) => ({
+	authenticated,
+	authenticating
 });
 
 export default connect(mapStateToProps)(Main);

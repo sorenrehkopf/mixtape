@@ -26,12 +26,14 @@ class Api {
 
 			http.open(method, `${baseUrl}${path}`);
 
-			http.setRequestHeader('authtoken', authToken);
+			if (authToken) {
+				http.setRequestHeader('authtoken', authToken);
+			}
 
 			http.onreadystatechange = () => {
 				if(http.readyState === 4){
 					if(http.status===200) resolve({data: JSON.parse(http.response)});
-					else reject(`error ${http.status}`);
+					else reject(`Error: ${http.status}`);
 				}
 			};
 

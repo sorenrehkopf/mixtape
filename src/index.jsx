@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import Api from './services/api.js';
 
 //custom components
 import Main from './components/main/index.jsx';
@@ -14,14 +15,29 @@ const rootReducer = combineReducers({
 	main: mainReducer
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+let currentUser;
 
-render(
-	<Provider store={store}>
-		<Router>
-			<Route path="/" component={Main}>
-			</Route>
-		</Router>
-	</Provider>, 
-	document.getElementById('app')
-);
+(async() => {
+	try {
+		const { data } = await Api.get('user');
+		console.log(data);
+		currentUser = data;
+	} catch (error) {
+		currentUser = null;
+	}
+
+	const store = createStore(rootReducer,
+		{ main: { authenticated: !!currentUser, currentUser } },
+		applyMiddleware(thunk)
+	);
+
+	render(
+		<Provider store={store}>
+			<Router>
+				<Route path="/" component={Main}>
+				</Route>
+			</Router>
+		</Provider>, 
+		document.getElementById('app')
+	);
+})();
