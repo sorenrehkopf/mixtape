@@ -63,7 +63,8 @@ const config = {
 		inline: true,
 		port:3030,
 		proxy: {
-			"/api": "http://localhost:3000/api"
+			"/api": "http://localhost:3000/api",
+			"*": "http://localhost:3000"
 		}
 	}
 };

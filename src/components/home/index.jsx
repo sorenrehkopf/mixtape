@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import style from './style.scss';
+
+import Sidebar from '../partials/sidebar/index.jsx';
 
 import logout from'./actions/logout.js';
 
@@ -8,9 +11,9 @@ class Home extends Component {
 	render() {
 		const { currentUser: { displayName, displayPhoto }, logout } = this.props;
 		return(<div>
-			<img src={displayPhoto} />
-			<h1>hello {displayName} !</h1>
-			<button onClick={logout}>Logout!</button>
+			<Sidebar displayName={displayName} displayPhoto={displayPhoto} logout={logout} />
+			<Route path="/" exact render={() => <h1>home!</h1>} />
+			<Route path="/songs" render={() => <h1>songs!</h1>} />
 		</div>)
 	}
 }

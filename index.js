@@ -24,6 +24,10 @@ const userController = require('./controllers/user.js');
 app.use('/api/auth', authController);
 app.use('/api/user', userController);
 
+app.get('*', (req, res) => {
+	res.sendFile(`${__dirname}/public/index.html`);
+});
+
 app.listen(3000, () => {
 	console.log('app listening on port 3000');
 });

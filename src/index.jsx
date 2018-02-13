@@ -34,8 +34,7 @@ let currentUser;
 	render(
 		<Provider store={store}>
 			<Router>
-				<Route path="/" component={Main}>
-				</Route>
+				<Main />
 			</Router>
 		</Provider>, 
 		document.getElementById('app')
