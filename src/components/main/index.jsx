@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import style from './style.scss';
+import style from './style';
 
-import Login from '../login/index.jsx';
-import Home from '../home/index.jsx';
+import Login from '../login';
+import Authenticated from '../authenticated';
 
 class Main extends Component {
-	renderLoginPage() {
-		return <Login />
-	}
-	
-	renderHomePage() {
-		return <Home />
-	}
-
 	render() {
 		const { authenticated, authenticating } = this.props;
 
@@ -22,7 +14,7 @@ class Main extends Component {
 			return <p>loading...</p>
 		}
 
-		return(authenticated? this.renderHomePage() : this.renderLoginPage());
+		return(authenticated? <Authenticated /> : <Login />);
 	}
 }
 

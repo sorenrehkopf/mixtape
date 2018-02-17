@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import style from './style.scss';
+import style from './style';
 
-import login from './actions/login.js';
+import login from './actions/login';
 
 class Login extends Component {
 	render() {

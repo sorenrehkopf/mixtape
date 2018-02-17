@@ -2,7 +2,7 @@ import {
 	LOGIN_START,
 	LOGIN_FINISH,
 	LOGOUT
-} from './actions/types.js';
+} from './actions/types';
 
 const initialState = {
 	authenticated: false

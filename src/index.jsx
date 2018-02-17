@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import Api from './services/api.js';
+import Api from './services/api';
 
 //custom components
-import Main from './components/main/index.jsx';
+import Main from './components/main';
 
-import mainReducer from './components/main/reducer.js';
+import mainReducer from './components/main/reducer';
+
+const history = createHistory();
+const historyMiddleware = routerMiddleware(history);
 
 const rootReducer = combineReducers({
-	main: mainReducer
+	main: mainReducer,
+	router: routerReducer
 });
 
 let currentUser;
@@ -20,7 +26,6 @@ let currentUser;
 (async() => {
 	try {
 		const { data } = await Api.get('user');
-		console.log(data);
 		currentUser = data;
 	} catch (error) {
 		currentUser = null;
@@ -28,14 +33,14 @@ let currentUser;
 
 	const store = createStore(rootReducer,
 		{ main: { authenticated: !!currentUser, currentUser } },
-		applyMiddleware(thunk)
+		applyMiddleware(thunk, historyMiddleware)
 	);
 
 	render(
 		<Provider store={store}>
-			<Router>
+			<ConnectedRouter history={history}>
 				<Main />
-			</Router>
+			</ConnectedRouter>
 		</Provider>, 
 		document.getElementById('app')
 	);

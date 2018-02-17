@@ -55,6 +55,12 @@ const config = {
 		  }
 		]
 	},
+	resolve: {
+		extensions: ['.js', '.jsx', '.scss'],
+		alias: {
+			purecss: path.join(__dirname, 'node_modules/purecss/build/pure.css')
+		}
+	},
 	plugins: [
 		new ExtractTextPlugin("style.css")
 	],

@@ -1,10 +1,10 @@
 import {
 	LOGIN_START,
 	LOGIN_FINISH
-} from './types.js';
+} from './types';
 
-import ChildWindow from '../../../services/child-window.js';
-import Api from '../../../services/api.js';
+import ChildWindow from '../../../services/child-window';
+import Api from '../../../services/api';
 
 const login = () => (dispatch, getState) => {
 	dispatch({ type: LOGIN_START });
