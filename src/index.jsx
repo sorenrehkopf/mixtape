@@ -12,12 +12,14 @@ import Api from './services/api';
 import Main from './components/main';
 
 import mainReducer from './components/main/reducer';
+import dashboardReducer from './components/dashboard/reducer';
 
 const history = createHistory();
 const historyMiddleware = routerMiddleware(history);
 
 const rootReducer = combineReducers({
 	main: mainReducer,
+	dashboard: dashboardReducer,
 	router: routerReducer
 });
 

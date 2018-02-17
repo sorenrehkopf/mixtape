@@ -58,7 +58,8 @@ const config = {
 	resolve: {
 		extensions: ['.js', '.jsx', '.scss'],
 		alias: {
-			purecss: path.join(__dirname, 'node_modules/purecss/build/pure.css')
+			"_": path.join(__dirname, 'src'),
+			"purecss": path.join(__dirname, 'node_modules/purecss/build/pure.css')
 		}
 	},
 	plugins: [
