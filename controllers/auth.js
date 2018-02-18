@@ -38,10 +38,20 @@ router.get('/handleauth', (req, res) => {
 	    		spotifyId: id
 	    	},
 	    	defaults: {
+	    		spotifyAccessToken: access_token,
+	    		spotifyRefreshToken: refresh_token,
 	    		displayName,
 	    		displayPhoto: url,
 	    	}
-	    }).spread(({ displayName, displayPhoto, id }, created) => {
+	    }).spread(async(user, created) => {
+	    	const { displayName, displayPhoto, id, spotifyAccessToken, spotifyRefreshToken } = user;
+
+	    	if (spotifyAccessToken !== access_token) {
+	    		user.spotifyAccessToken = access_token;
+	    		user.spotifyRefreshToken = refresh_token;
+	    		user.save().catch(err => console.log(err));
+	    	}
+	    	
 	    	const authToken = jwtSimple.encode({ id }, process.env.AUTH_TOKEN_SECRET);
 	    	const data = JSON.stringify({ authToken, displayName, displayPhoto });
 	    	const handleAuthPage = handleAuthSuccessCompiler({

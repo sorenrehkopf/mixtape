@@ -7,12 +7,11 @@ import search from './actions/search';
 class Dashboard extends Component {
 	render() {
 		const { songs, search } = this.props;
-		const songsList = songs.map(song => {
-			<p>{JSON.stringify(song)}</p>
-		})
+		const songsList = songs.map(song => <p>{JSON.stringify(song)}</p>)
 		return(
 			<div>
 				<input type="text" name="searchTerm" onChange={({target}) => search(target)} />
+				{songsList}
 			</div>
 		)
 	}

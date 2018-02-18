@@ -29,7 +29,7 @@ const authenticate = async(req, res, next) => {
 };
 
 const isRestricted = path => {
-	const route = restrictedRoutes.find(({ controller }) => path === `/api/${controller}`);
+	const route = restrictedRoutes.find(({ controller }) => path.includes(`/api/${controller}`));
 	
 	if (route) {
 		return !route.exceptions || !route.exceptions.some(exception => path.endsWith(exception));

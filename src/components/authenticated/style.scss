@@ -1,3 +1,7 @@
+@import '~_/styles/_pallette';
+
 .main {
+	background-color: $gainsboro;
 	display: flex;
+	height: 100vh;
 }

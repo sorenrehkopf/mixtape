@@ -1,0 +1,41 @@
+@import '~_/styles/_pallette';
+
+.main {
+	background-color: $jet;
+	&__header{
+		padding: 60px 30px 0px 1em;
+		min-width:150px;
+		* {
+			color: $gainsboro;
+		}
+		&--top {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			align-items: center;
+		}
+		&--logo {
+			font-size: $extra_large;
+			font-weight: bold;
+		}
+		&--photo {
+			height: 50px;
+			width: 50px;
+			border-radius: 50%;
+		}
+		&--name {
+			font-size: $small;
+			margin-top: 5px;
+		}
+	}
+	li > * {
+		&:hover, &:focus {
+			background-color: $granite_grey;
+		}
+		&.current {
+			background-color: $gainsboro;
+			color: $jet;
+		}
+		color: $eucalyptus;
+	}
+}

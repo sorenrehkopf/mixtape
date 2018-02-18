@@ -10,9 +10,9 @@ import logout from'./actions/logout';
 
 class Authenticated extends Component {
 	render() {
-		const { currentRoute, currentUser: { displayName, displayPhoto }, logout } = this.props;
+		const { currentRoute, currentUser: { displayName, displayPhoto }, logout, pathname } = this.props;
 		return(<div className={style.main}>
-			<Sidebar {...{ displayName, displayPhoto, logout }}  />
+			<Sidebar {...{ displayName, displayPhoto, logout, pathname }}  />
 			{currentRoute}
 		</div>)
 	}
@@ -20,7 +20,8 @@ class Authenticated extends Component {
 
 const mapStateToProps = ({ main: { currentUser }, router: { location: { pathname } } }) => ({
 	currentRoute: routes[pathname],
-	currentUser
+	currentUser,
+	pathname
 });
 
 const mapDispatchToProps = (dispatch) => ({
