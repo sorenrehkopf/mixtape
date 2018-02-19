@@ -1,4 +1,5 @@
 import {
+	SPOTIFY_ERROR,
 	LOGIN_START,
 	LOGIN_FINISH,
 	LOGOUT
@@ -27,6 +28,11 @@ const mainReducer = (state = initialState, { type, payload }) => {
 				...state,
 				authenticated: false,
 				currentUser: null
+			}
+		case SPOTIFY_ERROR:
+			return {
+				...state,
+				error: payload.error
 			}
 		default:
 			return state;

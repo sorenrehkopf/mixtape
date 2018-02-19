@@ -20,9 +20,10 @@ class Authenticated extends Component {
 	}
 }
 
-const mapStateToProps = ({ main: { currentUser }, router: { location: { pathname } } }) => ({
+const mapStateToProps = ({ main: { currentUser, error }, router: { location: { pathname } } }) => ({
 	currentRoute: routes[pathname],
 	currentUser,
+	error,
 	pathname
 });
 

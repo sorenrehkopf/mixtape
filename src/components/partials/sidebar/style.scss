@@ -15,7 +15,7 @@
 			align-items: center;
 		}
 		&--logo {
-			font-size: $extra_large;
+			font-size: $large;
 			font-weight: bold;
 		}
 		&--photo {
@@ -37,5 +37,6 @@
 			color: $jet;
 		}
 		color: $eucalyptus;
+		cursor: pointer;
 	}
 }
