@@ -13,7 +13,9 @@ class Authenticated extends Component {
 		const { currentRoute, currentUser: { displayName, displayPhoto }, logout, pathname } = this.props;
 		return(<div className={style.main}>
 			<Sidebar {...{ displayName, displayPhoto, logout, pathname }}  />
-			{currentRoute}
+			<div className={style.scene}>
+				{currentRoute}
+			</div>
 		</div>)
 	}
 }
