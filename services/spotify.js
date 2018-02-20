@@ -44,6 +44,14 @@ class SpotifyApi {
 			user
 		})
 	};
+
+	static async getSongData({ id, user }) {
+		return await this.execute({
+			method: 'getAudioFeaturesForTrack',
+			params: [id],
+			user
+		});
+	};
 }
 
 module.exports = SpotifyApi;
