@@ -4,6 +4,7 @@ import {
 } from './types';
 
 import Api from '_/services/api';
+import transformSongData from '_/services/transform-song-data';
 
 const selectSong = (songData) => async(dispatch, getState) => {
 	dispatch({ type: SELECT_SONG_START });
@@ -11,7 +12,8 @@ const selectSong = (songData) => async(dispatch, getState) => {
 	if (songData) {
 		const { id } = songData;
 		const { data: { song } } = await Api.get(`spotify/song/${id}`);
-		const payload = { selectedSong: { ...songData, ...song } };
+		const transformedSongData = transformSongData(song);
+		const payload = { selectedSong: { ...songData, ...transformedSongData } };
 
 		dispatch({ type: SELECT_SONG_FINISH, payload });
 	} else {

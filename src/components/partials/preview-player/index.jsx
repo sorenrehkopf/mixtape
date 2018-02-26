@@ -25,10 +25,10 @@ class PreviewPlayer extends Component {
 	}
 
 	render() {
-		const { imageUrl, previewUrl } = this.props;
+		const { className, imageUrl, previewUrl } = this.props;
 		const { playing } = this.state;
 		return (
-			<div className={style.main} onClickCapture={({ currentTarget }) => this.toggle(currentTarget)}>
+			<div className={`${style.main} ${className}`} onClickCapture={({ currentTarget }) => this.toggle(currentTarget)}>
 				<img className={style['main__image']} src={imageUrl}/>
 				<span className={style['main__icon']}>
 					{playing && <span><i className="fas fa-pause"></i></span>}

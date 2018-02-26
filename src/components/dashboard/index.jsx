@@ -12,6 +12,8 @@ import AddSongDialog from '_/components/partials/add-song-dialog';
 import search from './actions/search';
 import selectSong from './actions/select-song';
 
+import formatTime from '_/services/format-time';
+
 class Dashboard extends Component {
 	render() {
 		const { songs, search, selectSong, selectedSong } = this.props;
@@ -31,7 +33,7 @@ class Dashboard extends Component {
 				preview_url: previewUrl,
 
 			}) => {
-			const songData = { albumName, artistName, duration, id, imageUrl, name, previewUrl };
+			const songData = { albumName, artistName, duration: formatTime(duration), id, imageUrl, name, previewUrl };
 			return (<ListItem key={id} {...songData} onSelect={() => selectSong(songData) } />);
 		});
 

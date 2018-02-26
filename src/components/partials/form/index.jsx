@@ -1,26 +1,37 @@
-import React, { Component } from 'react';
+import React, { Component, Children } from 'react';
 
 class Form extends Component {
 	constructor({ children }) {
 		super();
 		const formData = {};
-		console.log(children);
-		if (children.length) {
-			for(let { props: { name, value } } of children) {
-				if (name) {
-					formData[name] = value;
-				}
+		const flattenedChildren = this.getFlattenedChildren(Children.toArray(children));
+		for(let { props: { name, value } } of flattenedChildren) {
+			if (name) {
+				formData[name] = value;
 			}
-		} else {
-			const { props: { name, value } } = children;
-			formData[name] = value;
 		}
+		console.log(formData);
 		this.state = {
 			formData
 		}
 	}
 
+	getFlattenedChildren = (children) => {
+		const { getFlattenedChildren } = this;
+		let flattened = [];
 
+		for(let child of children) {
+			if (child.props && child.props.children) {
+				if (Array.isArray(child.props.children)) {
+					flattened = [...flattened, ...child.props.children]					
+				} else {
+					flattened = [...flattened, child];
+				}
+			}
+		}
+
+		return flattened;
+	}
 
 	handleSubmit = (e) => {
 		const { props: { onSubmit }, state: { formData } } = this;

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import Form from '_/components/partials/form';
+import PreviewPlayer from '_/components/partials/preview-player';
 
 import updateSongData from '_/components/dashboard/actions/update-song-data';
 
@@ -9,15 +10,49 @@ import style from './style';
 
 class AddSongDialog extends Component {
 	render() {
-		const { addSong, selectedSong: { name }, updateSongData } = this.props;
-		
+		const { addSong, selectedSong: { 
+			albumName,
+			artistName,
+			duration,
+			energy,
+			key,
+			danceability,
+			tempo,
+			valence,
+			loudness,
+			imageUrl,
+			name,
+			previewUrl,
+			tags,
+			...restOfSong 
+		}, updateSongData } = this.props;
+		console.log(restOfSong);
+		const values = { energy, tempo, key, valence, danceability, loudness, ...tags };
+		const inputs = Object.keys(values).map(key => (
+			<div key={key} className="pure-control-group">
+				<label className={style.label}>{key}: </label>
+				<input className={`pure-input ${style.input}`} type='text' name={key} value={values[key]}/>
+			</div>
+		));
 		return(
 			<div className={style.main}>
-				<Form onSubmit={addSong} onChange={updateSongData}>
-					<input type='text' name="name" value={name}/>
-					<input type='text' name="thing2"/>
-					<input type='text' name="thing3"/>
-					<button>submit!</button>
+				<h2 className={style.header}>Adding song</h2>
+				<div className={style.info}>
+					<span className={style.info__item}><em>{name}</em> <span>by</span> </span>
+					<span className={`${style.info__item} ${style.small}`}>{artistName} <span>from</span> </span>
+					<span className={style.info__item}><em>{albumName}</em></span>
+					<br/>
+					<br/>
+					<div className={style.player_and_time}>
+						<PreviewPlayer className={style.player} {...{ imageUrl, previewUrl} } />
+						<span className={style.info__item}>{duration}</span>
+					</div>
+				</div>
+				<p className={style.data_label}>Data: </p>
+				<p className={style.disclaimer}><em>** Pre-populated values are taken from the availabile spotify audio analysis. They are by no means perfect. Please adjust.**</em></p>
+				<Form onSubmit={addSong} onChange={updateSongData} className={`pure-form ${style.form}`}>
+					{inputs}
+					<button className={`pure-button ${style.button}`}>submit!</button>
 				</Form> 
 			</div>
 		)
