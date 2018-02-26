@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 
 import style from './style';
 
+import Form from '_/components/partials/form';
 import ListItem from '_/components/partials/list-item';
 import Modal from '_/components/partials/modal';
 import AddSongDialog from '_/components/partials/add-song-dialog';
@@ -36,9 +37,9 @@ class Dashboard extends Component {
 
 		return(
 			<div>
-				<form className={`pure-form ${style.form}`} onSubmit={e => e.preventDefault()}>
-					<input type="text" className={`pure-input-2-3 ${style.input}`} placeholder="Song, artist, or album name" onChange={({target}) => search(target)} />
-				</form>
+				<Form className={`pure-form ${style.form}`} onChange={search}>
+					<input type="text" name="songName" className={`pure-input-2-3 ${style.input}`} placeholder="Song, artist, or album name"/>
+				</Form>
 				{songsList}
 				{selectedSong && (
 					<Modal onBackgroundClick={() => selectSong()}>
@@ -56,7 +57,7 @@ const mapStateToProps = ({ dashboard: { songs, selectedSong } }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	search: debounce(({ value }) => dispatch(search(value)), 500),
+	search: debounce(({ delta: { songName } }) => dispatch(search(songName)), 500),
 	selectSong: (id) => dispatch(selectSong(id))
 });
 
