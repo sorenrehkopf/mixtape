@@ -31,7 +31,7 @@ class AddSongDialog extends Component {
 		const defaultInputs = Object.keys(values).map(key => (
 			<div key={key} className={`pure-control-group ${style.input_container}`}>
 				<label className={style.label}>{key}: </label>
-				<input className={`pure-input ${style.input}`} type="number" name={key} value={values[key]}/>
+				<input className={`pure-input ${style.input}`} type={typeof values[key] === 'number' ? 'number' : 'text'} name={key} value={values[key]}/>
 			</div>
 		));
 		return(
