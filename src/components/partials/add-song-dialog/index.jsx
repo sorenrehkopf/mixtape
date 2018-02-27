@@ -27,11 +27,11 @@ class AddSongDialog extends Component {
 			...restOfSong 
 		}, updateSongData } = this.props;
 		console.log(restOfSong);
-		const values = { energy, tempo, key, valence, danceability, loudness, ...tags };
-		const inputs = Object.keys(values).map(key => (
-			<div key={key} className="pure-control-group">
+		const values = { energy, tempo, key, valence, danceability, loudness };
+		const defaultInputs = Object.keys(values).map(key => (
+			<div key={key} className={`pure-control-group ${style.input_container}`}>
 				<label className={style.label}>{key}: </label>
-				<input className={`pure-input ${style.input}`} type='text' name={key} value={values[key]}/>
+				<input className={`pure-input ${style.input}`} type="number" name={key} value={values[key]}/>
 			</div>
 		));
 		return(
@@ -51,7 +51,12 @@ class AddSongDialog extends Component {
 				<p className={style.data_label}>Data: </p>
 				<p className={style.disclaimer}><em>** Pre-populated values are taken from the availabile spotify audio analysis. They are by no means perfect. Please adjust.**</em></p>
 				<Form onSubmit={addSong} onChange={updateSongData} className={`pure-form ${style.form}`}>
-					{inputs}
+					<div className={style.input_group}>
+						{defaultInputs}
+					</div>
+					<div className={style.input_group}>
+
+					</div>
 					<button className={`pure-button ${style.button}`}>submit!</button>
 				</Form> 
 			</div>

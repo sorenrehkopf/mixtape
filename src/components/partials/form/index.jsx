@@ -1,36 +1,17 @@
 import React, { Component, Children } from 'react';
 
 class Form extends Component {
-	constructor({ children }) {
-		super();
+	componentDidMount() {
+		const nameElements = this.refs.form.querySelectorAll('[name]')
 		const formData = {};
-		const flattenedChildren = this.getFlattenedChildren(Children.toArray(children));
-		for(let { props: { name, value } } of flattenedChildren) {
-			if (name) {
-				formData[name] = value;
-			}
+
+		for (let { name, value } of nameElements) {
+			formData[name] = value;
 		}
-		console.log(formData);
-		this.state = {
+
+		this.setState({
 			formData
-		}
-	}
-
-	getFlattenedChildren = (children) => {
-		const { getFlattenedChildren } = this;
-		let flattened = [];
-
-		for(let child of children) {
-			if (child.props && child.props.children) {
-				if (Array.isArray(child.props.children)) {
-					flattened = [...flattened, ...child.props.children]					
-				} else {
-					flattened = [...flattened, child];
-				}
-			}
-		}
-
-		return flattened;
+		});
 	}
 
 	handleSubmit = (e) => {
@@ -54,6 +35,7 @@ class Form extends Component {
 			}
 		}, () => {
 			const { formData } = this.state;
+			console.log('the form data!', formData);
 			if (onChange) {
 				onChange({ formData, delta });
 			}
@@ -63,7 +45,7 @@ class Form extends Component {
 	render() {
 		const { children, className } = this.props;
 		return(
-			<form className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
+			<form ref="form" className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
 				{children}
 			</form>
 		)
