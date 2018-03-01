@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import debounce from 'lodash/debounce';
 import Form from '_/components/partials/form';
 import PreviewPlayer from '_/components/partials/preview-player';
+import Tag from '_/components/partials/tag';
 
 import updateSongData from '_/components/dashboard/actions/update-song-data';
 
@@ -26,14 +27,17 @@ class AddSongDialog extends Component {
 			tags,
 			...restOfSong 
 		}, updateSongData } = this.props;
-		console.log(restOfSong);
+		console.log(tags);
 		const values = { energy, tempo, key, valence, danceability, loudness };
 		const defaultInputs = Object.keys(values).map(key => (
 			<div key={key} className={`pure-control-group ${style.input_container}`}>
 				<label className={style.label}>{key}: </label>
-				<input className={`pure-input ${style.input}`} type={typeof values[key] === 'number' ? 'number' : 'text'} name={key} value={values[key]}/>
+				<input className={`pure-input ${style.input}`} type={typeof values[key] === 'number' ? 'number' : 'text'} step="any" name={key} value={values[key]}/>
 			</div>
 		));
+
+		const tagElements = Object.keys(tags).map(key => (<Tag name={key} value={tags[key]} />));
+
 		return(
 			<div className={style.main}>
 				<h2 className={style.header}>Adding song</h2>
@@ -55,9 +59,10 @@ class AddSongDialog extends Component {
 						{defaultInputs}
 					</div>
 					<div className={style.input_group}>
-
+						{tagElements}
+						<button className={`pure-button ${style.tagButton}`}><i className="fas fa-plus"/> add a tag!</button>
 					</div>
-					<button className={`pure-button ${style.button}`}>submit!</button>
+					<button className={`pure-button ${style.button}`}>Add song!</button>
 				</Form> 
 			</div>
 		)

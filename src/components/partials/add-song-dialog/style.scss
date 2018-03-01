@@ -76,7 +76,6 @@
 }
 
 .input_group {
-	flex: 1;
 	flex-wrap: wrap;
 	flex-direction: row;
 	display: flex;
@@ -84,6 +83,7 @@
 }
 
 .button {
+	flex: 1;
 	background-color: $eucalyptus;
 	color: $jet;
 	display: block;

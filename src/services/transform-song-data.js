@@ -18,12 +18,12 @@ const keyMappings = [
 const transformSongData = ({ danceability, energy, loudness, key, tempo, valence, ...everythingElse}) => ({
 	...everythingElse,
 	key: keyMappings[key],
-	danceability: round(danceability * 10, 2),
-	energy: round(energy * 10, 2),
-	tempo: round(tempo, 2),
-	valence: round(valence * 10, 2),
-	loudness: round(loudness, 2),
-	tags: []
+	danceability: round(danceability * 10, 1),
+	energy: round(energy * 10, 1),
+	tempo: round(tempo, 1),
+	valence: round(valence * 10, 1),
+	loudness: round(loudness, 1),
+	tags: { aKey: true, aNumberKey: 5 }
 });
 
 export default transformSongData;

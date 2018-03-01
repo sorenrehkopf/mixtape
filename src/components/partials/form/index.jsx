@@ -25,8 +25,9 @@ class Form extends Component {
 	handleChange = ({ target: { name, value } }) => {
 		const { props: { onChange }, state: { formData } } = this;
 		const delta = {};
+		if (!name) return; 
 
-		delta[name] = value;
+		delta[name] = isNaN(value) ? value : parseFloat(value);
 		
 		this.setState({ 
 			formData: {
@@ -35,7 +36,6 @@ class Form extends Component {
 			}
 		}, () => {
 			const { formData } = this.state;
-			console.log('the form data!', formData);
 			if (onChange) {
 				onChange({ formData, delta });
 			}
