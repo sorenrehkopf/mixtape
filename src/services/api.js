@@ -19,6 +19,10 @@ class Api {
 		return this.executeHttpReqest({ path })
 	}
 
+	static post(path, data) {
+		return this.executeHttpReqest({ data, method: 'POST', path });
+	}
+
 	static executeHttpReqest({ data, method = 'GET', path }) {
 		const { authToken, baseUrl } = this;
 		return new Promise((resolve, reject) => {

@@ -14,7 +14,7 @@ class ListItem extends Component {
 				<span className={style['main__item']} title={name}>{name}</span>
 				<span className={style['main__item']} title={artistName}>{artistName}</span>
 				<span className={style['main__item']} title={albumName}>{albumName}</span>
-				<span className={style['main__item']} title={duration}>{duration}</span>
+				<span className={style['main__item']} title={duration.friendly}>{duration.friendly}</span>
 			</div>
 		)
 	}

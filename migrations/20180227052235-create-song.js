@@ -21,11 +21,23 @@ module.exports = {
       albumName: {
         type: Sequelize.STRING
       },
+      durationFriendly: {
+        type: Sequelize.STRING
+      },
+      durationMs: {
+        type: Sequelize.INTEGER
+      },
       energy: {
         type: Sequelize.FLOAT
       },
+      imageUrl: {
+        type: Sequelize.STRING
+      },
       tempo: {
         type: Sequelize.FLOAT
+      },
+      timeSignature: {
+        type: Sequelize.STRING
       },
       key: {
         type: Sequelize.STRING

@@ -15,15 +15,16 @@ const keyMappings = [
 	'B',
 ];
 
-const transformSongData = ({ danceability, energy, loudness, key, tempo, valence, ...everythingElse}) => ({
+const transformSongData = ({ danceability, energy, loudness, key, tempo, time_signature, valence, ...everythingElse}) => ({
 	...everythingElse,
-	key: keyMappings[key],
 	danceability: round(danceability * 10, 1),
 	energy: round(energy * 10, 1),
-	tempo: round(tempo, 1),
-	valence: round(valence * 10, 1),
+	key: keyMappings[key],
 	loudness: round(loudness, 1),
-	tags: { aKey: true, aNumberKey: 5 }
+	tags: {},
+	tempo: round(tempo, 1),
+	timeSignature: `${time_signature}/4`,
+	valence: round(valence * 10, 1)
 });
 
 export default transformSongData;

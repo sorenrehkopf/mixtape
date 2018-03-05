@@ -43,9 +43,9 @@ class Form extends Component {
 	}
 
 	render() {
-		const { children, className } = this.props;
+		const { children, className, id } = this.props;
 		return(
-			<form ref="form" className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
+			<form id={id} ref="form" className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
 				{children}
 			</form>
 		)

@@ -1,0 +1,29 @@
+@import '~_/styles/pallette';
+
+.main {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	margin: 0px 20px 20px 0px;
+	background-color: $granite_grey;
+	min-width: 90px;
+
+	> .name{
+		margin: 0px;
+		padding: 5px;
+	}
+
+	.input_container {
+		background-color: white;
+		border: 1px solid $granite_grey;
+		> input.value {
+			border-radius: 0px;
+			padding: 5px;
+			box-shadow: none;
+			width: 90px;
+			border: none;
+			padding: 2px 5px;
+		}
+	}
+}

@@ -14,7 +14,7 @@ const selectSong = (songData) => async(dispatch, getState) => {
 		const { data: { song } } = await Api.get(`spotify/song/${id}`);
 		const transformedSongData = transformSongData(song);
 		const payload = { selectedSong: { ...songData, ...transformedSongData } };
-
+		console.log(JSON.stringify(payload));
 		dispatch({ type: SELECT_SONG_FINISH, payload });
 	} else {
 		dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: null } });

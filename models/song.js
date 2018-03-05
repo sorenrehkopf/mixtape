@@ -4,8 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     artistName: DataTypes.STRING,
     albumName: DataTypes.STRING,
+    durationFriendly: DataTypes.STRING,
+    durationMs: DataTypes.INTEGER,
     energy: DataTypes.FLOAT,
+    imageUrl: DataTypes.STRING,
+    previewUrl: DataTypes.STRING,
     tempo: DataTypes.FLOAT,
+    timeSignature: DataTypes.STRING,
     key: DataTypes.STRING,
     valence: DataTypes.FLOAT,
     danceability: DataTypes.FLOAT,
@@ -15,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        models.Song.belongsTo(models.User);
       }
     }
   });

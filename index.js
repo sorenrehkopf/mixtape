@@ -19,11 +19,13 @@ app.use(authenticate);
 const authController = require('./controllers/auth.js');
 const userController = require('./controllers/user.js');
 const spotifyController = require('./controllers/spotify.js');
+const songsController = require('./controllers/songs.js');
 
 
 app.use('/api/auth', authController);
 app.use('/api/user', userController);
 app.use('/api/spotify', spotifyController);
+app.use('/api/songs', songsController);
 
 app.get('*', (req, res) => {
 	res.sendFile(`${__dirname}/public/index.html`);
