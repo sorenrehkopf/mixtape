@@ -8,10 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
-        allowNull: false,
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
@@ -31,6 +27,9 @@ module.exports = {
         type: Sequelize.FLOAT
       },
       imageUrl: {
+        type: Sequelize.STRING
+      },
+      previewUrl: {
         type: Sequelize.STRING
       },
       tempo: {

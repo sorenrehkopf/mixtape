@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Song } = require('../../models/index.js');
+const { User } = require('../models/index.js');
 
 router.get('/', (req, res) => {
 	
