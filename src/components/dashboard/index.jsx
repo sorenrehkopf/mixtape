@@ -40,7 +40,7 @@ class Dashboard extends Component {
 		return(
 			<div>
 				<Form className={`pure-form ${style.form}`} onChange={search}>
-					<input type="text" name="songName" className={`pure-input-2-3 ${style.input}`} placeholder="Song, artist, or album name"/>
+					<input type="text" name="songName" className={`pure-input-2-3 ${style.input}`} placeholder="Song, artist, or album name" autoComplete="off" />
 				</Form>
 				{songsList}
 				{selectedSong && (

@@ -8,7 +8,8 @@ router.get('/', (req, res) => {
 		where: {
 			id
 		},
-		include: [ Song ]
+		include: [ Song ],
+		order: [ [ Song, 'createdAt', 'DESC'] ]
 	}).then(({ displayName, displayPhoto, Songs }) => {
 		res.send({
 			displayName,

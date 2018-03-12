@@ -68,7 +68,7 @@ const config = {
 	devServer: {
 		contentBase: buildDir,
 		inline: true,
-		port:3030,
+		port:4400,
 		proxy: {
 			"/api": "http://localhost:3000/api",
 			"*": "http://localhost:3000"

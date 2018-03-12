@@ -3,7 +3,7 @@ const router = express.Router();
 const { Song } = require('../models/index.js');
 
 router.get('/', (req, res) => {
-	User.findAll({
+	Song.findAll({
 		where: {
 			userId: req.user.id
 		}
@@ -11,7 +11,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	console.log(req.body);
 	const {
 		albumName,
 		artistName,
