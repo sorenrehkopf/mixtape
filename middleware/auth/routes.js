@@ -4,6 +4,9 @@ const routes = {
 			controller: 'user'
 		},
 		{
+			controller: 'songs'
+		},
+		{
 			controller: 'spotify'
 		}
 	]

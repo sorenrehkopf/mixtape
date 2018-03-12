@@ -3,7 +3,6 @@ import {
 } from './types';
 
 const updateSongData = (update) => (dispatch, getState) => {
-	console.log(update);
 	const keys = Object.keys(update);
 	const keyWithHash = keys.find(key => key.startsWith('#'));
 

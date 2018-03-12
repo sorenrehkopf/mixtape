@@ -8,10 +8,19 @@
 	margin: 0px 20px 20px 0px;
 	background-color: $granite_grey;
 	min-width: 90px;
+	cursor: pointer;
 
 	> .name{
 		margin: 0px;
 		padding: 5px;
+		> span {
+			opacity: 0;
+		}
+		&:hover {
+			> span {
+				opacity: 1;
+			}
+		}
 	}
 
 	.input_container {

@@ -13,7 +13,7 @@ import style from './style';
 class AddSongDialog extends Component {
 	render() {
 		console.log(this.props.selectedSong);
-		const { addSong, addTag, selectedSong: { 
+		const { addSong, addTag, removeTag, selectedSong: { 
 			albumName,
 			artistName,
 			danceability,
@@ -31,14 +31,9 @@ class AddSongDialog extends Component {
 			...restOfSong 
 		}, updateSongData } = this.props;
 		const values = { energy, tempo, key, valence, danceability, loudness, timeSignature };
-		const defaultInputs = Object.keys(values).map(key => (
-			<div key={key} className={`pure-control-group ${style.input_container}`}>
-				<label className={style.label}>{key}: </label>
-				<input className={`pure-input ${style.input}`} type={typeof values[key] === 'number' ? 'number' : 'text'} step="any" name={key} value={values[key]}/>
-			</div>
-		));
-		console.log(tags);
-		const tagElements = Object.keys(tags).map(key => (<Tag key={key} name={key} value={tags[key]} />));
+		const defaultInputs = Object.keys(values).map(key => <Tag key={key} name={key} value={values[key]} />);
+		const tagInputs = Object.keys(tags).map(key => <Tag key={key} name={`#${key}`} value={tags[key]} remove={() => removeTag(key)} />);
+		const inputs = [...defaultInputs, ...tagInputs];
 
 		return(
 			<div className={style.main}>
@@ -58,18 +53,21 @@ class AddSongDialog extends Component {
 				<p className={style.disclaimer}><em>** Pre-populated values are taken from the availabile spotify audio analysis. They are by no means perfect. Please adjust.**</em></p>
 				<Form id="add-song-form" onSubmit={addSong} onChange={updateSongData} className={`pure-form ${style.form}`}>
 					<div className={style.input_group}>
-						{defaultInputs}
-					</div>
-					<div className={style.input_group}>
-						{tagElements}
+						{inputs}
 					</div>
 				</Form> 
 				<Form className={`pure-form ${style.new_tag_form}`} onSubmit={addTag}>
 					<input name="newTagName" type="text" className={`pure-input ${style.input}`} />
-					<label className={`pure-checkbox ${style.tag_type_checkbox}`}>
-						<input type="checkbox" name="newTagType" value="numeric" />
-						  Numeric
-					</label>
+					<div>
+						<label className={`pure-radio ${style.tag_type_radio}`}>
+							<input type="radio" name="newTagType" value="boolean"/>
+							  Boolean
+						</label>
+						<label className={`pure-radio ${style.tag_type_radio}`}>
+							<input type="radio" name="newTagType" value="numeric" />
+							  Numeric
+						</label>
+					</div>
 					<button className={`pure-button ${style.tag_button}`}><i className="fas fa-plus"/> add a tag!</button>
 				</Form>
 				<button form="add-song-form" type="submit" className={`pure-button ${style.button}`}><i className="fas fa-plus"/> Add song!</button>
@@ -85,8 +83,14 @@ const mapStateToProps = ({ dashboard: { selectedSong } }) => ({
 const mapDispatchToProps = (dispatch) => ({
 	addSong: () => dispatch(addSong()),
 	addTag: ({ formData: { newTagName, newTagType } }) => {
+		console.log(newTagName, newTagType);
 		const update = {};
-		update[`#${newTagName}`] = newTagType === 'numeric' ? true : 5;
+		update[`#${newTagName}`] = newTagType === 'numeric' ? 5 : true;
+		dispatch(updateSongData(update))
+	},
+	removeTag: tagName => {
+		const update = {};
+		update[`#${tagName}`] = false;
 		dispatch(updateSongData(update))
 	},
 	updateSongData: ({ delta }) => dispatch(updateSongData(delta))

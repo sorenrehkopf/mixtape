@@ -5,12 +5,27 @@ import {
 	LOGOUT
 } from './actions/types';
 
+import {
+	ADD_SONG_FINISH
+} from '_/components/dashboard/actions/types';
+
 const initialState = {
 	authenticated: false
 };
 
 const mainReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
+		case ADD_SONG_FINISH:
+			return {
+				...state,
+				currentUser: {
+					...state.currentUser,
+					Songs: [
+						...state.currentUser.Songs,
+						payload.addedSongData
+					]
+				}
+			}
 		case LOGIN_START:
 			return { 
 				...state,

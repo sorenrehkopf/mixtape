@@ -10,7 +10,8 @@ import logout from'./actions/logout';
 
 class Authenticated extends Component {
 	render() {
-		const { currentRoute, currentUser: { displayName, displayPhoto }, logout, pathname } = this.props;
+		const { currentRoute, currentUser: { displayName, displayPhoto, ...more }, logout, pathname } = this.props;
+		console.log(more);
 		return(<div className={style.main}>
 			<Sidebar {...{ displayName, displayPhoto, logout, pathname }}  />
 			<div className={style.scene}>

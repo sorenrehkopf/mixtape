@@ -50,7 +50,6 @@
 }
 
 .form {
-	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -58,13 +57,12 @@
 }
 
 .new_tag_form {
-	flex: 1;
 	display: flex;
 	align-items: flex-start;
 	align-content: center;
-	.tag_type_checkbox {
+	.tag_type_radio {
 		margin: 0px 15px 0px 0px;
-		padding-top: 10px;
+		display:block;
 	}
 
 	> * {

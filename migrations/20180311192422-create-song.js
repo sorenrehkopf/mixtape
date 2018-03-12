@@ -32,11 +32,17 @@ module.exports = {
       previewUrl: {
         type: Sequelize.STRING
       },
+      spotifyId: {
+        type: Sequelize.STRING
+      },
       tempo: {
         type: Sequelize.FLOAT
       },
       timeSignature: {
         type: Sequelize.STRING
+      },
+      userId: {
+        type: Sequelize.INTEGER
       },
       key: {
         type: Sequelize.STRING
