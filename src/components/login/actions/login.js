@@ -11,16 +11,13 @@ const login = () => (dispatch, getState) => {
 
 	const loginWindow = new ChildWindow({
 		url: 'http://localhost:3000/api/auth/login',
-		onMessage: ({ data: { authToken, displayName, displayPhoto } }) => {
+		onMessage: ({ data: { authToken, ...more } }) => {
 			const payload = {
-				user: {
-					displayName,
-					displayPhoto
-				}
+				user: more
 			};
 
 			Api.setAuthToken(authToken);
-			dispatch({ type: LOGIN_FINISH, payload })
+			dispatch({ type: LOGIN_FINISH, payload });
 			loginWindow.close();
 		}
 	});

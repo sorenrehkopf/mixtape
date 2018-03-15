@@ -3,7 +3,7 @@ import { LOGOUT } from './types';
 
 const logout = () => (dispatch, getState) => {
 	Api.clearAuthToken();
-	dispatch({ type: LOGOUT })
+	dispatch({ type: LOGOUT });
 }
 
 export default logout;

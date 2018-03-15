@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import style from './style';
 
 import login from './actions/login';
 
 class Login extends Component {
-	render() {
+	renderLoginPage() {
 		const { authenticating, login } = this.props;
-		return(
+
+		return (
 			authenticating ? (
 				<div className={style.main}>
 					<p>loading...</p>
@@ -24,9 +26,18 @@ class Login extends Component {
 			)
 		)
 	}
+
+	render() {
+		const { authenticated } = this.props;
+		return(
+			authenticated ? <Redirect to="/" />
+			: this.renderLoginPage()
+		)
+	}
 };
 
-const mapStateToProps = ({ main: { authenticating } }) => ({
+const mapStateToProps = ({ main: { authenticating, authenticated } }) => ({
+	authenticated,
 	authenticating
 });
 

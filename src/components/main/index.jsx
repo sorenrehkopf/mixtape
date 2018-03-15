@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
+import { Route, Redirect, withRouter } from 'react-router-dom';
+import { Switch } from 'react-router';
 import style from './style';
 
 import Login from '../login';
@@ -14,7 +15,12 @@ class Main extends Component {
 			return <p>loading...</p>
 		}
 
-		return(authenticated? <Authenticated /> : <Login />);
+		return(
+			<Switch>
+				<Route path="/login" exact component={Login} />
+				<Route path="/" component={Authenticated} />
+			</Switch>
+		);
 	}
 }
 
@@ -23,4 +29,4 @@ const mapStateToProps = ({ main: { authenticated, authenticating } }) => ({
 	authenticating
 });
 
-export default connect(mapStateToProps)(Main);
+export default withRouter(connect(mapStateToProps)(Main));

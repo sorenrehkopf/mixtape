@@ -1,6 +1,6 @@
 const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
-const { User } = require('../models/index.js');
+const { Song, User } = require('../models/index.js');
 const template = require('lodash/template');
 const fs = require('fs');
 const jwtSimple = require('jwt-simple');
@@ -42,9 +42,11 @@ router.get('/handleauth', (req, res) => {
 	    		spotifyRefreshToken: refresh_token,
 	    		displayName,
 	    		displayPhoto: url,
-	    	}
+	    	},
+	    	include: [ Song ],
+				order: [ [ Song, 'createdAt', 'DESC'] ]
 	    }).spread(async(user, created) => {
-	    	const { displayName, displayPhoto, id, spotifyAccessToken, spotifyRefreshToken } = user;
+	    	const { displayName, displayPhoto, id, Songs, spotifyAccessToken, spotifyRefreshToken } = user;
 
 	    	if (spotifyAccessToken !== access_token) {
 	    		user.spotifyAccessToken = access_token;
@@ -53,7 +55,7 @@ router.get('/handleauth', (req, res) => {
 	    	}
 	    	
 	    	const authToken = jwtSimple.encode({ id }, process.env.AUTH_TOKEN_SECRET);
-	    	const data = JSON.stringify({ authToken, displayName, displayPhoto });
+	    	const data = JSON.stringify({ authToken, displayName, displayPhoto, Songs });
 	    	const handleAuthPage = handleAuthSuccessCompiler({
 	    		data, 
 	    		targetOrigin: process.env.CLIENT_BASE_URL
