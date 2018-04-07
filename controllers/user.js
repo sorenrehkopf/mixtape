@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Song, User } = require('../models/index.js');
+const { Song, Tag, User } = require('../models/index.js');
 
 router.get('/', (req, res) => {
 	const { id } = req.user;
@@ -8,13 +8,23 @@ router.get('/', (req, res) => {
 		where: {
 			id
 		},
-		include: [ Song ],
+		include: [{
+				model: Song,
+				include: [{
+					model: Tag,
+					through: { attributes: ['value'] }
+				}]
+			},
+			{
+				model: Tag
+			}],
 		order: [ [ Song, 'createdAt', 'DESC'] ]
-	}).then(({ displayName, displayPhoto, Songs }) => {
+	}).then(({ displayName, displayPhoto, Songs, Tags }) => {
 		res.send({
 			displayName,
 			displayPhoto,
-			Songs
+			Songs,
+			Tags
 		});
 	});
 });

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Song } = require('../models/index.js');
+const { Song, Tag } = require('../models/index.js');
 
 router.get('/', (req, res) => {
 	Song.findAll({
@@ -56,6 +56,21 @@ router.post('/', (req, res) => {
 			valence
 		}
 	}).spread((song, created) => {
+		for (let name in tags) {
+			Tag.findOrCreate({
+				where: {
+					userId: req.user.id,
+					name
+				}
+			}).spread((tag, created) => {
+				song.addTag(tag, { through: { value: {
+							type: typeof tags[name],
+							data: tags[name]
+						}
+					}
+				})
+			})
+		}
 		res.send(song);
 	});
 });
