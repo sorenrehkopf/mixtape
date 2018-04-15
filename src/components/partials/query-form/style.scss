@@ -1,0 +1,28 @@
+@import '~_/styles/_pallette';
+
+.tag-list {
+	display:flex;
+	margin: 10px 0px;
+}
+
+.include {
+	margin-bottom: 10px;
+}
+
+.section-title {
+	color: $jet;
+	font-size: $normal;
+}
+
+.add-button {
+	margin: 0px 10px;
+	background-color: $jet;
+	color: white;
+}
+
+.submit-button {
+	margin: 15px 0px;
+	background-color: $eucalyptus;
+	color: $jet;
+	font-size: $normal;
+}

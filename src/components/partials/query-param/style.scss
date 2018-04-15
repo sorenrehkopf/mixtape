@@ -1,0 +1,25 @@
+@import '~_/styles/pallette';
+
+.main {
+	display: inline-block;
+	margin: 10px 20px 10px 0px;
+	background-color: $granite_grey;
+	padding: 5px;
+	min-width: 90px;
+	cursor: pointer;
+
+	> .name{
+		margin: 0px;
+		padding: 5px;
+	}
+
+	> span.remove {
+		opacity: 0;
+	}
+
+	&:hover {
+		> span.remove {
+			opacity: 1;
+		}
+	}
+}

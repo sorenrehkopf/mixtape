@@ -5,12 +5,10 @@ import {
 
 
 
-const searchSongCollection = () => (dispatch, getState) => {
-	const { songs: { query } } = getState();
-
+const searchSongCollection = (data) => (dispatch, getState) => {
 	dispatch({ type: SEARCH_SONGS_START });
 
-	console.log(query);
+	console.log(data);
 
 	dispatch({ type: SEARCH_SONGS_FINISH });
 };
