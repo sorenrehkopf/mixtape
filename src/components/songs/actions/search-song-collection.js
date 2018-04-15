@@ -3,13 +3,14 @@ import {
 	SEARCH_SONGS_START
 } from './types';
 
+import Api from '_/services/api';
 
-
-const searchSongCollection = (data) => (dispatch, getState) => {
+const searchSongCollection = (data) => async(dispatch, getState) => {
 	dispatch({ type: SEARCH_SONGS_START });
 
-	console.log(data);
+	const { data: { songs } } = await Api.get(`songs/${encodeURIComponent(JSON.stringify(data))}`);
 
+	console.log(songs);
 	dispatch({ type: SEARCH_SONGS_FINISH });
 };
 

@@ -22,7 +22,6 @@ class QueryForm extends Component {
 	}
 
 	add(which, type, name, data) {
-		console.log(this, name, data);
 		const { state } = this;
 		const delta = state[which][type];
 		const update = {};
@@ -44,7 +43,7 @@ class QueryForm extends Component {
 
 	handleSubmit() {
 		const { props: { onSubmit }, state: { exclude, include } } = this;
-		console.log('hey!');
+
 		onSubmit({ exclude, include });
 	}
 
@@ -61,7 +60,6 @@ class QueryForm extends Component {
 	}
 
 	render() {
-		console.log(this.state);
 		const {
 			exclude,
 			include

@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { Song, Tag } = require('../models/index.js');
 
-router.get('/', (req, res) => {
+router.get('/:query', (req, res) => {
+	const query = JSON.parse(decodeURIComponent(req.params.query));
+	console.log('here are the params!', query);
 	Song.findAll({
 		where: {
 			userId: req.user.id
 		}
 	})
+	res.send({ songs: ['howdy!']});
 });
 
 router.post('/', (req, res) => {
