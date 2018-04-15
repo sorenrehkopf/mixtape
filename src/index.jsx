@@ -13,6 +13,7 @@ import Main from './components/main';
 
 import mainReducer from './components/main/reducer';
 import dashboardReducer from './components/dashboard/reducer';
+import songsReducer from './components/songs/reducer';
 
 const history = createHistory();
 const historyMiddleware = routerMiddleware(history);
@@ -20,7 +21,8 @@ const historyMiddleware = routerMiddleware(history);
 const rootReducer = combineReducers({
 	main: mainReducer,
 	dashboard: dashboardReducer,
-	router: routerReducer
+	router: routerReducer,
+	songs: songsReducer,
 });
 
 let currentUser;
@@ -34,7 +36,25 @@ let currentUser;
 	}
 
 	const store = createStore(rootReducer,
-		{ main: { authenticated: !!currentUser, currentUser } },
+		{ 
+			main: { 
+				authenticated: !!currentUser, 
+				currentUser 
+			}, 
+			songs: { 
+				songs: (currentUser && currentUser.Songs) || [],
+				query: {
+					include: {
+						tags: [],
+						params: []
+					},
+					exclude: {
+						tags: [],
+						params: []
+					}
+				}
+			}
+		},
 		applyMiddleware(thunk, historyMiddleware)
 	);
 

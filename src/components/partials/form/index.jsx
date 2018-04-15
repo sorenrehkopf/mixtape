@@ -10,15 +10,28 @@ class Form extends Component {
 		}
 
 		this.setState({
-			formData
+			formData,
+			nameElements
 		});
 	}
 
 	handleSubmit = (e) => {
-		const { props: { onSubmit }, state: { formData } } = this;
+		const { props: { clearOnSubmit, onSubmit }, state: { formData, nameElements } } = this;
 		e.preventDefault();
 		if (onSubmit) {
 			onSubmit({ formData });
+		}
+		if (clearOnSubmit) {
+			const clearedFormData = {};
+			for (let key in formData) {
+				clearedFormData[key] = null;
+			};
+			this.setState({
+				formData: clearedFormData
+			});
+			for (let element of nameElements) {
+				element.value = null;
+			}
 		}
 	}
 
