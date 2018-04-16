@@ -2,18 +2,35 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ListItem from '_/components/partials/list-item';
 import QueryForm from '_/components/partials/query-form';
+import Modal from '_/components/partials/modal';
 import style from './style';
 
 
 import searchSongCollection from './actions/search-song-collection';
 
 class Songs extends Component {
+	constructor() {
+		super()
+		this.state = {
+			showSearchModal: false
+		}
+	}
+
+	async searchSongs(data) {
+		const { searchSongs } = this.props;
+		await searchSongs(data);
+		this.toggleSearchModal();
+	}
+
+	toggleSearchModal() {
+		this.setState({
+			showSearchModal: !this.state.showSearchModal
+		});
+	}
+
 	render() {
-		const {
-			editSong,
-			searchSongs,
-			songs 
-		} = this.props;
+		const { editSong, songs } = this.props;
+		const { showSearchModal } = this.state;
 
 		const songsList = songs.map(({
 			albumName,
@@ -32,7 +49,15 @@ class Songs extends Component {
 		return(
 			<div>
 				<h1>Your songs!</h1>
-				<QueryForm onSubmit={searchSongs} />
+				<button className={`pure-button ${style.toggle_button}`} onClick={() => this.toggleSearchModal()}>Search your collection!</button>
+				{showSearchModal && 
+					<Modal onBackgroundClick={() => this.toggleSearchModal()}>
+						<div className={style.query_form_container}>
+							<h2 className={style.search_title}>Search your songs</h2>
+							<QueryForm onSubmit={data => this.searchSongs(data)} />
+						</div>
+					</Modal>
+				}
 				<div>
 					{songsList}
 				</div>
@@ -43,10 +68,12 @@ class Songs extends Component {
 
 const mapStateToProps = ({ 
 	songs: {
-		songs
+		songs,
+		showSearchModal
 	} 
 }) => ({
-	songs
+	songs,
+	showSearchModal
 });
 
 const mapDispatchToProps = (dispatch) => ({

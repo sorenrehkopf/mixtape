@@ -1,0 +1,21 @@
+@import '~_/styles/_pallette';
+
+.toggle_button {
+	background-color: $eucalyptus;
+	color: $jet;
+	font-size: $normal;
+	margin: 15px;
+}
+
+.query_form_container {
+	background-color: white;
+	overflow: auto;
+	padding: 20px;
+	width: 80vw;
+	height: 70vh;
+}
+
+.search_title {
+	margin: 10px 0px 20px;
+	color: $jet;	
+}

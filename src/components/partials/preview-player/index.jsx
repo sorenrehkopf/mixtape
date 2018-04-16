@@ -11,6 +11,11 @@ class PreviewPlayer extends Component {
 
 	toggle(currentTarget) {
 		const audio = currentTarget.parentElement.querySelector('audio');
+
+		if (!audio) {
+			return;
+		}
+
 		if (audio.paused) {
 			audio.play();
 			this.setState({
@@ -29,14 +34,18 @@ class PreviewPlayer extends Component {
 		const { playing } = this.state;
 		return (
 			<div className={`${style.main} ${className}`} onClickCapture={({ currentTarget }) => this.toggle(currentTarget)}>
-				<img className={style['main__image']} src={imageUrl}/>
-				<span className={style['main__icon']}>
-					{playing && <span><i className="fas fa-pause"></i></span>}
-					{!playing && <span><i className="fas fa-play"></i></span>}
-				</span>
-				<audio>
-					<source src={previewUrl} type="audio/mpeg"/>
-				</audio>
+				<img className={style['main__image']} src={imageUrl} title={previewUrl ? 'Click to play preview' : 'No preview available'}/>
+				{previewUrl && 
+					<span className={style['main__icon']}>
+						{playing && <span><i className="fas fa-pause"></i></span>}
+						{!playing && <span><i className="fas fa-play"></i></span>}
+					</span>
+				}
+				{previewUrl &&
+					<audio>
+						<source src={previewUrl} type="audio/mpeg"/>
+					</audio>
+				}
 			</div>
 		)
 	}

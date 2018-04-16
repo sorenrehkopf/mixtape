@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import style from './style';
 
+import { paramTypes } from '_/services/get-collections';
+
 class QueryParam extends Component {
 	render() {
-		const { name, remove, type, value1, value2, value3 } = this.props;
+		const { name, remove, type, ...values } = this.props;
+		console.log(values);
 		return (
 			<div className={style.main}>
 				<span className={style.name}>
 					<span>{name}</span>
-					<span> {type} </span>
-					{type === 'is' && <span>{value1}</span>}
-					{type !== 'is' && <span>{value2}</span>}
-					{type === 'between' && <span> and {value3}</span>}
+					<span> {paramTypes[type].displayValue} </span>
+					{paramTypes[type].inputTypes.map((type, i) => <span key={i}>{i ? ' and ' : null}{values[`value${i}`]}</span>)}
 				</span>
 				<span className={style.remove} onClick={remove}>x</span>
 			</div>

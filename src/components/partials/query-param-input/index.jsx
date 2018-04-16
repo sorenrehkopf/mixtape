@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import Form from '_/components/partials/form';
 import style from './style';
 
+import { paramTypes } from '_/services/get-collections';
+
 class QueryParamInput extends Component {
 	constructor() {
 		super();
 		this.state = {
-			newParamType: 'is'
+			newParamType: 'strict_equivalence_text'
 		};
 	}
 
 	updateParamType(newType) {
-		if (newType !== this.state.newParamType) {
+		if (newType && newType !== this.state.newParamType) {
 			this.setState({
 				newParamType: newType
 			});
@@ -21,20 +23,15 @@ class QueryParamInput extends Component {
 	render() {
 		const { props: { queryParamAddAction }, state: { newParamType } } = this;
 
+		const typeOptions = Object.keys(paramTypes).map(type => <option key={type} value={type}>{paramTypes[type].displayValue}</option>);
+		const typeInputs = paramTypes[newParamType].inputTypes.map((type, i) => <input required key={i} className={style.input} type={type} name={`value${i}`} step="any" />);
 		return(
 			<Form className={`pure-form`} clearOnSubmit={true} onSubmit={queryParamAddAction} onChange={({ formData: { newParamType } }) => this.updateParamType(newParamType)}>
 				<input className={style.input} type="text" name="newParamName"></input>
-				<select className={style.input} name="newParamType">
-					<option value="is">is</option>
-					<option value="exactly">is exactly</option>
-					<option value="greater-than">is greater than</option>
-					<option value="less-than">is less than</option>
-					<option value="between">is between</option>
+				<select required className={style.input} name="newParamType">
+					{typeOptions}
 				</select>
-				{newParamType === 'is' && <input className={style.input} type="text" name="value1"/>}
-				{newParamType !== 'is' && <input className={style.input} type="number" name="value2" step="any"/>}
-				{newParamType ==='between' && ' and '}
-				{newParamType === 'between' && <input className={style.input} type="number" name="value3" step="any"/>}
+				{typeInputs}
 				<button className={`${style['add-button']} ${style.input} pure-button`}>add</button>
 			</Form>
 		)
