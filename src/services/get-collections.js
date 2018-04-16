@@ -1,6 +1,6 @@
-export const defaultQueryFields = {
+export const defaultQueryFields = [
 	
-};
+];
 
 export const paramTypes = {
 	strict_equivalence_text:{

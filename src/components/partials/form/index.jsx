@@ -36,6 +36,7 @@ class Form extends Component {
 	}
 
 	handleChange = ({ target: { name, value } }) => {
+		console.log('changing!!', name, value);
 		const { props: { onChange }, state: { formData } } = this;
 		const delta = {};
 		if (!name) return; 
@@ -58,7 +59,7 @@ class Form extends Component {
 	render() {
 		const { children, className, id } = this.props;
 		return(
-			<form id={id} ref="form" className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
+			<form id={id} ref="form" className={className} onInput={this.handleChange} onSubmit={this.handleSubmit}>
 				{children}
 			</form>
 		)

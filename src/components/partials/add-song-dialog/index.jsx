@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import Form from '_/components/partials/form';
 import PreviewPlayer from '_/components/partials/preview-player';
 import Tag from '_/components/partials/tag';
+import Autocomplete from '_/components/partials/autocomplete';
 
 import addSong from '_/components/dashboard/actions/add-song';
 import updateSongData from '_/components/dashboard/actions/update-song-data';
@@ -12,7 +13,6 @@ import style from './style';
 
 class AddSongDialog extends Component {
 	render() {
-		console.log(this.props.selectedSong);
 		const { addSong, addTag, removeTag, selectedSong: { 
 			albumName,
 			artistName,
@@ -24,15 +24,15 @@ class AddSongDialog extends Component {
 			loudness,
 			name,
 			previewUrl,
-			tags,
+			tags: songTags,
 			tempo,
 			timeSignature,
 			valence,
 			...restOfSong 
-		}, updateSongData } = this.props;
+		}, tags, updateSongData } = this.props;
 		const values = { energy, tempo, key, valence, danceability, loudness, timeSignature };
 		const defaultInputs = Object.keys(values).map(key => <Tag key={key} name={key} value={values[key]} />);
-		const tagInputs = Object.keys(tags).map(key => <Tag key={key} name={`#${key}`} value={tags[key]} remove={() => removeTag(key)} />);
+		const tagInputs = Object.keys(songTags).map(key => <Tag key={key} name={`#${key}`} value={songTags[key]} remove={() => removeTag(key)} />);
 		const inputs = [...defaultInputs, ...tagInputs];
 
 		return(
@@ -55,9 +55,9 @@ class AddSongDialog extends Component {
 					<div className={style.input_group}>
 						{inputs}
 					</div>
-				</Form> 
-				<Form className={`pure-form ${style.new_tag_form}`} onSubmit={addTag}>
-					<input name="newTagName" type="text" className={`pure-input ${style.input}`} />
+				</Form>
+				<Form className={`pure-form ${style.new_tag_form}`} onSubmit={addTag} clearOnSubmit={true}>
+					<Autocomplete name="newTagName" className={`pure-input ${style.input}`} options={tags} />
 					<div>
 						<label className={`pure-radio ${style.tag_type_radio}`}>
 							<input type="radio" name="newTagType" value="boolean"/>
@@ -76,8 +76,9 @@ class AddSongDialog extends Component {
 	}
 }
 
-const mapStateToProps = ({ dashboard: { selectedSong } }) => ({
-	selectedSong
+const mapStateToProps = ({ dashboard: { selectedSong }, main: { currentUser: { Tags: tags } } }) => ({
+	selectedSong,
+	tags
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,0 +1,24 @@
+@import '~_/styles/_pallette';
+
+.main {
+	position: relative;
+}
+
+.options {
+	postion: absolute;
+	top: 100%;
+	border-left: 1px solid $gainsboro;
+	border-right: 1px solid $gainsboro;
+	max-height: 300px;
+	overflow: auto;
+}
+
+.option {
+	display: block;
+	padding: 5px 2px;
+	border-bottom: 1px solid $gainsboro;
+}
+
+.current {
+	background-color: $pastel-green;
+}
