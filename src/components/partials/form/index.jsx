@@ -1,5 +1,8 @@
 import React, { Component, Children } from 'react';
 
+// setting element.value does not work for elements rendered by react
+const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+
 class Form extends Component {
 	componentDidMount() {
 		const nameElements = this.refs.form.querySelectorAll('[name]')
@@ -30,13 +33,16 @@ class Form extends Component {
 				formData: clearedFormData
 			});
 			for (let element of nameElements) {
-				element.value = null;
+				const value = element.type === 'text' ? '' : null;
+				nativeInputValueSetter.call(element, value);
+				// dispatch an input event so that any listeners will respond
+				const event = new Event('input', { bubbles: true });
+  	  	element.dispatchEvent(event);
 			}
 		}
 	}
 
 	handleChange = ({ target: { name, value } }) => {
-		console.log('changing!!', name, value);
 		const { props: { onChange }, state: { formData } } = this;
 		const delta = {};
 		if (!name) return; 

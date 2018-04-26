@@ -5,10 +5,6 @@ import {
 	LOGOUT
 } from './actions/types';
 
-import {
-	ADD_SONG_FINISH
-} from '_/components/dashboard/actions/types';
-
 const initialState = {
 	authenticated: false
 };

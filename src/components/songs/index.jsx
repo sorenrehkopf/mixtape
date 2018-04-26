@@ -29,7 +29,7 @@ class Songs extends Component {
 	}
 
 	render() {
-		const { editSong, songs } = this.props;
+		const { editSong, songs, tags } = this.props;
 		const { showSearchModal } = this.state;
 
 		const songsList = songs.map(({
@@ -54,7 +54,7 @@ class Songs extends Component {
 					<Modal onBackgroundClick={() => this.toggleSearchModal()}>
 						<div className={style.query_form_container}>
 							<h2 className={style.search_title}>Search your songs</h2>
-							<QueryForm onSubmit={data => this.searchSongs(data)} />
+							<QueryForm onSubmit={data => this.searchSongs(data)} tags={tags} />
 						</div>
 					</Modal>
 				}
@@ -70,10 +70,16 @@ const mapStateToProps = ({
 	songs: {
 		songs,
 		showSearchModal
+	},
+	main: {
+		currentUser: {
+			Tags: tags
+		}
 	} 
 }) => ({
 	songs,
-	showSearchModal
+	showSearchModal,
+	tags
 });
 
 const mapDispatchToProps = (dispatch) => ({

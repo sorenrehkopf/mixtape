@@ -14,6 +14,13 @@
 	font-size: $normal;
 }
 
+.include_form {
+	display: flex;
+	> * {
+		margin-right: 10px;
+	}
+}
+
 .add-button {
 	margin: 0px 10px;
 	background-color: $jet;

@@ -5,7 +5,9 @@
 }
 
 .options {
-	postion: absolute;
+	position: absolute;
+	z-index: 300;
+	background-color: white;
 	top: 100%;
 	border-left: 1px solid $gainsboro;
 	border-right: 1px solid $gainsboro;

@@ -24,7 +24,6 @@ class Autocomplete extends Component {
 
 	onKeyDown = (e) => {
 		const { key } = e;
-		console.log(key);
 		const { currentIdx, hideOptions } = this.state;
 		const matches = this.getMatches();
 		if(key == 'Enter' && !hideOptions && matches.length) {

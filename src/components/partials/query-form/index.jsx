@@ -5,6 +5,7 @@ import QueryParam from '_/components/partials/query-param';
 import style from './style';
 
 import QueryParamInput from '_/components/partials/query-param-input';
+import Autocomplete from '_/components/partials/autocomplete';
 
 class QueryForm extends Component {
 	constructor() {
@@ -64,6 +65,7 @@ class QueryForm extends Component {
 			exclude,
 			include
 		} = this.state;
+		const { tags } = this.props;
 
 		const includeParams = Object.keys(include.params).map(param => {
 				const { type, ...values } = include.params[param];
@@ -82,26 +84,26 @@ class QueryForm extends Component {
 					<label className={style['section-title']}>Include</label>
 					<div className={style['tag-list']}>
 						{includeTags}
-						<Form className={`pure-form`} onSubmit={({ formData: { tagName }}) => this.add('include', 'tags', tagName)} clearOnSubmit={true}>
-							<input type="text" name="tagName" autoComplete="off"/>
+						<Form className={`pure-form ${style.include_form}`} onSubmit={({ formData: { tagName }}) => this.add('include', 'tags', tagName)} clearOnSubmit={true}>
+							<Autocomplete name="tagName" className={`pure-input ${style.input}`} options={tags} />
 							<button className={`pure-button ${style['add-button']}`}>add</button>
 						</Form>
 					</div>
 					{includeParams}
-					<QueryParamInput queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('include', 'params', newParamName, param)} />
+					<QueryParamInput tags={tags} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('include', 'params', newParamName, param)} />
 				</div>
 
 				<div>
 					<label className={style['section-title']}>Exclude</label>
 					<div className={style['tag-list']}>
 						{excludeTags}
-						<Form className={`pure-form`} onSubmit={({ formData: { tagName }}) => this.add('exclude', 'tags', tagName)} clearOnSubmit={true}>
-							<input type="text" name="tagName" autoComplete="off"/>
+						<Form className={`pure-form ${style.include_form}`} onSubmit={({ formData: { tagName }}) => this.add('exclude', 'tags', tagName)} clearOnSubmit={true}>
+							<Autocomplete name="tagName" className={`pure-input ${style.input}`} options={tags} />
 							<button className={`pure-button ${style['add-button']}`}>add</button>
 						</Form>
 					</div>
 					{excludeParams}
-					<QueryParamInput queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('exclude', 'params', newParamName, param)} />
+					<QueryParamInput tags={tags} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('exclude', 'params', newParamName, param)} />
 				</div>
 				<button className={`pure-button ${style['submit-button']}`} onClick={() => this.handleSubmit()}>Search your collection!</button>
 			</div>
