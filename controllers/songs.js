@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { Song, Tag } = require('../models/index.js');
+const QueryBuilder = require('../services/query-builder');
 
-router.get('/:query', (req, res) => {
-	const query = JSON.parse(decodeURIComponent(req.params.query));
-	console.log('here are the params!', query);
-	Song.findAll({
-		where: {
-			userId: req.user.id
-		}
-	})
-	res.send({ songs: ['howdy!']});
+router.get('/search/:query', (req, res) => {
+	const params = JSON.parse(decodeURIComponent(req.params.query));
+	const query = QueryBuilder.build({ params, user: req.user });
+	console.log(JSON.stringify(query))
+	Song.findAll(query).then(songs => {
+		console.log(songs)
+		res.send({ songs });
+	});
 });
 
 router.post('/', (req, res) => {

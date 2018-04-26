@@ -7,6 +7,7 @@ import style from './style';
 
 
 import searchSongCollection from './actions/search-song-collection';
+import clearSearchResults from './actions/clear-search-results';
 
 class Songs extends Component {
 	constructor() {
@@ -29,10 +30,11 @@ class Songs extends Component {
 	}
 
 	render() {
-		const { editSong, songs, tags } = this.props;
+		const { clearSearchResults, editSong, queryResults, search, songs, tags } = this.props;
 		const { showSearchModal } = this.state;
-
-		const songsList = songs.map(({
+		const songsSource = search ? queryResults : songs;
+		console.log(songs);
+		const songsList = songsSource.map(({
 			albumName,
 			artistName,
 			durationFriendly,
@@ -50,6 +52,7 @@ class Songs extends Component {
 			<div>
 				<h1>Your songs!</h1>
 				<button className={`pure-button ${style.toggle_button}`} onClick={() => this.toggleSearchModal()}>Search your collection!</button>
+				{search && <button className={`pure-button ${style.clear_button}`} onClick={clearSearchResults}>Clear search results</button>}
 				{showSearchModal && 
 					<Modal onBackgroundClick={() => this.toggleSearchModal()}>
 						<div className={style.query_form_container}>
@@ -68,6 +71,8 @@ class Songs extends Component {
 
 const mapStateToProps = ({ 
 	songs: {
+		queryResults,
+		search,
 		songs,
 		showSearchModal
 	},
@@ -77,6 +82,8 @@ const mapStateToProps = ({
 		}
 	} 
 }) => ({
+	queryResults,
+	search,
 	songs,
 	showSearchModal,
 	tags
@@ -84,7 +91,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch) => ({
 	editSong: data => { console.log(data) },
-	searchSongs: (data) => dispatch(searchSongCollection(data))
+	searchSongs: (data) => dispatch(searchSongCollection(data)),
+	clearSearchResults: () => dispatch(clearSearchResults())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Songs);

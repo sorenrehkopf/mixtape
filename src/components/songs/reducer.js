@@ -1,4 +1,5 @@
 import {
+	CLEAR_SEARCH_RESULTS,
 	SEARCH_SONGS_FINISH,
 	SEARCH_SONGS_START
 } from './actions/types'
@@ -15,11 +16,6 @@ const initialState = {};
 
 const songsReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case LOGIN_FINISH:
-			return {
-				...state,
-				songs: payload.currentUser && payload.currentUser.Songs
-			}
 		case ADD_SONG_FINISH:
 			return {
 				...state,
@@ -27,6 +23,30 @@ const songsReducer = (state = initialState, { type, payload }) => {
 					...state.songs,
 					payload.addedSongData
 				]
+			}
+		case CLEAR_SEARCH_RESULTS:
+			return {
+				...state,
+				search: false,
+				queryResults: []
+			}
+		case LOGIN_FINISH:
+			return {
+				...state,
+				songs: payload.currentUser && payload.currentUser.Songs
+			}
+		case SEARCH_SONGS_START:
+			return {
+				...state,
+				queryResults: [],
+				search: true,
+				loading: true	
+			}
+		case SEARCH_SONGS_FINISH:
+			return {
+				...state,
+				loading: false,
+				queryResults: payload.queryResults
 			}
 		default: 
 			return state;

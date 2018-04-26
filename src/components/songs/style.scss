@@ -3,6 +3,15 @@
 .toggle_button {
 	background-color: $eucalyptus;
 	color: $jet;
+	border: 1px solid $pastel_green;
+	font-size: $normal;
+	margin: 15px;
+}
+
+.clear_button {
+	background-color: $gainsboro;
+	color: $jet;
+	border: 1px solid $jet;
 	font-size: $normal;
 	margin: 15px;
 }
