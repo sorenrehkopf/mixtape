@@ -13,11 +13,15 @@ class QueryForm extends Component {
 		this.state = {
 			exclude: {
 				params: {},
-				tags: {}
+				paramsExclusive: false,
+				tags: {},
+				tagsExclusive: false
 			},
 			include: {
 				params: {},
-				tags: {}
+				paramsExclusive: false,
+				tags: {},
+				tagsExclusive: false
 			}
 		}
 	}
@@ -38,6 +42,20 @@ class QueryForm extends Component {
 			...state[which]
 		};
 		update[which][type] = delta;
+
+		this.setState(update);
+	}
+
+	toggleExclusive = (which, type) => {
+		const { state } = this;
+		const update = {};
+		const key = `${type}Exclusive`;
+
+		update[which] = {
+			...state[which]
+		};
+
+		update[which][key] = !state[which][key];
 
 		this.setState(update);
 	}
@@ -82,6 +100,18 @@ class QueryForm extends Component {
 			<div>
 				<div className={style.include}>
 					<label className={style['section-title']}>Include</label>
+					<form className={`pure-form ${style.exclusive_toggle}`}>
+						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
+							<input type="checkbox" onChange={() => this.toggleExclusive('include', 'tags')} />
+							tags exclusive
+						</label>
+					</form>
+					<form className={`pure-form ${style.exclusive_toggle}`}>
+						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
+							<input type="checkbox" onChange={() => this.toggleExclusive('include', 'params')} />
+							params exclusive
+						</label>
+					</form>
 					<div className={style['tag-list']}>
 						{includeTags}
 						<Form className={`pure-form ${style.include_form}`} onSubmit={({ formData: { tagName }}) => this.add('include', 'tags', tagName)} clearOnSubmit={true}>
@@ -95,6 +125,18 @@ class QueryForm extends Component {
 
 				<div>
 					<label className={style['section-title']}>Exclude</label>
+					<form className={`pure-form ${style.exclusive_toggle}`}>
+						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
+							<input type="checkbox" onChange={() => this.toggleExclusive('exclude', 'tags')} />
+							tags exclusive
+						</label>
+					</form>
+					<form className={`pure-form ${style.exclusive_toggle}`}>
+						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
+							<input type="checkbox" onChange={() => this.toggleExclusive('exclude', 'params')} />
+							params exclusive
+						</label>
+					</form>
 					<div className={style['tag-list']}>
 						{excludeTags}
 						<Form className={`pure-form ${style.include_form}`} onSubmit={({ formData: { tagName }}) => this.add('exclude', 'tags', tagName)} clearOnSubmit={true}>

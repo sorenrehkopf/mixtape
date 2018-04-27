@@ -2,14 +2,19 @@ const express = require('express');
 const router = express.Router();
 const { Song, Tag } = require('../models/index.js');
 const QueryBuilder = require('../services/query-builder');
+const CollectionBuilder = require('../services/collection-builder');
 
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
 	const query = QueryBuilder.build({ params, user: req.user });
-	console.log(JSON.stringify(query))
+
 	Song.findAll(query).then(songs => {
-		console.log(songs)
-		res.send({ songs });
+		const filteredSongs = CollectionBuilder.filterResults({
+			songs,
+			params
+		});
+		
+		res.send({ songs: filteredSongs });
 	});
 });
 

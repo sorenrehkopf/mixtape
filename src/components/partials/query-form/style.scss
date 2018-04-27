@@ -14,6 +14,17 @@
 	font-size: $normal;
 }
 
+.exclusive_toggle {
+	display: inline;
+	margin-left: 20px;
+	> label.toggle_label {
+		display: inline;
+		> input {
+			margin-right: 10px;
+		}
+	}
+}
+
 .include_form {
 	display: flex;
 	> * {
