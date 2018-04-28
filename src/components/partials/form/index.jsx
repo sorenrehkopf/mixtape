@@ -8,7 +8,12 @@ class Form extends Component {
 		const nameElements = this.refs.form.querySelectorAll('[name]')
 		const formData = {};
 
-		for (let { name, value } of nameElements) {
+		for (let { name, value, type } of nameElements) {
+			if (type == 'checkbox') {
+				formData[name] = false;
+				continue;
+			}
+
 			formData[name] = value;
 		}
 
@@ -33,21 +38,30 @@ class Form extends Component {
 				formData: clearedFormData
 			});
 			for (let element of nameElements) {
-				const value = element.type === 'text' ? '' : null;
-				nativeInputValueSetter.call(element, value);
-				// dispatch an input event so that any listeners will respond
-				const event = new Event('input', { bubbles: true });
-  	  	element.dispatchEvent(event);
+				if (element.type != 'checkbox') {
+					const value = element.type === 'text' ? '' : null;
+					nativeInputValueSetter.call(element, value);
+					// dispatch an input event so that any listeners will respond
+					const event = new Event('input', { bubbles: true });
+	  	  	element.dispatchEvent(event);
+				}
 			}
 		}
 	}
 
-	handleChange = ({ target: { name, value } }) => {
+	handleChange = ({ target }) => {
+		const { name, value, type } = target;
 		const { props: { onChange }, state: { formData } } = this;
 		const delta = {};
 		if (!name) return; 
 
-		delta[name] = isNaN(value) ? value : parseFloat(value);
+		const transformedValue = target.getAttribute('uppercase') ? value.toUpperCase() : value;
+
+		if (type == 'checkbox') {
+			delta[name] = !formData[name]
+		} else {
+			delta[name] = isNaN(value) ? transformedValue : parseFloat(value);
+		}
 		
 		this.setState({ 
 			formData: {
@@ -65,7 +79,7 @@ class Form extends Component {
 	render() {
 		const { children, className, id } = this.props;
 		return(
-			<form id={id} ref="form" className={className} onInput={this.handleChange} onSubmit={this.handleSubmit}>
+			<form id={id} ref="form" className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
 				{children}
 			</form>
 		)

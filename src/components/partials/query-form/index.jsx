@@ -83,7 +83,7 @@ class QueryForm extends Component {
 			exclude,
 			include
 		} = this.state;
-		const { tags } = this.props;
+		const { options, tags } = this.props;
 
 		const includeParams = Object.keys(include.params).map(param => {
 				const { type, ...values } = include.params[param];
@@ -120,7 +120,7 @@ class QueryForm extends Component {
 						</Form>
 					</div>
 					{includeParams}
-					<QueryParamInput tags={tags} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('include', 'params', newParamName, param)} />
+					<QueryParamInput options={options} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('include', 'params', newParamName, param)} />
 				</div>
 
 				<div>
@@ -145,7 +145,7 @@ class QueryForm extends Component {
 						</Form>
 					</div>
 					{excludeParams}
-					<QueryParamInput tags={tags} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('exclude', 'params', newParamName, param)} />
+					<QueryParamInput options={options} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('exclude', 'params', newParamName, param)} />
 				</div>
 				<button className={`pure-button ${style['submit-button']}`} onClick={() => this.handleSubmit()}>Search your collection!</button>
 			</div>

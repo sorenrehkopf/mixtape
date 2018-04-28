@@ -23,13 +23,13 @@ class QueryParamInput extends Component {
 	}
 
 	render() {
-		const { props: { queryParamAddAction, tags }, state: { newParamType } } = this;
+		const { props: { queryParamAddAction, options }, state: { newParamType } } = this;
 
 		const typeOptions = Object.keys(paramTypes).map(type => <option key={type} value={type}>{paramTypes[type].displayValue}</option>);
 		const typeInputs = paramTypes[newParamType].inputTypes.map((type, i) => <input required key={i} className={style.input} type={type} name={`value${i}`} step="any" />);
 		return(
 			<Form className={`pure-form ${style.form}`} clearOnSubmit={true} onSubmit={queryParamAddAction} onChange={({ formData: { newParamType } }) => this.updateParamType(newParamType)}>
-				<Autocomplete name="newParamName" className={`pure-input ${style.input}`} options={tags} />
+				<Autocomplete name="newParamName" className={`pure-input ${style.input}`} options={options} />
 				<select required className={style.input} name="newParamType">
 					{typeOptions}
 				</select>

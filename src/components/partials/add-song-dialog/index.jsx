@@ -59,12 +59,8 @@ class AddSongDialog extends Component {
 				<Form className={`pure-form ${style.new_tag_form}`} onSubmit={addTag} clearOnSubmit={true}>
 					<Autocomplete name="newTagName" className={`pure-input ${style.input}`} options={tags} />
 					<div>
-						<label className={`pure-radio ${style.tag_type_radio}`}>
-							<input type="radio" name="newTagType" value="boolean"/>
-							  Boolean
-						</label>
-						<label className={`pure-radio ${style.tag_type_radio}`}>
-							<input type="radio" name="newTagType" value="numeric" />
+						<label className={`pure-checkbox ${style.tag_type_radio}`}>
+							<input type="checkbox" name="newTagNumeric" />
 							  Numeric
 						</label>
 					</div>
@@ -83,10 +79,9 @@ const mapStateToProps = ({ dashboard: { selectedSong }, main: { currentUser: { T
 
 const mapDispatchToProps = (dispatch) => ({
 	addSong: () => dispatch(addSong()),
-	addTag: ({ formData: { newTagName, newTagType } }) => {
-		console.log(newTagName, newTagType);
+	addTag: ({ formData: { newTagName, newTagNumeric } }) => {
 		const update = {};
-		update[`#${newTagName}`] = newTagType === 'numeric' ? 5 : true;
+		update[`#${newTagName}`] = newTagNumeric ? 5 : true;
 		dispatch(updateSongData(update))
 	},
 	removeTag: tagName => {

@@ -19,13 +19,14 @@ class Autocomplete extends Component {
 	}
 
 	handleChange = ({ target: { value }}) => {
-		this.setState({ value });
+		this.setState({ value: value.toUpperCase() });
 	}
 
 	onKeyDown = (e) => {
 		const { key } = e;
 		const { currentIdx, hideOptions } = this.state;
 		const matches = this.getMatches();
+		
 		if(key == 'Enter' && !hideOptions && matches.length) {
 			e.preventDefault();
 
@@ -73,7 +74,7 @@ class Autocomplete extends Component {
 
 		return(
 			<div className={style.main}>
-				<input ref="input" autoComplete="off" onKeyDown={this.onKeyDown} name={name} value={value} className={classname} onChange={this.handleChange} />
+				<input ref="input" autoComplete="off" uppercase="true" onKeyDown={this.onKeyDown} name={name} value={value} className={classname} onChange={this.handleChange} />
 				{value && !hideOptions && <div className={style.options}>
 					{matches}
 				</div>}

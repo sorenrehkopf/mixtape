@@ -3,7 +3,17 @@ const { Op } = require('sequelize');
 
 class QueryBuilder {
 	static get defaultTypes() {
-
+		return [
+			'albumName',
+			'artistName',
+			'danceability',
+			'energy',
+			'key',
+			'loudness',
+			'name',
+			'tempo',
+			'valence'
+		];
 	}
 
 	static build({ params: { include, exclude }, user }) {

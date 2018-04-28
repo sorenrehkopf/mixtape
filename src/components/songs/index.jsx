@@ -5,9 +5,10 @@ import QueryForm from '_/components/partials/query-form';
 import Modal from '_/components/partials/modal';
 import style from './style';
 
-
 import searchSongCollection from './actions/search-song-collection';
 import clearSearchResults from './actions/clear-search-results';
+
+import { defaultQueryFields } from '_/services/get-collections';
 
 class Songs extends Component {
 	constructor() {
@@ -48,6 +49,8 @@ class Songs extends Component {
 			return (<ListItem key={id} {...songData} onSelect={() => editSong(songData) } />);
 		});
 
+		const options = [...tags, ...defaultQueryFields];
+
 		return(
 			<div>
 				<h1>Your songs!</h1>
@@ -57,7 +60,7 @@ class Songs extends Component {
 					<Modal onBackgroundClick={() => this.toggleSearchModal()}>
 						<div className={style.query_form_container}>
 							<h2 className={style.search_title}>Search your songs</h2>
-							<QueryForm onSubmit={data => this.searchSongs(data)} tags={tags} />
+							<QueryForm onSubmit={data => this.searchSongs(data)} options={options} tags={tags} />
 						</div>
 					</Modal>
 				}
@@ -86,7 +89,10 @@ const mapStateToProps = ({
 	search,
 	songs,
 	showSearchModal,
-	tags
+	tags: tags.map(tag => {
+		tag.name = tag.name.toUpperCase();
+		return tag;
+	})
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,5 +1,31 @@
 export const defaultQueryFields = [
-	
+	{
+		name: 'ALBUMNAME'
+	},
+	{
+		name: 'ARTISTNAME'
+	},
+	{
+		name: 'DANCEABILITY'
+	},
+	{
+		name: 'ENERGY'
+	},
+	{
+		name: 'KEY'
+	},
+	{
+		name: 'LOUDNESS'
+	},
+	{
+		name: 'NAME'
+	},
+	{
+		name: 'TEMPO'
+	},
+	{
+		name: 'VALENCE'
+	}
 ];
 
 export const paramTypes = {
