@@ -13,7 +13,7 @@ router.get('/search/:query', (req, res) => {
 			songs,
 			params
 		});
-		
+
 		res.send({ songs: filteredSongs });
 	});
 });
@@ -57,7 +57,7 @@ router.post('/', (req, res) => {
 			loudness,
 			name,
 			previewUrl,
-			tags,
+			tags: JSON.parse(tags),
 			tempo,
 			timeSignature,
 			userId,

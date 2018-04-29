@@ -25,6 +25,7 @@ class Form extends Component {
 
 	handleSubmit = (e) => {
 		const { props: { clearOnSubmit, onSubmit }, state: { formData, nameElements } } = this;
+		console.log(formData);
 		e.preventDefault();
 		if (onSubmit) {
 			onSubmit({ formData });
@@ -49,19 +50,38 @@ class Form extends Component {
 		}
 	}
 
-	handleChange = ({ target }) => {
+	handleInput = ({ target }) => {
 		const { name, value, type } = target;
 		const { props: { onChange }, state: { formData } } = this;
 		const delta = {};
 		if (!name) return; 
-
 		const transformedValue = target.getAttribute('uppercase') ? value.toUpperCase() : value;
 
-		if (type == 'checkbox') {
-			delta[name] = !formData[name]
-		} else {
-			delta[name] = isNaN(value) ? transformedValue : parseFloat(value);
-		}
+		delta[name] = isNaN(value) ? transformedValue : parseFloat(value);
+		
+		this.setState({ 
+			formData: {
+				...formData,
+				...delta
+			}
+		}, () => {
+			const { formData } = this.state;
+			if (onChange) {
+				onChange({ formData, delta });
+			}
+		});
+	}
+
+	// currently have a separate handler for change since checkboxes to not recognize a click
+	// as an input, yet the onChange handler doesn't recognize when the autocomplete component
+	// programatically sets the value for a text input field, yet the onInput handler does. 
+	handleChange = ({ target }) => {
+		const { name, value, type } = target;
+		const { props: { onChange }, state: { formData } } = this;
+		const delta = {};
+		if (!name || type != 'checkbox') return;
+
+		delta[name] = !formData[name]
 		
 		this.setState({ 
 			formData: {
@@ -79,7 +99,7 @@ class Form extends Component {
 	render() {
 		const { children, className, id } = this.props;
 		return(
-			<form id={id} ref="form" className={className} onChange={this.handleChange} onSubmit={this.handleSubmit}>
+			<form id={id} ref="form" className={className} onChange={this.handleChange} onInput={this.handleInput} onSubmit={this.handleSubmit}>
 				{children}
 			</form>
 		)

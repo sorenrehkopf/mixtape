@@ -20,8 +20,8 @@ const songsReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				songs: [
-					...state.songs,
-					payload.addedSongData
+					payload.addedSongData,
+					...state.songs
 				]
 			}
 		case CLEAR_SEARCH_RESULTS:

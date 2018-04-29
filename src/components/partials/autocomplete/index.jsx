@@ -37,7 +37,7 @@ class Autocomplete extends Component {
 			this.setState({
 				value: ''
 			});
-		} else if (key != 'Enter' && hideOptions) {
+		} else if (key != 'Enter' && key != 'Tab' && hideOptions) {
 			this.setState({
 				hideOptions: false,
 				currentIdx: 0
