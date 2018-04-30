@@ -53,6 +53,12 @@ class Autocomplete extends Component {
 		}
 	}
 
+	onBlur = () => {
+		this.setState({
+			hideOptions: true
+		});
+	}
+
 	select = (value) => {
 		const { input } = this.refs;
 
@@ -68,13 +74,13 @@ class Autocomplete extends Component {
 	}
 
 	render() {
-		const { props: { name, options, classname }, handleChange, state: { currentIdx, hideOptions, value } } = this;
+		const { props: { autofocus, name, options, classname }, handleChange, state: { currentIdx, hideOptions, value } } = this;
 		const matches = this.getMatches().map((option, i) => 
 			<span key={i} className={`${style.option} ${currentIdx == i ? style.current : ''}`} onClick={() => this.select(option.name)}>{option.name}</span>);
 
 		return(
 			<div className={style.main}>
-				<input ref="input" autoComplete="off" uppercase="true" onKeyDown={this.onKeyDown} name={name} value={value} className={classname} onChange={this.handleChange} />
+				<input autofocus={autofocus} onBlur={this.onBlur} ref="input" autoComplete="off" uppercase="true" onKeyDown={this.onKeyDown} name={name} value={value} className={classname} onChange={this.handleChange} />
 				{value && !hideOptions && <div className={style.options}>
 					{matches}
 				</div>}

@@ -16,31 +16,40 @@ class QueryBuilder {
 		];
 	}
 
+	static deriveValuesFromRange({value0, value1, inclusive, step = 0.1}) {
+		const values = inclusive ? [value0, value1] : [];
+		for (let i = value0; i < value1; i+=step) {
+			values.push(i);
+		}
+		return values;
+	}
+
 	static get operators() {
+		const { deriveValuesFromRange } = this;
 		return {
 			strict_equivalence_text: {
 				operator: Op.eq,
-				numOfArgs: 1
+				getValue: value0 => value0
 			},
 			loose_equivalence: {
 				operator: Op.ilike,
-				numOfArgs: 1
+				getValue: value0 => `%${value0}%`
 			},
 			between: {
 				operator: Op.between,
-				numOfArgs: 2
+				getValue: (value0, value1)=> ([value0, value1])
 			},
 			greater_than: {
 				operator: Op.gt,
-				numOfArgs: 1
+				getValue: value0 => value0
 			},
 			less_than: {
 				operator: Op.lt,
-				numOfArgs: 1
+				getValue: value0 => value0
 			},
 			strict_equivalence_numeric: {
 				operator: Op.eq,
-				numOfArgs: 1
+				getValue: value0 => value0
 			}
 		}
 	}
@@ -59,7 +68,9 @@ class QueryBuilder {
 
 		const includeParamsQuery = {
 			[includeParamsOperator]: {
-				tags: {}
+				tags: {
+					[includeParamsOperator]: {}
+				}
 			}
 		};
 
@@ -78,23 +89,28 @@ class QueryBuilder {
 				return new RegExp(param, 'i').test(type);
 			});
 
-			const { operator, numOfArgs } = operators[type];
-			const formattedParam = {
-				[operator]: numOfArgs > 1 ? [value0, value1] : value0 
-			};
+			const { operator, getValue } = operators[type];
 
 			if (defaultValue) {
-				includeParamsQuery[includeParamsOperator][defaultValue] = formattedParam;
+				includeParamsQuery[includeParamsOperator][defaultValue] = {
+					[operator]: getValue(value0, value1)
+				};
 			} else{
-				includeParamsQuery[includeParamsOperator].tags[param] = formattedParam;
+				includeParamsQuery[includeParamsOperator].tags[includeParamsOperator][param] = {
+					numericValue: {
+						[operator]: getValue(value0, value1)
+					}
+				};
 			}
 		}
 
-		console.log(includeParamsQuery);
+		console.log('the query obj', includeParamsQuery);
 
 		for (let tag in include.tags) {
 			tagsQuery[tagsOperator][tag] = {
-				[Op.or]: ['true', '6', '7', '8', '9', '10']
+				[Op.contains]: {
+					boolValue: true
+				}
 			};
 		};
 
@@ -104,7 +120,8 @@ class QueryBuilder {
 				...includeParamsQuery,
 				...excludeParamsOperator,
 				tags: tagsQuery
-			}
+			},
+			raw: true
 		}
 	}
 };

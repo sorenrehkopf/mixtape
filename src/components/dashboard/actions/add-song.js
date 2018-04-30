@@ -14,6 +14,12 @@ const addSong = () => async(dispatch, getState) => {
 	
 	dispatch({ type: ADD_SONG_START });
 
+	for (let tag in selectedSong.tags) {
+		if (selectedSong.tags[tag] === false) {
+			delete selectedSong.tags[tag];
+		}
+	};
+
 	const { data: addedSongData } = await Api.post('songs', selectedSong);
 
 	dispatch({ type: ADD_SONG_FINISH, payload: { addedSongData } });

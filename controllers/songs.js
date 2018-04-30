@@ -3,6 +3,7 @@ const router = express.Router();
 const { Song, Tag } = require('../models/index.js');
 const QueryBuilder = require('../services/query-builder');
 const CollectionBuilder = require('../services/collection-builder');
+const TagsFormatter = require('../services/tags-formatter');
 
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
@@ -40,6 +41,9 @@ router.post('/', (req, res) => {
 		userId,
 		valence
 	} = req.body;
+
+	const formattedTags = TagsFormatter.formatForDB(tags);
+
 	Song.findOrCreate({
 		where: {
 			spotifyId,
@@ -57,7 +61,7 @@ router.post('/', (req, res) => {
 			loudness,
 			name,
 			previewUrl,
-			tags: JSON.parse(tags),
+			tags: formattedTags,
 			tempo,
 			timeSignature,
 			userId,
@@ -71,12 +75,7 @@ router.post('/', (req, res) => {
 					name
 				}
 			}).spread((tag, created) => {
-				song.addTag(tag, { through: { value: {
-							type: typeof tags[name],
-							data: tags[name]
-						}
-					}
-				})
+				song.addTag(tag, { through: { value: formattedTags[name] } });
 			})
 		}
 		res.send(song);

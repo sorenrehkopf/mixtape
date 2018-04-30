@@ -57,7 +57,7 @@ class AddSongDialog extends Component {
 					</div>
 				</Form>
 				<Form className={`pure-form ${style.new_tag_form}`} onSubmit={addTag} clearOnSubmit={true}>
-					<Autocomplete name="newTagName" className={`pure-input ${style.input}`} options={tags} />
+					<Autocomplete name="newTagName" autofocus="true" className={`pure-input ${style.input}`} options={tags} />
 					<div>
 						<label className={`pure-checkbox ${style.tag_type_radio}`}>
 							<input type="checkbox" name="newTagNumeric" />
