@@ -62,24 +62,22 @@ class QueryBuilder {
 		const includeParamsOperator = include.paramsExclusive ? Op.and : Op.or;
 		const excludeParamsOperator = exclude.paramsExclusive ? Op.and : Op.or;
 		
-		const tagsQuery = {
-			[tagsOperator]: {}
-		};
+		const query = {};
 
-		const includeParamsQuery = {
-			[includeParamsOperator]: {
+		if (Object.keys(include.params).length) {
+			query[includeParamsOperator] = {
 				tags: {
 					[includeParamsOperator]: {}
 				}
 			}
 		};
 
-		const excludeParamsQuery = {
-			[Op.not]: {
-				[excludeParamsOperator]: {
-
+		if (Object.keys(include.tags).length && !query[tagsOperator]){
+			query[tagsOperator] = {
+				tags: {
+					[tagsOperator]: {}
 				}
-			}
+			};
 		};
 
 		for (let param in include.params) {
@@ -92,11 +90,11 @@ class QueryBuilder {
 			const { operator, getValue } = operators[type];
 
 			if (defaultValue) {
-				includeParamsQuery[includeParamsOperator][defaultValue] = {
+				query[includeParamsOperator][defaultValue] = {
 					[operator]: getValue(value0, value1)
 				};
 			} else{
-				includeParamsQuery[includeParamsOperator].tags[includeParamsOperator][param] = {
+				query[includeParamsOperator].tags[includeParamsOperator][param] = {
 					numericValue: {
 						[operator]: getValue(value0, value1)
 					}
@@ -104,23 +102,18 @@ class QueryBuilder {
 			}
 		}
 
-		console.log('the query obj', includeParamsQuery);
+		console.log('the query obj', query);
 
 		for (let tag in include.tags) {
-			tagsQuery[tagsOperator][tag] = {
-				[Op.contains]: {
-					boolValue: true
-				}
+			query[tagsOperator].tags[tagsOperator][tag] = {
+				boolValue: true
 			};
 		};
 
 		return {
 			where: {
-				userId: user.id,
-				...includeParamsQuery,
-				...excludeParamsOperator,
-				tags: tagsQuery
-			},
+				[Op.and]: query
+			},	
 			raw: true
 		}
 	}

@@ -80,7 +80,7 @@ class Autocomplete extends Component {
 
 		return(
 			<div className={style.main}>
-				<input autofocus={autofocus} onBlur={this.onBlur} ref="input" autoComplete="off" uppercase="true" onKeyDown={this.onKeyDown} name={name} value={value} className={classname} onChange={this.handleChange} />
+				<input autoFocus={autofocus} onBlur={this.onBlur} ref="input" autoComplete="off" uppercase="true" onKeyDown={this.onKeyDown} name={name} value={value} className={classname} onChange={this.handleChange} />
 				{value && !hideOptions && <div className={style.options}>
 					{matches}
 				</div>}
