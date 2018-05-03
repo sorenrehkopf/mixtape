@@ -15,7 +15,8 @@ class Autocomplete extends Component {
 		const { props: { options }, state: { value } } = this;
 		const valueRegex = new RegExp(value, 'i');
 
-		return options.filter(option => valueRegex.test(option.name));
+		return options.filter(option => valueRegex.test(option.name))
+			.sort((a,b) => a.name.length - b.name.length);
 	}
 
 	handleChange = ({ target: { value }}) => {

@@ -108,7 +108,7 @@ class QueryForm extends Component {
 					</form>
 					<form className={`pure-form ${style.exclusive_toggle}`}>
 						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
-							<input type="checkbox" checked onChange={() => this.toggleExclusive('include', 'params')} />
+							<input type="checkbox" checked={include.paramsExclusive} onChange={() => this.toggleExclusive('include', 'params')} />
 							params exclusive
 						</label>
 					</form>
@@ -133,7 +133,7 @@ class QueryForm extends Component {
 					</form>
 					<form className={`pure-form ${style.exclusive_toggle}`}>
 						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
-							<input type="checkbox" checked onChange={() => this.toggleExclusive('exclude', 'params')} />
+							<input type="checkbox" checked={exclude.paramsExclusive} onChange={() => this.toggleExclusive('exclude', 'params')} />
 							params exclusive
 						</label>
 					</form>

@@ -10,7 +10,7 @@ class QueryParamInput extends Component {
 	constructor() {
 		super();
 		this.state = {
-			newParamType: 'strict_equivalence_text'
+			newParamType: 'loose_equivalence'
 		};
 	}
 

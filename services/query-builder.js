@@ -27,12 +27,8 @@ class QueryBuilder {
 	static get operators() {
 		const { deriveValuesFromRange } = this;
 		return {
-			strict_equivalence_text: {
-				operator: Op.eq,
-				getValue: value0 => value0
-			},
 			loose_equivalence: {
-				operator: Op.ilike,
+				operator: Op.iLike,
 				getValue: value0 => `%${value0}%`
 			},
 			between: {
@@ -58,43 +54,64 @@ class QueryBuilder {
 	// query object to return results based on those params
 	static build({ params: { include, exclude }, user }) {
 		const { defaultTypes, operators } = this;
-		const tagsOperator = include.tagsExclusive ? Op.and : Op.or;
+		const includeTagsOperator = include.tagsExclusive ? Op.and : Op.or;
 		const includeParamsOperator = include.paramsExclusive ? Op.and : Op.or;
+		const excludeTagsOperator = exclude.tagsExclusive ? Op.and : Op.or;
 		const excludeParamsOperator = exclude.paramsExclusive ? Op.and : Op.or;
 		
-		const query = {};
+		const includeQuery = {};
+		const excludeQuery = {};
 
 		if (Object.keys(include.params).length) {
-			query[includeParamsOperator] = {
+			includeQuery[includeParamsOperator] = {
 				tags: {
 					[includeParamsOperator]: {}
 				}
 			}
 		};
 
-		if (Object.keys(include.tags).length && !query[tagsOperator]){
-			query[tagsOperator] = {
+		if (Object.keys(include.tags).length && !includeQuery[includeTagsOperator]){
+			includeQuery[includeTagsOperator] = {
 				tags: {
-					[tagsOperator]: {}
+					[includeTagsOperator]: {}
+				}
+			};
+		};
+
+		// if (Object.keys(exclude.tags).length || Object.keys(exclude.params).length) {
+		// 	excludeQuery = {};
+		// }
+
+		if (Object.keys(exclude.params).length) {
+			excludeQuery[excludeParamsOperator] = {
+				tags: {
+					[excludeParamsOperator]: {}
+				}
+			}
+		};
+
+		if (Object.keys(exclude.tags).length && !excludeQuery[excludeTagsOperator]){
+			excludeQuery[excludeTagsOperator] = {
+				tags: {
+					[excludeTagsOperator]: {}
 				}
 			};
 		};
 
 		for (let param in include.params) {
-			console.log(param, include.params[param]);
 			const { type, value0, value1 } = include.params[param];
 			const defaultValue = defaultTypes.find(type => {
-				return new RegExp(param, 'i').test(type);
+				return new RegExp(`^${param}$`, 'i').test(type);
 			});
 
 			const { operator, getValue } = operators[type];
 
 			if (defaultValue) {
-				query[includeParamsOperator][defaultValue] = {
+				includeQuery[includeParamsOperator][defaultValue] = {
 					[operator]: getValue(value0, value1)
 				};
 			} else{
-				query[includeParamsOperator].tags[includeParamsOperator][param] = {
+				includeQuery[includeParamsOperator].tags[includeParamsOperator][param] = {
 					numericValue: {
 						[operator]: getValue(value0, value1)
 					}
@@ -102,18 +119,55 @@ class QueryBuilder {
 			}
 		}
 
-		console.log('the query obj', query);
-
 		for (let tag in include.tags) {
-			query[tagsOperator].tags[tagsOperator][tag] = {
+			includeQuery[includeTagsOperator].tags[includeTagsOperator][tag] = {
 				boolValue: true
 			};
 		};
 
+		for (let param in exclude.params) {
+			console.log('the param!', param, exclude.params[param]);
+			const { type, value0, value1 } = exclude.params[param];
+			const defaultValue = defaultTypes.find(type => {
+				return new RegExp(`^${param}$`, 'i').test(type);
+			});
+
+			const { operator, getValue } = operators[type];
+
+			if (defaultValue) {
+				excludeQuery[excludeParamsOperator][defaultValue] = {
+					[operator]: getValue(value0, value1)
+				};
+			} else{
+				excludeQuery[excludeParamsOperator].tags[excludeParamsOperator][param] = {
+					numericValue: {
+						[operator]: getValue(value0, value1)
+					}
+				};
+			}
+		}
+
+		for (let tag in exclude.tags) {
+			excludeQuery[excludeTagsOperator].tags[excludeTagsOperator][tag] = {
+				boolValue: true
+			};
+		};
+
+		const query = {
+			[Op.and]: {
+				userId: user.id,
+				...includeQuery
+			}
+		};
+		console.log('the exclude!!', excludeQuery);
+		if (Object.keys(exclude.tags).length || Object.keys(exclude.params).length) {
+			QueryBuilder[Op.not] = excludeQuery;
+		};
+
+		console.log(query);
+
 		return {
-			where: {
-				[Op.and]: query
-			},	
+			where: query,	
 			raw: true
 		}
 	}

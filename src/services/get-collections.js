@@ -29,12 +29,8 @@ export const defaultQueryFields = [
 ];
 
 export const paramTypes = {
-	strict_equivalence_text:{
-		displayValue: 'is',
-		inputTypes: ['text']
-	},
 	loose_equivalence:{
-		displayValue: 'is similar to',
+		displayValue: 'is roughly (text)',
 		inputTypes: ['text']
 	},
 	between:{
@@ -50,7 +46,7 @@ export const paramTypes = {
 		inputTypes: ['number']
 	},
 	strict_equivalence_numeric:{
-		displayValue: 'is exactly',
+		displayValue: 'is exactly (numeric)',
 		inputTypes: ['number']
 	}
 }
