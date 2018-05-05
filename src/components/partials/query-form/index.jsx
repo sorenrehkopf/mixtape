@@ -107,7 +107,7 @@ class QueryForm extends Component {
 						</label>
 					</form>
 					<form className={`pure-form ${style.exclusive_toggle}`}>
-						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
+						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for params">
 							<input type="checkbox" checked={include.paramsExclusive} onChange={() => this.toggleExclusive('include', 'params')} />
 							params exclusive
 						</label>
@@ -131,12 +131,6 @@ class QueryForm extends Component {
 							tags exclusive
 						</label>
 					</form>
-					<form className={`pure-form ${style.exclusive_toggle}`}>
-						<label className={`pure-checkbox ${style.toggle_label}`} title="'and' instead of 'or' for tags">
-							<input type="checkbox" checked={exclude.paramsExclusive} onChange={() => this.toggleExclusive('exclude', 'params')} />
-							params exclusive
-						</label>
-					</form>
 					<div className={style['tag-list']}>
 						{excludeTags}
 						<Form className={`pure-form ${style.include_form}`} onSubmit={({ formData: { tagName }}) => this.add('exclude', 'tags', tagName)} clearOnSubmit={true}>
@@ -144,8 +138,6 @@ class QueryForm extends Component {
 							<button className={`pure-button ${style['add-button']}`}>add</button>
 						</Form>
 					</div>
-					{excludeParams}
-					<QueryParamInput options={options} queryParamAddAction={({ formData: { newParamName, ...param } }) => this.add('exclude', 'params', newParamName, param)} />
 				</div>
 				<button className={`pure-button ${style['submit-button']}`} onClick={() => this.handleSubmit()}>Search your collection!</button>
 			</div>

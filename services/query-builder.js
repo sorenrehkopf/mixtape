@@ -31,6 +31,14 @@ class QueryBuilder {
 				operator: Op.iLike,
 				getValue: value0 => `%${value0}%`
 			},
+			loose_inequivalence: {
+				operator: Op.notILike,
+				getValue: value0 => `%${value0}%`
+			},
+			not_between: {
+				operator: Op.notBetween,
+				getValue: (value0, value1)=> ([value0, value1])
+			},
 			between: {
 				operator: Op.between,
 				getValue: (value0, value1)=> ([value0, value1])
@@ -60,7 +68,6 @@ class QueryBuilder {
 		const excludeParamsOperator = exclude.paramsExclusive ? Op.and : Op.or;
 		
 		const includeQuery = {};
-		const excludeQuery = {};
 
 		if (Object.keys(include.params).length) {
 			includeQuery[includeParamsOperator] = {
@@ -74,26 +81,6 @@ class QueryBuilder {
 			includeQuery[includeTagsOperator] = {
 				tags: {
 					[includeTagsOperator]: {}
-				}
-			};
-		};
-
-		// if (Object.keys(exclude.tags).length || Object.keys(exclude.params).length) {
-		// 	excludeQuery = {};
-		// }
-
-		if (Object.keys(exclude.params).length) {
-			excludeQuery[excludeParamsOperator] = {
-				tags: {
-					[excludeParamsOperator]: {}
-				}
-			}
-		};
-
-		if (Object.keys(exclude.tags).length && !excludeQuery[excludeTagsOperator]){
-			excludeQuery[excludeTagsOperator] = {
-				tags: {
-					[excludeTagsOperator]: {}
 				}
 			};
 		};
@@ -125,43 +112,11 @@ class QueryBuilder {
 			};
 		};
 
-		for (let param in exclude.params) {
-			console.log('the param!', param, exclude.params[param]);
-			const { type, value0, value1 } = exclude.params[param];
-			const defaultValue = defaultTypes.find(type => {
-				return new RegExp(`^${param}$`, 'i').test(type);
-			});
-
-			const { operator, getValue } = operators[type];
-
-			if (defaultValue) {
-				excludeQuery[excludeParamsOperator][defaultValue] = {
-					[operator]: getValue(value0, value1)
-				};
-			} else{
-				excludeQuery[excludeParamsOperator].tags[excludeParamsOperator][param] = {
-					numericValue: {
-						[operator]: getValue(value0, value1)
-					}
-				};
-			}
-		}
-
-		for (let tag in exclude.tags) {
-			excludeQuery[excludeTagsOperator].tags[excludeTagsOperator][tag] = {
-				boolValue: true
-			};
-		};
-
 		const query = {
 			[Op.and]: {
 				userId: user.id,
 				...includeQuery
 			}
-		};
-		console.log('the exclude!!', excludeQuery);
-		if (Object.keys(exclude.tags).length || Object.keys(exclude.params).length) {
-			QueryBuilder[Op.not] = excludeQuery;
 		};
 
 		console.log(query);

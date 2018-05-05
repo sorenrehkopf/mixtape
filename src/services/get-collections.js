@@ -30,11 +30,19 @@ export const defaultQueryFields = [
 
 export const paramTypes = {
 	loose_equivalence:{
-		displayValue: 'is roughly (text)',
+		displayValue: 'is like (text)',
+		inputTypes: ['text']
+	},
+	loose_inequivalence:{
+		displayValue: 'is not like (text)',
 		inputTypes: ['text']
 	},
 	between:{
 		displayValue: 'is between',
+		inputTypes: ['number', 'number']
+	},
+	not_between:{
+		displayValue: 'is not between',
 		inputTypes: ['number', 'number']
 	},
 	greater_than:{
