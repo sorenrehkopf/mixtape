@@ -15,7 +15,7 @@ const keyMappings = [
 	'B',
 ];
 
-const transformSongData = ({ danceability, energy, loudness, key, tempo, time_signature, valence, ...everythingElse}) => ({
+const convertFromSpotify = ({ danceability, energy, loudness, key, tempo, time_signature, valence, ...everythingElse}) => ({
 	...everythingElse,
 	danceability: round(danceability * 10, 1),
 	energy: round(energy * 10, 1),
@@ -27,4 +27,18 @@ const transformSongData = ({ danceability, energy, loudness, key, tempo, time_si
 	valence: round(valence * 10, 1)
 });
 
-export default transformSongData;
+const convertDBTags = tags => {
+	for (let tag in tags) {
+		const { boolValue, numericValue, originalType } = tags[tag];
+		const isBool = originalType === 'boolean';
+
+		tags[tag] = isBool ? boolValue : numericValue;
+	}
+
+	return tags;
+};
+
+export {
+	convertDBTags,
+	convertFromSpotify
+};

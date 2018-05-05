@@ -9,7 +9,6 @@ class TagsFormatter {
 				numericValue: getNumericValue(tags[tag], isBool),
 				originalType: typeof tags[tag]
 			}
-			console.log('a tag!!', tags[tag], isBool);
 		}
 
 		return tags
