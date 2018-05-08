@@ -10,7 +10,6 @@ import Authenticated from '../authenticated';
 class Main extends Component {
 	render() {
 		const { authenticated, authenticating } = this.props;
-
 		if (authenticating) {
 			return <p>loading...</p>
 		}

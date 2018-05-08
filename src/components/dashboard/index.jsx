@@ -16,7 +16,7 @@ import formatTime from '_/services/format-time';
 
 class Dashboard extends Component {
 	render() {
-		const { songs, search, selectSong, selectedSong } = this.props;
+		const { songs, search, selectSong } = this.props;
 		
 		const songsList = songs.map(({ id,
 				album: {
@@ -43,24 +43,18 @@ class Dashboard extends Component {
 					<input autoFocus="true" type="text" name="songName" className={`pure-input-2-3 ${style.input}`} placeholder="Song, artist, or album name" autoComplete="off" />
 				</Form>
 				{songsList}
-				{selectedSong && (
-					<Modal onBackgroundClick={() => selectSong()}>
-						<AddSongDialog />
-					</Modal>
-				)}
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = ({ dashboard: { songs, selectedSong } }) => ({
-	selectedSong,
+const mapStateToProps = ({ dashboard: { songs } }) => ({
 	songs
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	search: debounce(({ delta: { songName } }) => dispatch(search(songName)), 500),
-	selectSong: (id) => dispatch(selectSong(id))
+	selectSong: (id) => dispatch(selectSong(id, true))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

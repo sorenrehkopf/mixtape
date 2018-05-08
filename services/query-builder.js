@@ -11,6 +11,7 @@ class QueryBuilder {
 			'key',
 			'loudness',
 			'name',
+			'spotifyId',
 			'tempo',
 			'valence'
 		];
@@ -27,6 +28,10 @@ class QueryBuilder {
 	static get operators() {
 		const { deriveValuesFromRange } = this;
 		return {
+			strict_equivalence: {
+				operator: Op.eq,
+				getValue: value0 => value0
+			},
 			loose_equivalence: {
 				operator: Op.iLike,
 				getValue: value0 => `%${value0}%`

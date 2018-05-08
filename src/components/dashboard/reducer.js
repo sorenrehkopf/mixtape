@@ -1,10 +1,6 @@
 import {
-	ADD_SONG_FINISH,
-	ADD_SONG_START,
 	SEARCH_FINISH,
 	SEARCH_START,
-	SELECT_SONG_FINISH,
-	SELECT_SONG_START,
 	UPDATE_SONG_DATA
 } from './actions/types';
 
@@ -15,16 +11,6 @@ const initialState = {
 
 const dashboardReducer = (state = initialState, { type, payload }) => {
 	switch (type) {
-		case ADD_SONG_START:
-			return {
-				...state,
-				addingSong: true
-			}
-		case ADD_SONG_FINISH:
-			return {
-				...state,
-				error: payload.error
-			}
 		case SEARCH_START:
 			return {
 				...state,
@@ -35,11 +21,6 @@ const dashboardReducer = (state = initialState, { type, payload }) => {
 				...state,
 				searching: false,
 				songs: payload.songs
-			}
-		case SELECT_SONG_FINISH:
-			return {
-				...state,
-				selectedSong: payload.selectedSong
 			}
 		case UPDATE_SONG_DATA:
 			return {

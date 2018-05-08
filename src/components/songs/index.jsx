@@ -5,8 +5,9 @@ import QueryForm from '_/components/partials/query-form';
 import Modal from '_/components/partials/modal';
 import style from './style';
 
-import searchSongCollection from './actions/search-song-collection';
 import clearSearchResults from './actions/clear-search-results';
+import searchSongCollection from './actions/search-song-collection';
+import selectSong from '_/components/dashboard/actions/select-song';
 
 import { defaultQueryFields } from '_/services/get-collections';
 
@@ -31,7 +32,7 @@ class Songs extends Component {
 	}
 
 	render() {
-		const { clearSearchResults, editSong, queryResults, search, songs, tags } = this.props;
+		const { clearSearchResults, editSong, queryResults, search, selectSong, songs, tags } = this.props;
 		const { showSearchModal } = this.state;
 		const songsSource = search ? queryResults : songs;
 		console.log(songs);
@@ -46,7 +47,7 @@ class Songs extends Component {
 			spotifyId: id
 		}) => {
 			const songData = { albumName, artistName, duration: { friendly: durationFriendly, ms: durationMs }, id, imageUrl, name, previewUrl };
-			return (<ListItem key={id} {...songData} onSelect={() => editSong(songData) } />);
+			return (<ListItem key={id} {...songData} onSelect={() => selectSong(songData) } />);
 		});
 
 		const options = [...tags, ...defaultQueryFields];
@@ -96,9 +97,9 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	editSong: data => { console.log(data) },
-	searchSongs: (data) => dispatch(searchSongCollection(data)),
-	clearSearchResults: () => dispatch(clearSearchResults())
+	clearSearchResults: () => dispatch(clearSearchResults()),
+	selectSong: (song) => dispatch(selectSong(song)),
+	searchSongs: (data) => dispatch(searchSongCollection(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Songs);

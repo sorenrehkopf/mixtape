@@ -13,8 +13,11 @@ router.get('/search/:query', (req, res) => {
 		const filteredSongs = CollectionBuilder.filterResults({
 			songs,
 			params
-		});
-
+		}).map(song => ({
+			...song,
+			tags: TagsFormatter.formatForClient(song.tags)
+		}));
+		
 		res.send({ songs: filteredSongs });
 	});
 });

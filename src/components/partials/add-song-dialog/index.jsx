@@ -72,7 +72,7 @@ class AddSongDialog extends Component {
 	}
 }
 
-const mapStateToProps = ({ dashboard: { selectedSong }, main: { currentUser: { Tags: tags } } }) => ({
+const mapStateToProps = ({ main: { currentUser: { Tags: tags }, selectedSong } }) => ({
 	selectedSong,
 	tags
 });

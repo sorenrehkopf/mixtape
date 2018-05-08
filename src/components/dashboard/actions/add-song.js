@@ -10,7 +10,7 @@ import {
 import Api from '_/services/api';
 
 const addSong = () => async(dispatch, getState) => {
-	const { dashboard: { selectedSong } } = getState();
+	const { main: { selectedSong } } = getState();
 	
 	dispatch({ type: ADD_SONG_START });
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Song, Tag, User } = require('../models/index.js');
+const TagsFormatter = require('../services/tags-formatter.js');
 
 router.get('/', (req, res) => {
 	const { id } = req.user;
@@ -9,21 +10,21 @@ router.get('/', (req, res) => {
 			id
 		},
 		include: [{
-				model: Song,
-				include: [{
-					model: Tag,
-					through: { attributes: ['value'] }
-				}]
+				model: Song
 			},
 			{
 				model: Tag
 			}],
 		order: [ [ Song, 'createdAt', 'DESC'] ]
 	}).then(({ displayName, displayPhoto, Songs, Tags }) => {
+		console.log('the songs!')
 		res.send({
 			displayName,
 			displayPhoto,
-			Songs,
+			Songs: Songs.map(song => {
+				song.tags = TagsFormatter.formatForClient(song.tags);
+				return song;
+			}),
 			Tags
 		});
 	});

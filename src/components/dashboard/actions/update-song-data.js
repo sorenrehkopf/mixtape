@@ -7,7 +7,7 @@ const updateSongData = (update) => (dispatch, getState) => {
 	const keyWithHash = keys.find(key => key.startsWith('#'));
 
 	if (keyWithHash) {
-		const { dashboard: { selectedSong: { tags } } } = getState();
+		const { main: { selectedSong: { tags } } } = getState();
 		const tagKey = keyWithHash.substr(1);
 
 		update = {
