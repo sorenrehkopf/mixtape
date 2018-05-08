@@ -5,7 +5,8 @@ import {
 	LOGIN_START,
 	LOGIN_FINISH,
 	LOGOUT,
-	SELECT_SONG_FINISH
+	SELECT_SONG_FINISH,
+	UPDATE_SONG_DATA
 } from './actions/types';
 
 const initialState = {
@@ -52,6 +53,14 @@ const mainReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				selectedSong: payload.selectedSong
+			}
+		case UPDATE_SONG_DATA:
+			return {
+				...state,
+				selectedSong: {
+					...state.selectedSong,
+					...payload.update
+				}
 			}
 		default:
 			return state;

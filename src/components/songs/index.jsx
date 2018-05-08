@@ -44,9 +44,23 @@ class Songs extends Component {
 			imageUrl,
 			name,
 			previewUrl,
-			spotifyId: id
+			spotifyId: id,
+			tags,
+			...rest
 		}) => {
-			const songData = { albumName, artistName, duration: { friendly: durationFriendly, ms: durationMs }, id, imageUrl, name, previewUrl };
+			const songData = { albumName,
+				artistName,
+				duration: { 
+					friendly: durationFriendly,
+					ms: durationMs 
+				},
+				id,
+				imageUrl,
+				name,
+				previewUrl,
+				tags,
+				...rest
+			};
 			return (<ListItem key={id} {...songData} onSelect={() => selectSong(songData) } />);
 		});
 

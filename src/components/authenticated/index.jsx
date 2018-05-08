@@ -12,10 +12,11 @@ import Dashboard from '../dashboard';
 import Songs from '../songs';
 
 import logout from'./actions/logout';
+import selectSong from '_/components/dashboard/actions/select-song';
 
 class Authenticated extends Component {
 	render() {
-		const { authenticated, currentRoute, currentUser, location, logout, selectedSong } = this.props;
+		const { authenticated, currentRoute, currentUser, location, logout, selectedSong, selectSong } = this.props;
 
 		if (!authenticated) {
 			return <Redirect to="/login" />;
@@ -51,7 +52,8 @@ const mapStateToProps = ({ main: { authenticated, currentUser, error, selectedSo
 });
 
 const mapDispatchToProps = (dispatch) => ({
-	logout: () => dispatch(logout())
+	logout: () => dispatch(logout()),
+	selectSong: () => dispatch(selectSong())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Authenticated);

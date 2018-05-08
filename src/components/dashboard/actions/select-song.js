@@ -11,6 +11,13 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 	if (songData) {
 		// if we don't need to load the data for this song than just set it directly
 		if (!shouldLoad) {
+			const selectedSong = {
+				...songData,
+				duration: {
+					friendly: songData.durationFriendly,
+					ms: songData.durationMs
+				}
+			};
 			return dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: songData } });
 		}
 
@@ -23,13 +30,20 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 						value0: id
 					}
 				},
-				tags: {}
+				tags: {},
 			},
 			exclude: { params: {}, tags: {}}
 		};
 		
 		let { data: { songs: [song] } } = await Api.get(`songs/search/${encodeURIComponent(JSON.stringify(data))}`);
-		let payload = { selectedSong: song };
+		let payload = { selectedSong: {
+				...song,
+				duration: {
+					friendly: song.durationFriendly,
+					ms: song.durationMs
+				}
+			} 
+		};
 
 		if (!song) {
 			song = await Api.get(`spotify/song/${id}`).then(({ data: { song } }) => song);
