@@ -13,7 +13,7 @@ import style from './style';
 
 class AddSongDialog extends Component {
 	render() {
-		const { addSong, addTag, removeTag, selectedSong: { 
+		const { addSong, addTag, isSelectedSongNew, removeTag, selectedSong: { 
 			albumName,
 			artistName,
 			danceability,
@@ -66,13 +66,17 @@ class AddSongDialog extends Component {
 					</div>
 					<button className={`pure-button ${style.tag_button}`}><i className="fas fa-plus"/> add a tag!</button>
 				</Form>
-				<button form="add-song-form" type="submit" className={`pure-button ${style.button}`}><i className="fas fa-plus"/> Add song!</button>
+				<button form="add-song-form" type="submit" className={`pure-button ${style.button}`}>
+					<i className="fas fa-plus"/>&nbsp;
+					{isSelectedSongNew ? 'Add' : 'Update'} song!
+				</button>
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = ({ main: { currentUser: { Tags: tags }, selectedSong } }) => ({
+const mapStateToProps = ({ main: { currentUser: { Tags: tags }, isSelectedSongNew, selectedSong } }) => ({
+	isSelectedSongNew,
 	selectedSong,
 	tags
 });

@@ -4,6 +4,7 @@ const { Song, Tag } = require('../models/index.js');
 const QueryBuilder = require('../services/query-builder');
 const CollectionBuilder = require('../services/collection-builder');
 const TagsFormatter = require('../services/tags-formatter');
+const { isEqual } = require('lodash');
 
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
@@ -17,7 +18,7 @@ router.get('/search/:query', (req, res) => {
 			...song,
 			tags: TagsFormatter.formatForClient(song.tags)
 		}));
-		
+
 		res.send({ songs: filteredSongs });
 	});
 });
@@ -32,7 +33,7 @@ router.post('/', (req, res) => {
 			ms: durationMs
 		},
 		energy,
-		id: spotifyId,
+		spotifyId,
 		imageUrl,
 		key,
 		loudness,
@@ -46,13 +47,14 @@ router.post('/', (req, res) => {
 	} = req.body;
 
 	const formattedTags = TagsFormatter.formatForDB(tags);
-
+	console.log('here1!', typeof spotifyId, spotifyId)
 	Song.findOrCreate({
 		where: {
 			spotifyId,
 			userId: req.user.id
-		},
-		defaults: {
+		}
+	}).spread((song, created) => {
+		const data = {
 			albumName,
 			artistName,
 			danceability,
@@ -69,18 +71,32 @@ router.post('/', (req, res) => {
 			timeSignature,
 			userId,
 			valence
-		}
-	}).spread((song, created) => {
-		for (let name in tags) {
-			Tag.findOrCreate({
-				where: {
-					userId: req.user.id,
-					name
+		};
+		console.log('here!', created);
+		if (created) {
+			song.update(data);
+
+			for (let name in tags) {
+				Tag.findOrCreate({
+					where: {
+						userId: req.user.id,
+						name
+					}
+				}).spread((tag, created) => {
+					song.addTag(tag, { through: { value: formattedTags[name] } });
+				})
+			}
+		} else {
+			const update  = {};
+			for (let key in data) {
+				if (!isEqual(data[key], song[key])) {
+					update[key] = data[key];
 				}
-			}).spread((tag, created) => {
-				song.addTag(tag, { through: { value: formattedTags[name] } });
-			})
+			}
+			console.log('the update!!', update);
+			song.update(update);
 		}
+
 		res.send(song);
 	});
 });

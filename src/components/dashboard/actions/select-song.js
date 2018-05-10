@@ -18,7 +18,7 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 					ms: songData.durationMs
 				}
 			};
-			return dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: songData } });
+			return dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: songData, isSelectedSongNew: false } });
 		}
 
 		const { id } = songData;
@@ -36,19 +36,22 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 		};
 		
 		let { data: { songs: [song] } } = await Api.get(`songs/search/${encodeURIComponent(JSON.stringify(data))}`);
-		let payload = { selectedSong: {
-				...song,
-				duration: {
-					friendly: song.durationFriendly,
-					ms: song.durationMs
-				}
-			} 
-		};
+		let payload;
 
 		if (!song) {
 			song = await Api.get(`spotify/song/${id}`).then(({ data: { song } }) => song);
 			const transformedSongData = convertFromSpotify(song);
-			payload = { selectedSong: { ...songData, ...transformedSongData } };
+			payload = { selectedSong: { ...songData, ...transformedSongData }, isSelectedSongNew: true };
+		} else {
+			payload = { selectedSong: {
+					...song,
+					duration: {
+						friendly: song.durationFriendly,
+						ms: song.durationMs
+					}
+				},
+				isSelectedSongNew: false
+			};
 		}
 
 		dispatch({ type: SELECT_SONG_FINISH, payload });

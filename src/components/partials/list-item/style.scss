@@ -9,6 +9,7 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+	cursor: pointer;
 	&__item{
 		flex: 1;
 		flex-shrink: 0;
@@ -29,4 +30,15 @@
 		margin: 0px 20px;
 		cursor: pointer;
 	}
+}
+
+.items {
+	flex: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.time {
+	flex: none;
 }

@@ -9,7 +9,7 @@ class PreviewPlayer extends Component {
 		}
 	}
 
-	toggle(currentTarget) {
+	toggle = ({ currentTarget }) => {
 		const audio = currentTarget.parentElement.querySelector('audio');
 
 		if (!audio) {
@@ -33,7 +33,7 @@ class PreviewPlayer extends Component {
 		const { className, imageUrl, previewUrl } = this.props;
 		const { playing } = this.state;
 		return (
-			<div className={`${style.main} ${className}`} onClickCapture={({ currentTarget }) => this.toggle(currentTarget)}>
+			<div className={`${style.main} ${className}`} onClickCapture={this.toggle}>
 				<img className={style['main__image']} src={imageUrl} title={previewUrl ? 'Click to play preview' : 'No preview available'}/>
 				{previewUrl && 
 					<span className={style['main__icon']}>

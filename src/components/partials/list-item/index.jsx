@@ -4,17 +4,19 @@ import PreviewPlayer from '_/components/partials/preview-player';
 
 class ListItem extends Component {
 	render() {
-		const { imageUrl, previewUrl, name, artistName, albumName, duration, onSelect } = this.props; 
+		const { imageUrl, iconName = 'plus', previewUrl, name, artistName, albumName, duration, onSelect } = this.props; 
 		return (
 			<div className={style.main}>
 				<PreviewPlayer {...{ imageUrl, previewUrl }}/>
-				<span className={style['main__add-icon']} onClick={onSelect}>
-					<i className="fas fa-plus"></i>
-				</span>
-				<span className={style['main__item']} title={name}>{name}</span>
-				<span className={style['main__item']} title={artistName}>{artistName}</span>
-				<span className={style['main__item']} title={albumName}>{albumName}</span>
-				<span className={style['main__item']} title={duration.friendly}>{duration.friendly}</span>
+				<div className={style.items} onClick={onSelect}>
+					<span className={style['main__add-icon']}>
+						<i className={`fas fa-${iconName}`}></i>
+					</span>
+					<span className={style['main__item']} title={name}>{name}</span>
+					<span className={style['main__item']} title={artistName}>{artistName}</span>
+					<span className={style['main__item']} title={albumName}>{albumName}</span>
+					<span className={`${style['main__item']} ${style.time}`} title={duration.friendly}>{duration.friendly}</span>
+				</div>
 			</div>
 		)
 	}

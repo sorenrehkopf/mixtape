@@ -15,12 +15,13 @@ const keyMappings = [
 	'B',
 ];
 
-const convertFromSpotify = ({ danceability, energy, loudness, key, tempo, time_signature, valence, ...everythingElse}) => ({
+const convertFromSpotify = ({ danceability, energy, id, loudness, key, tempo, time_signature, valence, ...everythingElse}) => ({
 	...everythingElse,
 	danceability: round(danceability * 10, 1),
 	energy: round(energy * 10, 1),
 	key: keyMappings[key],
 	loudness: round(loudness, 1),
+	spotifyId: id,
 	tags: {},
 	tempo: round(tempo, 1),
 	timeSignature: `${time_signature}/4`,

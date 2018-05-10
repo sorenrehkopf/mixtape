@@ -52,7 +52,8 @@ const mainReducer = (state = initialState, { type, payload }) => {
 		case SELECT_SONG_FINISH:
 			return {
 				...state,
-				selectedSong: payload.selectedSong
+				selectedSong: payload.selectedSong,
+				isSelectedSongNew: payload.isSelectedSongNew
 			}
 		case UPDATE_SONG_DATA:
 			return {

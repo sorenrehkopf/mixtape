@@ -44,7 +44,7 @@ class Songs extends Component {
 			imageUrl,
 			name,
 			previewUrl,
-			spotifyId: id,
+			spotifyId,
 			tags,
 			...rest
 		}) => {
@@ -54,14 +54,15 @@ class Songs extends Component {
 					friendly: durationFriendly,
 					ms: durationMs 
 				},
-				id,
+				spotifyId,
 				imageUrl,
 				name,
 				previewUrl,
 				tags,
 				...rest
 			};
-			return (<ListItem key={id} {...songData} onSelect={() => selectSong(songData) } />);
+			console.log(spotifyId);
+			return (<ListItem key={spotifyId} {...songData} onSelect={() => selectSong(songData) } iconName="edit" />);
 		});
 
 		const options = [...tags, ...defaultQueryFields];
