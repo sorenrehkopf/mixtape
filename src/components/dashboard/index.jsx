@@ -39,6 +39,7 @@ class Dashboard extends Component {
 
 		return(
 			<div>
+				<h1>Search Spotify!</h1>
 				<Form className={`pure-form ${style.form}`} onChange={search}>
 					<input autoFocus="true" type="text" name="songName" className={`pure-input-2-3 ${style.input}`} placeholder="Song, artist, or album name" autoComplete="off" />
 				</Form>

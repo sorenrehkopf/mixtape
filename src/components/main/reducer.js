@@ -24,7 +24,16 @@ const mainReducer = (state = initialState, { type, payload }) => {
 		case ADD_SONG_FINISH:
 			return {
 				...state,
-				error: payload.error
+				error: payload.error,
+				currentUser: {
+					...state.currentUser,
+					Tags: [
+						...Object.keys(payload.addedSongData.tags).map(tag => ({
+							name: tag
+						})).filter(({ name }) => !state.currentUser.Tags.some(tag => tag.name == name)),	
+						...state.currentUser.Tags
+					]
+				}
 			}
 		case LOGIN_START:
 			return { 

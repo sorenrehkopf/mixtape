@@ -6,6 +6,18 @@ const CollectionBuilder = require('../services/collection-builder');
 const TagsFormatter = require('../services/tags-formatter');
 const { isEqual } = require('lodash');
 
+const getUpdate = (data, song) => {
+	const update  = {};
+
+	for (let key in data) {
+		if (!isEqual(data[key], song[key])) {
+			update[key] = data[key];
+		}
+	}
+
+	return update;
+}
+
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
 	const query = QueryBuilder.build({ params, user: req.user });
@@ -72,9 +84,15 @@ router.post('/', (req, res) => {
 			userId,
 			valence
 		};
-		console.log('here!', created);
-		if (created) {
-			song.update(data);
+
+		const update = created ? data : getUpdate(data, song);
+
+		song.update(update);
+
+		if (created || update.tags) {
+			if (!created) {
+				song.setTags([])
+			}
 
 			for (let name in tags) {
 				Tag.findOrCreate({
@@ -86,15 +104,6 @@ router.post('/', (req, res) => {
 					song.addTag(tag, { through: { value: formattedTags[name] } });
 				})
 			}
-		} else {
-			const update  = {};
-			for (let key in data) {
-				if (!isEqual(data[key], song[key])) {
-					update[key] = data[key];
-				}
-			}
-			console.log('the update!!', update);
-			song.update(update);
 		}
 
 		res.send(song);

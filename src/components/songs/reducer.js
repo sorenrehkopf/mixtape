@@ -20,7 +20,7 @@ const songsReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				songs: [
-					...[payload.addedSongData].filter(({ spotifyId}) => {
+					...[payload.addedSongData].filter(({ spotifyId }) => {
 						return !state.songs.some(song => song.spotifyId == spotifyId);
 					}),
 					...state.songs

@@ -83,7 +83,7 @@ class QueryForm extends Component {
 			exclude,
 			include
 		} = this.state;
-		const { options, tags } = this.props;
+		const { options, tags, submitText = 'Search your collection!' } = this.props;
 
 		const includeParams = Object.keys(include.params).map(param => {
 				const { type, ...values } = include.params[param];
@@ -139,7 +139,7 @@ class QueryForm extends Component {
 						</Form>
 					</div>
 				</div>
-				<button className={`pure-button ${style['submit-button']}`} onClick={() => this.handleSubmit()}>Search your collection!</button>
+				<button className={`pure-button ${style['submit-button']}`} onClick={() => this.handleSubmit()}>{submitText}</button>
 			</div>
 		)
 	}

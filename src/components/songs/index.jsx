@@ -35,7 +35,7 @@ class Songs extends Component {
 		const { clearSearchResults, editSong, queryResults, search, selectSong, songs, tags } = this.props;
 		const { showSearchModal } = this.state;
 		const songsSource = search ? queryResults : songs;
-		console.log(songs);
+
 		const songsList = songsSource.map(({
 			albumName,
 			artistName,
@@ -61,8 +61,8 @@ class Songs extends Component {
 				tags,
 				...rest
 			};
-			console.log(spotifyId);
-			return (<ListItem key={spotifyId} {...songData} onSelect={() => selectSong(songData) } iconName="edit" />);
+
+			return (<ListItem key={spotifyId} songData={songData} onSelect={() => selectSong(songData) } iconName="edit" />);
 		});
 
 		const options = [...tags, ...defaultQueryFields];

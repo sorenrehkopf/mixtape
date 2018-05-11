@@ -4,7 +4,7 @@ import PreviewPlayer from '_/components/partials/preview-player';
 
 class ListItem extends Component {
 	render() {
-		const { imageUrl, iconName = 'plus', previewUrl, name, artistName, albumName, duration, onSelect } = this.props; 
+		const { iconName = 'plus', onSelect, songData: { imageUrl, previewUrl, name, artistName, albumName, duration } } = this.props; 
 		return (
 			<div className={style.main}>
 				<PreviewPlayer {...{ imageUrl, previewUrl }}/>
