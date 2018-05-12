@@ -28,4 +28,13 @@ router.get('/song/:id', async(req, res) => {
 	}
 });
 
+router.put('/play', (req, res) => {
+	const { body: { uri }, user } = req;
+	SpotifyApi.playPlaylist({ user, uri }).then(() => {
+		res.send({ status: 'success!' });
+	}).catch(error => {
+		res.send({ status: 'something went wrong', error });
+	});
+});
+
 module.exports = router;

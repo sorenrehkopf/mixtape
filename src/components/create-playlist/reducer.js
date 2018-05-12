@@ -8,6 +8,8 @@ const initialState = {
 	playlistData: {
 		name: ''
 	},
+	createdPlaylist: null,
+	loading: false
 };
 
 const createPlaylistReducer = (state = initialState, { type, payload }) => {
@@ -20,6 +22,17 @@ const createPlaylistReducer = (state = initialState, { type, payload }) => {
 					...payload
 				}
 			};
+		case CREATE_PLAYLIST_START:
+			return {
+				...state,
+				loading: true
+			}
+		case CREATE_PLAYLIST_FINISH:
+			return {
+				...state,
+				createdPlaylist: payload.playlist,
+				loading: false
+			}
 		default: 
 			return state;
 	}

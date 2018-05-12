@@ -34,7 +34,7 @@ class Dashboard extends Component {
 
 			}) => {
 			const songData = { albumName, artistName, duration: { friendly: formatTime(duration), ms: duration }, id, imageUrl, name, previewUrl };
-			return (<ListItem key={id} {...songData} onSelect={() => selectSong(songData) } />);
+			return (<ListItem key={id} songData={songData} onSelect={() => selectSong(songData) } />);
 		});
 
 		return(

@@ -35,7 +35,7 @@ const songsReducer = (state = initialState, { type, payload }) => {
 		case LOGIN_FINISH:
 			return {
 				...state,
-				songs: payload.currentUser && payload.currentUser.Songs
+				songs: payload.user && payload.user.Songs
 			}
 		case SEARCH_SONGS_START:
 			return {

@@ -21,8 +21,9 @@ router.post('/', (req, res) => {
 
 		SpotifyApi.createPlaylist({ user, name }).then(({ body: playlist }) => {
 			const { id: playlistId } = playlist;
-			SpotifyApi.addTracksToPlaylist({ user, playlistId, songUris })
-			res.send({ playlist });
+			SpotifyApi.addTracksToPlaylist({ user, playlistId, songUris }).then(() => {
+				res.send({ playlist });
+			});
 		});
 	});
 });

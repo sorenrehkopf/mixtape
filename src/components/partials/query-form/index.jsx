@@ -63,7 +63,27 @@ class QueryForm extends Component {
 	handleSubmit() {
 		const { props: { onSubmit }, state: { exclude, include } } = this;
 
-		onSubmit({ exclude, include });
+		try {
+			onSubmit({ exclude, include });
+
+			this.setState({
+				exclude: {
+					params: {},
+					paramsExclusive: true,
+					tags: {},
+					tagsExclusive: false
+				},
+				include: {
+					params: {},
+					paramsExclusive: true,
+					tags: {},
+					tagsExclusive: false
+				}
+			});
+		} catch (error) {
+			// the submit action couldn't complete for some reason
+			console.log(error);	
+		}
 	}
 
 	remove(which, type, name) {

@@ -68,6 +68,14 @@ class SpotifyApi {
 			user
 		});
 	}
+
+	static playPlaylist({ user, uri }) {
+		return this.execute({
+			method: 'play',
+			params: [{ context_uri: uri }],
+			user
+		})
+	}
 }
 
 module.exports = SpotifyApi;
