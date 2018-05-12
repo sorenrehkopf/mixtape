@@ -25,11 +25,12 @@ class Form extends Component {
 
 	handleSubmit = (e) => {
 		const { props: { clearOnSubmit, onSubmit }, state: { formData, nameElements } } = this;
-		console.log(formData);
 		e.preventDefault();
+
 		if (onSubmit) {
 			onSubmit({ formData });
 		}
+		
 		if (clearOnSubmit) {
 			const clearedFormData = {};
 			for (let key in formData) {
@@ -57,7 +58,7 @@ class Form extends Component {
 		if (!name) return; 
 		const transformedValue = target.getAttribute('uppercase') ? value.toUpperCase() : value;
 
-		delta[name] = isNaN(value) ? transformedValue : parseFloat(value);
+		delta[name] = !value || isNaN(value) ? transformedValue : parseFloat(value);
 		
 		this.setState({ 
 			formData: {

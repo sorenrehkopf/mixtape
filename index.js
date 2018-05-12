@@ -17,12 +17,14 @@ app.use(express.static('public'));
 app.use(authenticate);
 
 const authController = require('./controllers/auth.js');
+const playlistsController = require('./controllers/playlists.js');
 const userController = require('./controllers/user.js');
 const spotifyController = require('./controllers/spotify.js');
 const songsController = require('./controllers/songs.js');
 
 
 app.use('/api/auth', authController);
+app.use('/api/playlists', playlistsController);
 app.use('/api/user', userController);
 app.use('/api/spotify', spotifyController);
 app.use('/api/songs', songsController);

@@ -8,6 +8,9 @@ const routes = {
 		},
 		{
 			controller: 'spotify'
+		},
+		{
+			controller: 'playlists'
 		}
 	]
 }

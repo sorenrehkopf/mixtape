@@ -11,18 +11,20 @@ import Api from './services/api';
 //custom components
 import Main from './components/main';
 
-import mainReducer from './components/main/reducer';
+import createPlaylistReducer from './components/create-playlist/reducer';
 import dashboardReducer from './components/dashboard/reducer';
+import mainReducer from './components/main/reducer';
 import songsReducer from './components/songs/reducer';
 
 const history = createHistory();
 const historyMiddleware = routerMiddleware(history);
 
 const rootReducer = combineReducers({
-	main: mainReducer,
+	createPlaylist: createPlaylistReducer,
 	dashboard: dashboardReducer,
+	main: mainReducer,
 	router: routerReducer,
-	songs: songsReducer,
+	songs: songsReducer
 });
 
 let currentUser;

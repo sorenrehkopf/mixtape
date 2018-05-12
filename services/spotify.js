@@ -42,7 +42,7 @@ class SpotifyApi {
 			method: 'searchTracks',
 			params: [searchTerm],
 			user
-		})
+		});
 	};
 
 	static async getSongData({ id, user }) {
@@ -52,6 +52,22 @@ class SpotifyApi {
 			user
 		});
 	};
+
+	static createPlaylist({ user, name }) {
+		return this.execute({
+			method: 'createPlaylist',
+			params: [user.spotifyId, name],
+			user
+		});
+	}
+
+	static addTracksToPlaylist({ user, playlistId, songUris }) {
+		return this.execute({
+			method: 'addTracksToPlaylist',
+			params: [user.spotifyId, playlistId, songUris],
+			user
+		});
+	}
 }
 
 module.exports = SpotifyApi;
