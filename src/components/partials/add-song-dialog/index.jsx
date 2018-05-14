@@ -13,6 +13,7 @@ import style from './style';
 
 class AddSongDialog extends Component {
 	render() {
+		console.log(this.props);
 		const { addSong, addTag, isSelectedSongNew, removeTag, selectedSong: { 
 			albumName,
 			artistName,

@@ -12,28 +12,15 @@ import AddSongDialog from '_/components/partials/add-song-dialog';
 import search from './actions/search';
 import selectSong from './actions/select-song';
 
-import formatTime from '_/services/format-time';
+import { convertBasicSongInfoFromSpotify } from '_/services/transform-song-data';
 
 class Dashboard extends Component {
 	render() {
 		const { songs, search, selectSong } = this.props;
 		
-		const songsList = songs.map(({ id,
-				album: {
-					images: [{}, {
-						url: imageUrl
-					}],
-					name: albumName
-				},
-				artists: [{
-					name: artistName
-				}],
-				duration_ms: duration,
-				name,
-				preview_url: previewUrl,
+		const songsList = songs.map((song) => {
+			const songData = convertBasicSongInfoFromSpotify(song);
 
-			}) => {
-			const songData = { albumName, artistName, duration: { friendly: formatTime(duration), ms: duration }, id, imageUrl, name, previewUrl };
 			return (<ListItem key={id} songData={songData} onSelect={() => selectSong(songData) } />);
 		});
 

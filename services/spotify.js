@@ -7,7 +7,7 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 class SpotifyApi {
-	static async execute({ method, params, user: { spotifyAccessToken, spotifyRefreshToken, id } }) {
+	static async execute({ method, params= [], user: { spotifyAccessToken, spotifyRefreshToken, id } }) {
 		spotifyApi.setAccessToken(spotifyAccessToken);
 		spotifyApi.setRefreshToken(spotifyRefreshToken);
 
@@ -73,6 +73,22 @@ class SpotifyApi {
 		return this.execute({
 			method: 'play',
 			params: [{ context_uri: uri }],
+			user
+		})
+	}
+
+	static getPlaylists({ user }) {
+		return this.execute({
+			method: 'getUserPlaylists',
+			params: [user.spotifyId, { limit: 50 }],
+			user
+		})
+	}
+
+	static getPlaylistTracks({ user, id, offset }) {
+		return this.execute({
+			method: 'getPlaylistTracks',
+			params: [user.spotifyId, id, { limit: 100, offset }],
 			user
 		})
 	}

@@ -9,9 +9,14 @@ import {
 	UPDATE_SONG_DATA
 } from './actions/types';
 
+import {
+	SLOW_IMPORT_FINISH
+} from '_/components/import-playlists/actions/types';
+
 const initialState = {
 	authenticated: false,
-	authenticating: false
+	authenticating: false,
+	importQueue: []
 };
 
 const mainReducer = (state = initialState, { type, payload }) => {
@@ -63,6 +68,11 @@ const mainReducer = (state = initialState, { type, payload }) => {
 				...state,
 				selectedSong: payload.selectedSong,
 				isSelectedSongNew: payload.isSelectedSongNew
+			}
+		case SLOW_IMPORT_FINISH:
+			return {
+				...state,
+				importQueue: payload.tracks
 			}
 		case UPDATE_SONG_DATA:
 			return {

@@ -4,13 +4,16 @@ import {
 } from './types';
 
 import {
-	SELECT_SONG_FINISH
-} from '_/components/dashboard/actions/types';
+	SLOW_IMPORT_FINISH
+} from '_/components/import-playlists/actions/types';
 
 import Api from '_/services/api';
+import { convertBasicSongInfoFromSpotify } from '_/services/transform-song-data';
+
+import selectSong from '_/components/dashboard/actions/select-song';
 
 const addSong = () => async(dispatch, getState) => {
-	const { main: { selectedSong } } = getState();
+	const { main: { selectedSong, importQueue } } = getState();
 	
 	dispatch({ type: ADD_SONG_START });
 
@@ -23,7 +26,13 @@ const addSong = () => async(dispatch, getState) => {
 	const { data: addedSongData } = await Api.post('songs', selectedSong);
 
 	dispatch({ type: ADD_SONG_FINISH, payload: { addedSongData } });
-	dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: null } });
+
+	const nextSong = importQueue.shift();
+	
+	if (nextSong) {
+		dispatch(selectSong(convertBasicSongInfoFromSpotify(nextSong), true));
+		dispatch({ type: SLOW_IMPORT_FINISH, payload: { tracks: importQueue } });
+	}
 };
 
 export default addSong;

@@ -37,10 +37,10 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 		
 		let { data: { songs: [song] } } = await Api.get(`songs/search/${encodeURIComponent(JSON.stringify(data))}`);
 		let payload;
-
 		if (!song) {
 			song = await Api.get(`spotify/song/${id}`).then(({ data: { song } }) => song);
 			const transformedSongData = convertFromSpotify(song);
+			console.log('the transformed data!', transformedSongData);
 			payload = { selectedSong: { ...songData, ...transformedSongData }, isSelectedSongNew: true };
 		} else {
 			payload = { selectedSong: {
@@ -53,7 +53,7 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 				isSelectedSongNew: false
 			};
 		}
-
+		console.log('the payload!', payload);
 		dispatch({ type: SELECT_SONG_FINISH, payload });
 	} else {
 		dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: null } });

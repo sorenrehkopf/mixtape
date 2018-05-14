@@ -13,6 +13,7 @@ import Main from './components/main';
 
 import createPlaylistReducer from './components/create-playlist/reducer';
 import dashboardReducer from './components/dashboard/reducer';
+import importPlaylistsReducer from './components/import-playlists/reducer';
 import mainReducer from './components/main/reducer';
 import songsReducer from './components/songs/reducer';
 
@@ -22,6 +23,7 @@ const historyMiddleware = routerMiddleware(history);
 const rootReducer = combineReducers({
 	createPlaylist: createPlaylistReducer,
 	dashboard: dashboardReducer,
+	importPlaylists: importPlaylistsReducer,
 	main: mainReducer,
 	router: routerReducer,
 	songs: songsReducer

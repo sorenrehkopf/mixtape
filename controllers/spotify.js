@@ -15,6 +15,30 @@ router.get('/songs', async(req, res) => {
 	}
 });
 
+router.get('/playlists', (req,res) => {
+	SpotifyApi.getPlaylists({ user: req.user }).then(({ body }) => {
+		res.send(body);
+	});
+});
+
+router.get('/playlistTracks', (req,res) => {
+	const { query: { id, total }, user } = req;
+	console.log('the playlist tracks!!', id, total);
+	const n = Math.ceil(total / 100);
+	let tracks = [];
+
+	const trackFetches = [];
+	for (let i = 0; i < n; i ++) {
+		trackFetches.push(SpotifyApi.getPlaylistTracks({ user, id, offset: 99 * i }).then(({ body }) => {
+			tracks = [...tracks, ...body.items];
+		}));
+	}
+
+	Promise.all(trackFetches).then(() => {
+		res.send({ tracks });
+	});
+});
+
 router.get('/song/:id', async(req, res) => {
 	const { params: { id }, user } = req;
 
