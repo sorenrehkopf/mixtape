@@ -1,12 +1,15 @@
+import { DateTime } from 'luxon';
+
 import {
 	UPDATE_PLAYLIST_DATA,
 	CREATE_PLAYLIST_START,
-	CREATE_PLAYLIST_FINISH
+	CREATE_PLAYLIST_FINISH,
+	CLEAR_CREATED_PLAYLIST
 } from './actions/types';
 
 const initialState = {
 	playlistData: {
-		name: ''
+		name: DateTime.local().toLocaleString()
 	},
 	createdPlaylist: null,
 	loading: false
@@ -32,6 +35,11 @@ const createPlaylistReducer = (state = initialState, { type, payload }) => {
 				...state,
 				createdPlaylist: payload.playlist,
 				loading: false
+			}
+		case CLEAR_CREATED_PLAYLIST:
+			return {
+				...state,
+				createdPlaylist: null
 			}
 		default: 
 			return state;

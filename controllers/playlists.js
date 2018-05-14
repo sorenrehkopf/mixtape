@@ -14,10 +14,10 @@ router.post('/', (req, res) => {
 	});
 
 	Song.findAll(query).then(songs => {
-		const songUris = CollectionBuilder.filterResults({
+		const songUris = CollectionBuilder.getPlaylistUris({
 			songs,
 			params: songCriteria
-		}).map(({ spotifyId }) => `spotify:track:${spotifyId}`);
+		});
 
 		SpotifyApi.createPlaylist({ user, name }).then(({ body: playlist }) => {
 			const { id: playlistId } = playlist;

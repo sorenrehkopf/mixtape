@@ -57,8 +57,7 @@ class Form extends Component {
 		const delta = {};
 		if (!name) return; 
 		const transformedValue = target.getAttribute('uppercase') ? value.toUpperCase() : value;
-		const valueAsNumber = parseFloat(value);
-		delta[name] = isNaN(valueAsNumber) ? transformedValue : valueAsNumber;
+		delta[name] = target.getAttribute('type') == 'text' ? transformedValue : parseFloat(value);
 		
 		this.setState({ 
 			formData: {

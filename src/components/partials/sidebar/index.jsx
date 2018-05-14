@@ -20,6 +20,9 @@ class Sidebar extends Component {
 						<Link className={`pure-menu-link ${pathname === '/' && style.current}`} to="">Add A Song</Link>
 					</li>
 					<li className="pure-menu-item">
+						<Link className={`pure-menu-link ${pathname === '/import' && style.current}`} to="import">Import a Playlist</Link>
+					</li>
+					<li className="pure-menu-item">
 						<Link className={`pure-menu-link ${pathname === '/songs' && style.current}`} to="songs">Your Collection</Link>
 					</li>
 					<li className="pure-menu-item">

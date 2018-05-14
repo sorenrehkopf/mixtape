@@ -17,6 +17,7 @@
     "history": "^4.7.2",
     "jwt-simple": "^0.5.1",
     "lodash": "^4.17.5",
+    "luxon": "^1.2.0",
     "pg": "6.4.1",
     "pg-hstore": "^2.3.2",
     "purecss": "^1.0.0",

@@ -14,6 +14,7 @@ class PlaylistSuccess extends Component {
 		const { 
 			play,
 			props: {
+				clearCreatedPlaylist,
 				playlist: {
 					external_urls: {
 						spotify: viewUrl
@@ -25,7 +26,7 @@ class PlaylistSuccess extends Component {
 		return(
 			<div>
 				<h2 className={style.success_header}>Success!</h2>
-				<p>Your playlist <em>{name}</em> was successfully created.</p>
+				<p>Your playlist <em><strong>{name}</strong></em> was successfully created.</p>
 				<button className={style.button} onClick={play}>
 					<i className="fas fa-play"/>
 					<span>Play</span>
@@ -36,6 +37,10 @@ class PlaylistSuccess extends Component {
 						<span>View</span>
 					</button>
 				</a>
+				<button className={`${style.button} ${style.clear}`} onClick={clearCreatedPlaylist}>
+					<i className="fas fa-sync"/>
+					<span>Make Another</span>
+				</button>
 			</div>
 		)
 	}
