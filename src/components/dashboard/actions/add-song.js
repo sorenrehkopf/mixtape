@@ -27,7 +27,11 @@ const addSong = () => async(dispatch, getState) => {
 
 	dispatch({ type: ADD_SONG_FINISH, payload: { addedSongData } });
 
-	const nextSong = importQueue.shift();
+	if (importQueue[0] && selectedSong.spotifyId == importQueue[0].spotifyId) {
+		importQueue.shift();
+	}
+
+	const nextSong = importQueue[0];
 	
 	if (nextSong) {
 		dispatch(selectSong(convertBasicSongInfoFromSpotify(nextSong), true));

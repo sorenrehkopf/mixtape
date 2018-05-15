@@ -29,7 +29,7 @@ const convertFromSpotify = ({ danceability, duration_ms, energy, id, loudness, k
 	valence: round(valence * 10, 1)
 });
 
-const convertBasicSongInfoFromSpotify = ({ id,
+const convertBasicSongInfoFromSpotify = ({ 
 	album: {
 		images: [{}, {
 			url: imageUrl
@@ -50,7 +50,6 @@ const convertBasicSongInfoFromSpotify = ({ id,
 		friendly: formatTime(duration), 
 		ms: duration
 	},
-	id,
 	imageUrl,
 	name,
 	previewUrl 

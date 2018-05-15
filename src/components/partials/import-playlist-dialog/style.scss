@@ -1,0 +1,36 @@
+@import '~_/styles/_pallette';
+
+.main {
+	max-width: 70vw;
+	max-height: 70vh;
+	background-color: $gainsboro;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 40px 80px;
+}
+
+.options {
+	display: flex;
+	justify-content: center;
+}
+
+.option {
+	padding: 20px 40px;
+	&:first-of-type {
+		border-right: 2px solid $jet;
+	}
+}
+
+.button {
+	margin: 20px 20px 20vh 0px;
+	background-color: $eucalyptus;
+	color: $jet;
+	padding: 10px 50px;
+	font-size: $larger;
+	border: none;
+	border-radius: 50px;
+	> span {
+		margin-left: 20px;
+	}
+}

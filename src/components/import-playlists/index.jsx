@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import PlaylistItem from '_/components/partials/playlist-item';
+import Modal from '_/components/partials/modal';
+import ImportPlaylistDialog from '_/components/partials/import-playlist-dialog';
 
 import loadPlaylists from './actions/load-playlists';
-import slowImport from './actions/slow-import';
+import selectPlaylist from './actions/select-playlist';
 
 class ImportPlaylists extends Component {
 	componentDidMount() {
@@ -16,10 +18,10 @@ class ImportPlaylists extends Component {
 	}
 
 	render() {
-		const { playlists, loading, loaded, slowImport } = this.props;
+		const { playlists, loading, loaded, selectedPlaylist, selectPlaylist } = this.props;
 
 		const playlistsList = playlists.map(playlist => {
-			return <PlaylistItem key={playlist.id} onSelect={() => slowImport(playlist)} playlist={playlist} />
+			return <PlaylistItem key={playlist.id} onSelect={() => selectPlaylist(playlist)} playlist={playlist} />
 		});
 
 		return(
@@ -29,20 +31,26 @@ class ImportPlaylists extends Component {
 					{playlistsList}
 				</div>)}
 				{loading && <p>loading</p>}
+				{selectedPlaylist && (
+					<Modal onBackgroundClick={() => selectPlaylist(null)}>
+						<ImportPlaylistDialog />
+					</Modal>
+				)}
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = ({ importPlaylists: { playlists, loading, loaded } }) => ({
+const mapStateToProps = ({ importPlaylists: { playlists, loading, loaded, selectedPlaylist } }) => ({
 	loaded,
 	loading,
-	playlists
+	playlists,
+	selectedPlaylist
 });
 
 const mapDispatchToProps = dispatch => ({
 	loadPlaylists: () => dispatch(loadPlaylists()),
-	slowImport: (playlist) => dispatch(slowImport(playlist))
+	selectPlaylist: (playlist) => dispatch(selectPlaylist(playlist))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImportPlaylists);

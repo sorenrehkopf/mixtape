@@ -22,7 +22,8 @@ class ListItem extends Component {
 						total
 					}
 				},
-				onSelect
+				onSelect,
+				hideAddIcon
 			},
 			smallestImageUrl
 		} = this; 
@@ -30,9 +31,9 @@ class ListItem extends Component {
 			<div className={style.main}>
 				{smallestImageUrl && <img src={smallestImageUrl} className={style.image} />}
 				<div className={style.items} onClick={onSelect}>
-					<span className={style['main__add-icon']}>
-						<i className={`fas fa-plus`}></i>
-					</span>
+				{!hideAddIcon && <span className={style['main__add-icon']}>
+					<i className={`fas fa-plus`}></i>
+				</span>}
 					<span className={style['main__item']} title={name}>{name}</span>
 					<span className={style['main__item']} title={`${total} songs`}>{`${total} songs`}</span>
 				</div>

@@ -3,23 +3,32 @@ import {
 	SLOW_IMPORT_FINISH
 } from './types';
 
-import {
-	SONG_SELECT_FINISH
-} from '_/components/main/actions/types';
-
 import Api from '_/services/api';
 import { convertBasicSongInfoFromSpotify } from '_/services/transform-song-data';
 
 import selectSong from '_/components/dashboard/actions/select-song';
 
-const slowImport = ({ id: playlistId, owner: { id: ownerId }, tracks: { total } }) => async(dispatch, getState) => {
+const slowImport = () => async(dispatch, getState) => {
 	dispatch({ type: SLOW_IMPORT_START });
+	const {
+		importPlaylists: {
+			selectedPlaylist: {
+				id: playlistId, 
+				owner: { 
+					id: ownerId 
+				},
+				tracks: { 
+					total 
+				} 
+			}
+		}
+	} = getState();
 
-	const { data: { tracks } } = await Api.get(`spotify/playlistTracks?playlistId=${playlistId}&ownerId=${ownerId}&total=${total}`);
-	const firstTrack = tracks.shift();
-	const payload = { tracks: tracks.map(({ track }) => track) };
+	let { data: { tracks } } = await Api.get(`spotify/playlistTracks?playlistId=${playlistId}&ownerId=${ownerId}&total=${total}`);
+	tracks = tracks.map(({ track }) => track);
+	const payload = { tracks };
 
-	dispatch(selectSong(convertBasicSongInfoFromSpotify(firstTrack.track), true));
+	dispatch(selectSong(convertBasicSongInfoFromSpotify(tracks[0]), true));
 	dispatch({ type: SLOW_IMPORT_FINISH, payload });
 }
 

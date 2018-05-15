@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
 	} = req.body;
 
 	const formattedTags = TagsFormatter.formatForDB(tags);
-	console.log('here1!', typeof spotifyId, spotifyId)
+	
 	Song.findOrCreate({
 		where: {
 			spotifyId,

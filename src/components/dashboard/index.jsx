@@ -21,7 +21,7 @@ class Dashboard extends Component {
 		const songsList = songs.map((song) => {
 			const songData = convertBasicSongInfoFromSpotify(song);
 
-			return (<ListItem key={id} songData={songData} onSelect={() => selectSong(songData) } />);
+			return (<ListItem key={song.id} songData={songData} onSelect={() => selectSong(songData) } />);
 		});
 
 		return(
