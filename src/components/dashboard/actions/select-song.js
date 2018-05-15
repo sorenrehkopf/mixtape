@@ -21,13 +21,13 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 			return dispatch({ type: SELECT_SONG_FINISH, payload: { selectedSong: songData, isSelectedSongNew: false } });
 		}
 
-		const { id } = songData;
+		const { spotifyId } = songData;
 		const data = {
 			include: { 
 				params: { 
 					spotifyId: {
 						type: 'strict_equivalence',
-						value0: id
+						value0: spotifyId
 					}
 				},
 				tags: {},
@@ -38,7 +38,7 @@ const selectSong = (songData, shouldLoad) => async(dispatch, getState) => {
 		let { data: { songs: [song] } } = await Api.get(`songs/search/${encodeURIComponent(JSON.stringify(data))}`);
 		let payload;
 		if (!song) {
-			song = await Api.get(`spotify/song/${id}`).then(({ data: { song } }) => song);
+			song = await Api.get(`spotify/song/${spotifyId}`).then(({ data: { song } }) => song);
 			const transformedSongData = convertFromSpotify(song);
 			
 			payload = { selectedSong: { ...songData, ...transformedSongData }, isSelectedSongNew: true };

@@ -34,6 +34,7 @@ const importPlaylistsReducer = (state = initialState, { type, payload }) => {
 			}
 		case SLOW_IMPORT_FINISH: 
 			return {
+				...state,
 				selectedPlaylist: null
 			}
 		default: 

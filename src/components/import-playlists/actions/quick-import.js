@@ -5,8 +5,22 @@ import {
 
 import Api from '_/services/api';
 
-const quickImport = ({ id: playlistId, owner: { id: ownerId }, tracks: { total } }) => async(dispatch, getState) => {
+const quickImport = () => async(dispatch, getState) => {
 	dispatch({ type: QUICK_IMPORT_START });
+
+	const {
+		importPlaylists: {
+			selectedPlaylist: {
+				id: playlistId, 
+				owner: { 
+					id: ownerId 
+				},
+				tracks: { 
+					total 
+				} 
+			}
+		}
+	} = getState();
 
 	try {
 		const success = await Api.get(`spotify/playlistTracks?playlistId=${playlistId}&ownerId=${ownerId}&total=${total}`);
