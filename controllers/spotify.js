@@ -22,14 +22,13 @@ router.get('/playlists', (req,res) => {
 });
 
 router.get('/playlistTracks', (req,res) => {
-	const { query: { id, total }, user } = req;
-	console.log('the playlist tracks!!', id, total);
+	const { query: { ownerId, playlistId, total }, user } = req;
 	const n = Math.ceil(total / 100);
+	const trackFetches = [];
 	let tracks = [];
 
-	const trackFetches = [];
 	for (let i = 0; i < n; i ++) {
-		trackFetches.push(SpotifyApi.getPlaylistTracks({ user, id, offset: 99 * i }).then(({ body }) => {
+		trackFetches.push(SpotifyApi.getPlaylistTracks({ user, ownerId, playlistId, offset: 99 * i }).then(({ body }) => {
 			tracks = [...tracks, ...body.items];
 		}));
 	}

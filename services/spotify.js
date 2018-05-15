@@ -85,10 +85,10 @@ class SpotifyApi {
 		})
 	}
 
-	static getPlaylistTracks({ user, id, offset }) {
+	static getPlaylistTracks({ user, ownerId, playlistId, offset }) {
 		return this.execute({
 			method: 'getPlaylistTracks',
-			params: [user.spotifyId, id, { limit: 100, offset }],
+			params: [ownerId, playlistId, { limit: 100, offset }],
 			user
 		})
 	}

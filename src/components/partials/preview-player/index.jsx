@@ -9,8 +9,20 @@ class PreviewPlayer extends Component {
 		}
 	}
 
+	componentDidUpdate(prevProps) {
+		const { refs: { audio }, props: { previewUrl } } = this;
+
+		if (audio && previewUrl != prevProps.previewUrl) {
+			audio.pause();
+			audio.load();
+			this.setState({
+				playing: false
+			});
+		}
+	}
+
 	toggle = ({ currentTarget }) => {
-		const audio = currentTarget.parentElement.querySelector('audio');
+		const { audio } = this.refs;
 
 		if (!audio) {
 			return;
@@ -42,7 +54,7 @@ class PreviewPlayer extends Component {
 					</span>
 				}
 				{previewUrl &&
-					<audio>
+					<audio ref="audio">
 						<source src={previewUrl} type="audio/mpeg"/>
 					</audio>
 				}

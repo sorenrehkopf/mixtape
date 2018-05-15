@@ -12,10 +12,10 @@ import { convertBasicSongInfoFromSpotify } from '_/services/transform-song-data'
 
 import selectSong from '_/components/dashboard/actions/select-song';
 
-const slowImport = ({ id, tracks: { total }}) => async(dispatch, getState) => {
+const slowImport = ({ id: playlistId, owner: { id: ownerId }, tracks: { total } }) => async(dispatch, getState) => {
 	dispatch({ type: SLOW_IMPORT_START });
 
-	const { data: { tracks } } = await Api.get(`spotify/playlistTracks?id=${id}&total=${total}`);
+	const { data: { tracks } } = await Api.get(`spotify/playlistTracks?playlistId=${playlistId}&ownerId=${ownerId}&total=${total}`);
 	const firstTrack = tracks.shift();
 	const payload = { tracks: tracks.map(({ track }) => track) };
 
