@@ -1,4 +1,4 @@
-class TagsFormatter {
+class SongFormatter {
 	static formatForDB(tags) {
 		const { getBoolValue, getNumericValue } = this;
 		for (let tag in tags) {
@@ -48,6 +48,12 @@ class TagsFormatter {
 
 		return 0;
 	}
+
+	static convertFromSpotifyData(song) {
+		const {
+
+		} = song;
+	}
 }
 
-module.exports = TagsFormatter;
+module.exports = SongFormatter;

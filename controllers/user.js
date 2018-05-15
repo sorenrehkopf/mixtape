@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Song, Tag, User } = require('../models/index.js');
-const TagsFormatter = require('../services/tags-formatter.js');
+const SongFormatter = require('../services/song-formatter.js');
 
 router.get('/', (req, res) => {
 	const { id } = req.user;
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 			displayName,
 			displayPhoto,
 			Songs: Songs.map(song => {
-				song.tags = TagsFormatter.formatForClient(song.tags);
+				song.tags = SongFormatter.formatForClient(song.tags);
 				return song;
 			}),
 			Tags

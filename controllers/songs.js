@@ -3,7 +3,8 @@ const router = express.Router();
 const { Song, Tag } = require('../models/index.js');
 const QueryBuilder = require('../services/query-builder');
 const CollectionBuilder = require('../services/collection-builder');
-const TagsFormatter = require('../services/tags-formatter');
+const SongFormatter = require('../services/song-formatter');
+const SpotifyApi = require('../services/spotify');
 const { isEqual } = require('lodash');
 
 const getUpdate = (data, song) => {
@@ -28,7 +29,7 @@ router.get('/search/:query', (req, res) => {
 			params
 		}).map(song => ({
 			...song,
-			tags: TagsFormatter.formatForClient(song.tags)
+			tags: SongFormatter.formatForClient(song.tags)
 		}));
 
 		res.send({ songs: filteredSongs });
@@ -58,7 +59,7 @@ router.post('/', (req, res) => {
 		valence
 	} = req.body;
 
-	const formattedTags = TagsFormatter.formatForDB(tags);
+	const formattedTags = SongFormatter.formatForDB(tags);
 	
 	Song.findOrCreate({
 		where: {
@@ -107,6 +108,26 @@ router.post('/', (req, res) => {
 		}
 
 		res.send(song);
+	});
+});
+
+router.post('/bulkAdd', (req,res) => {
+	const { body: { ownerId, playlistId, total }, user } = req;
+
+	SpotifyApi.getPlaylistTracks({ 
+		user, 
+		ownerId, 
+		playlistId, 
+		total 
+	}).then((tracks) => {
+		SpotifyApi.getDataForSongs({ 
+			user,
+			trackIds: tracks.map(({ track: { id } }) => id),
+			total: tracks.length
+		}).then((trackData) => {
+			// const formattedTracks = tracks.map(track => SongFormatter.convertFromSpotifyData(track))
+			res.send({trackData});
+		});
 	});
 });
 

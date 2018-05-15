@@ -15,7 +15,7 @@ const spotifyApi = new SpotifyWebApi({
 	clientSecret:process.env.SPOTIFY_CLIENT_SECRET,
 	redirectUri:process.env.SPOTIFY_REDIRECT_URI
 });
-const TagsFormatter = require('../services/tags-formatter');
+const SongFormatter = require('../services/song-formatter');
 
 
 const scopes = [
@@ -66,7 +66,7 @@ router.get('/handleauth', (req, res) => {
 	    		displayName, 
 	    		displayPhoto, 
 	    		Songs: Songs.map(song => {
-						song.tags = TagsFormatter.formatForClient(song.tags);
+						song.tags = SongFormatter.formatForClient(song.tags);
 						return song;
 					}), 
 	    		Tags 

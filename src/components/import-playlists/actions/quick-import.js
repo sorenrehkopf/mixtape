@@ -5,7 +5,7 @@ import {
 
 import Api from '_/services/api';
 
-const quickImport = () => async(dispatch, getState) => {
+const quickImport = (tags) => async(dispatch, getState) => {
 	dispatch({ type: QUICK_IMPORT_START });
 
 	const {
@@ -22,11 +22,18 @@ const quickImport = () => async(dispatch, getState) => {
 		}
 	} = getState();
 
+	const data = {
+		playlistId,
+		ownerId,
+		total,
+		tags
+	}
+
 	try {
-		const success = await Api.get(`spotify/playlistTracks?playlistId=${playlistId}&ownerId=${ownerId}&total=${total}`);
+		const success = await Api.post('songs/bulkAdd', data);
 		console.log(success);
 
-		dispatch({ type: QUICK_IMPORT_FINISH });
+		dispatch({ type: QUICK_IMPORT_FINISH, payload: {} });
 	} catch (error) {
 		dispatch({ type: QUICK_IMPORT_FINISH, payload: { error } });
 	}

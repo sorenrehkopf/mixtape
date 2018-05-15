@@ -53,6 +53,28 @@ class SpotifyApi {
 		});
 	};
 
+	static getDataForSongs({ user, trackIds, total }) {
+		const n = Math.ceil(total / 100);
+		const trackFetches = [];
+		let tracks = [];
+
+		for (let i = 0; i < n; i ++) {
+			const count = 99 * i;
+			console.log(trackIds.slice(0 + count, 99 + count))
+			trackFetches.push(this.execute({
+				method: 'getAudioFeaturesForTracks',
+				params: [trackIds.slice(0 + count, 99 + count)],
+				user
+			}).then(({ body }) => {
+				tracks = [...tracks, ...body.audio_features];
+			}));
+		}
+
+		return new Promise(resolve => {
+			Promise.all(trackFetches).then(() => resolve(tracks));
+		});
+	}
+
 	static createPlaylist({ user, name }) {
 		return this.execute({
 			method: 'createPlaylist',
@@ -85,12 +107,24 @@ class SpotifyApi {
 		})
 	}
 
-	static getPlaylistTracks({ user, ownerId, playlistId, offset }) {
-		return this.execute({
-			method: 'getPlaylistTracks',
-			params: [ownerId, playlistId, { limit: 100, offset }],
-			user
-		})
+	static getPlaylistTracks({ user, ownerId, playlistId, total }) {
+		const n = Math.ceil(total / 100);
+		const trackFetches = [];
+		let tracks = [];
+
+		for (let i = 0; i < n; i ++) {
+			trackFetches.push(this.execute({
+				method: 'getPlaylistTracks',
+				params: [ownerId, playlistId, { limit: 100, offset: 99 * i }],
+				user
+			}).then(({ body }) => {
+				tracks = [...tracks, ...body.items];
+			}));
+		}
+
+		return new Promise(resolve => {
+			Promise.all(trackFetches).then(() => resolve(tracks));
+		});
 	}
 }
 

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { Song } = require('../models/index.js');
-const TagsFormatter = require('../services/tags-formatter.js');
 const SpotifyApi = require('../services/spotify.js');
 const CollectionBuilder = require('../services/collection-builder.js');
 const QueryBuilder = require('../services/query-builder.js');

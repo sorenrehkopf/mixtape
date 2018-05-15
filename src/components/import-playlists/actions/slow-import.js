@@ -25,10 +25,10 @@ const slowImport = () => async(dispatch, getState) => {
 	} = getState();
 
 	let { data: { tracks } } = await Api.get(`spotify/playlistTracks?playlistId=${playlistId}&ownerId=${ownerId}&total=${total}`);
-	tracks = tracks.map(({ track }) => track);
+	tracks = tracks.map(({ track }) => convertBasicSongInfoFromSpotify(track));
 	const payload = { tracks };
 
-	dispatch(selectSong(convertBasicSongInfoFromSpotify(tracks[0]), true));
+	dispatch(selectSong(tracks[0], true));
 	dispatch({ type: SLOW_IMPORT_FINISH, payload });
 }
 

@@ -34,7 +34,7 @@ const addSong = () => async(dispatch, getState) => {
 	const nextSong = importQueue[0];
 	
 	if (nextSong) {
-		dispatch(selectSong(convertBasicSongInfoFromSpotify(nextSong), true));
+		dispatch(selectSong(nextSong, true));
 		dispatch({ type: SLOW_IMPORT_FINISH, payload: { tracks: importQueue } });
 	}
 };
