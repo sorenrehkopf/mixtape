@@ -12,6 +12,10 @@ import {
 	ADD_SONG_FINISH
 } from '_/components/dashboard/actions/types';
 
+import {
+	QUICK_IMPORT_FINISH
+} from '_/components/import-playlists/actions/types';
+
 const initialState = {};
 
 const songsReducer = (state = initialState, { type, payload }) => {
@@ -36,6 +40,14 @@ const songsReducer = (state = initialState, { type, payload }) => {
 			return {
 				...state,
 				songs: payload.user && payload.user.Songs
+			}
+		case QUICK_IMPORT_FINISH:
+			return {
+				...state,
+				songs: [
+					...payload.songs,
+					...state.songs
+				]
 			}
 		case SEARCH_SONGS_START:
 			return {

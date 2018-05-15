@@ -15,6 +15,7 @@ class QueryParamInput extends Component {
 	}
 
 	updateParamType(newType) {
+		console.log(newType);
 		if (newType && newType !== this.state.newParamType) {
 			this.setState({
 				newParamType: newType
@@ -30,7 +31,7 @@ class QueryParamInput extends Component {
 		return(
 			<Form className={`pure-form ${style.form}`} clearOnSubmit={true} onSubmit={queryParamAddAction} onChange={({ formData: { newParamType } }) => this.updateParamType(newParamType)}>
 				<Autocomplete name="newParamName" className={`pure-input ${style.input}`} options={options} />
-				<select required className={style.input} name="newParamType">
+				<select required type="text" className={style.input} name="newParamType">
 					{typeOptions}
 				</select>
 				{typeInputs}

@@ -6,6 +6,7 @@ const CollectionBuilder = require('../services/collection-builder');
 const SongFormatter = require('../services/song-formatter');
 const SpotifyApi = require('../services/spotify');
 const { isEqual } = require('lodash');
+const { Op } = require('sequelize');
 
 const getUpdate = (data, song) => {
 	const update  = {};
@@ -111,8 +112,9 @@ router.post('/', (req, res) => {
 	});
 });
 
-router.post('/bulkAdd', (req,res) => {
-	const { body: { ownerId, playlistId, total }, user } = req;
+router.post('/bulkAddPlaylist', (req,res) => {
+	const { body: { ownerId, playlistId, total, tags }, user } = req;
+	const formattedTags = SongFormatter.formatForDB(tags);
 
 	SpotifyApi.getPlaylistTracks({ 
 		user, 
@@ -120,13 +122,69 @@ router.post('/bulkAdd', (req,res) => {
 		playlistId, 
 		total 
 	}).then((tracks) => {
-		SpotifyApi.getDataForSongs({ 
-			user,
-			trackIds: tracks.map(({ track: { id } }) => id),
-			total: tracks.length
-		}).then((trackData) => {
-			// const formattedTracks = tracks.map(track => SongFormatter.convertFromSpotifyData(track))
-			res.send({trackData});
+		// first get just the actual track data from spotify
+		tracks = tracks.map(({ track }) => track);
+		// then de-dupe songs so we don't create any duplicate records
+		Song.findAll({
+			where: {
+				[Op.and]: {
+					userId: user.id,
+					spotifyId: {
+						[Op.or]: tracks.map(({ id }) => id)
+					}
+				}
+			}
+		}).then(songs => {
+			tracks = tracks.filter(track => !songs.some(({ spotifyId }) => spotifyId == track.id));
+			// in this case there were no new tracks to add. oh well!
+			if (!tracks.length) {
+				return res.send({ songs: [] });
+			}
+			// then get the audio data for the new tracks
+			SpotifyApi.getDataForSongs({ 
+				user,
+				trackIds: tracks.map(({ id }) => id),
+				total: tracks.length
+			}).then((trackData) => {
+				const songsObj = {};
+
+				for (let data of trackData) {
+					songsObj[data.id] = data;
+				};
+
+				for (let track of tracks) {
+					songsObj[track.id] = {
+						...track,
+						...songsObj[track.id]
+					};
+				};
+
+				const formattedTracks = Object.keys(songsObj).map(id => {
+					return {
+						...SongFormatter.convertFromSpotifyData(songsObj[id]),
+						userId: user.id,
+						tags: formattedTags
+					};
+				});
+
+				Song.bulkCreate(formattedTracks, {}).then((newSongs) => {
+					for (let song of newSongs) {
+						for (let name in tags) {
+							Tag.findOrCreate({
+								where: {
+									userId: req.user.id,
+									name
+								}
+							}).spread((tag, created) => {
+								song.addTag(tag, { through: { value: formattedTags[name] } });
+							})
+						}
+					};
+					res.send({ songs: formattedTracks.map(track => ({ ...track, tags })) });
+				}).catch(err => {
+					console.error('there was an error adding the songs!', err);
+				});
+			});
 		});
 	});
 });

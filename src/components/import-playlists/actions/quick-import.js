@@ -30,10 +30,9 @@ const quickImport = (tags) => async(dispatch, getState) => {
 	}
 
 	try {
-		const success = await Api.post('songs/bulkAdd', data);
-		console.log(success);
+		const { data: { songs } } = await Api.post('songs/bulkAddPlaylist', data);
 
-		dispatch({ type: QUICK_IMPORT_FINISH, payload: {} });
+		dispatch({ type: QUICK_IMPORT_FINISH, payload: { songs } });
 	} catch (error) {
 		dispatch({ type: QUICK_IMPORT_FINISH, payload: { error } });
 	}

@@ -1,4 +1,23 @@
+const round = require('lodash/round');
+
 class SongFormatter {
+	static get keyMappings() {
+		return [
+			'C',
+			'C#',
+			'D',
+			'D#',
+			'E',
+			'F',
+			'F#',
+			'G',
+			'G#',
+			'A',
+			'A#',
+			'B',
+		];
+	}
+
 	static formatForDB(tags) {
 		const { getBoolValue, getNumericValue } = this;
 		for (let tag in tags) {
@@ -49,10 +68,58 @@ class SongFormatter {
 		return 0;
 	}
 
-	static convertFromSpotifyData(song) {
-		const {
+	static formatTime(milliseconds) {
+		const roundedMilliseconds = 1000 * Math.round(milliseconds / 1000);
+		const date = new Date(roundedMilliseconds);
 
+		const minutes = date.getUTCMinutes();
+		const seconds = date.getUTCSeconds();
+		
+		return `${minutes}:${seconds}`;
+	};
+
+	static convertFromSpotifyData(song) {
+		const { 
+			album: {
+				images: [{}, {
+					url: imageUrl
+				}],
+				name: albumName
+			},
+			artists: [{
+				name: artistName
+			}],
+			danceability,
+			duration_ms,
+			duration_ms: duration,
+			energy,
+			id,
+			key,
+			loudness,
+			name,
+			preview_url: previewUrl,
+			tempo,
+			time_signature,
+			valence
 		} = song;
+
+		return {
+			albumName,
+			artistName,
+			danceability: round(danceability * 10, 1),
+			durationFriendly: this.formatTime(duration), 
+			durationMs: duration,
+			energy: round(energy * 10, 1),
+			imageUrl,
+			key: this.keyMappings[key],
+			loudness: round(loudness, 1),
+			name,
+			previewUrl,
+			spotifyId: id,
+			tempo: round(tempo, 1),
+			timeSignature: `${time_signature}/4`,
+			valence: round(valence * 10, 1)
+		}
 	}
 }
 

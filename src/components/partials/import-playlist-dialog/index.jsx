@@ -87,7 +87,10 @@ class ImportPlaylistDialog extends Component {
 						{importingFast && <p>Any tags added here will be applied to every song in the playlist when it is added.</p>}
 						{importingFast && <p>Songs from this playlist that are already in your collection will not be updated.</p>}
 					</div>}
-					{importing && <h2>importing...</h2>}
+					{importing && (<div>
+						<h2>Importing...</h2>
+						<p>This can take a while depending on the size of the playlist</p>
+					</div>)}
 					{quickImportSuccess && <h2>Successfully Imported</h2>}
 				</div>
 			</div>
