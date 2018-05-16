@@ -13,7 +13,7 @@ import clearCreatedPlaylist from './actions/clear-created-playlist';
 
 class CreatePlaylist extends Component {
 	render() {
-		const { createPlaylist, createdPlaylist, clearCreatedPlaylist, loading, name, tags, updatePlaylistData } = this.props;
+		const { createPlaylist, createdPlaylist, clearCreatedPlaylist, loading, name, recycle, tags, updatePlaylistData } = this.props;
 		const options = [...tags, ...defaultQueryFields];
 
 		return(
@@ -22,9 +22,14 @@ class CreatePlaylist extends Component {
 				{!createdPlaylist && !loading && (<div>
 					<h2 className={style.sub_header}>Playlist Details</h2>
 					<Form className={`pure-form`} onChange={updatePlaylistData}>
+						<label className={`pure-checkbox ${style.recycle_toggle}`}>
+							Recycle
+							<input className={style.recycle} type="checkbox" name="recycle" checked={recycle} />
+							<p className={style.recycle_explanation}>**Recycle means that your default mixtape playlist will be used. If you haven't used this option yet then it will be created for you.**</p>
+						</label>
 						<label>Name</label>
 						<br/>
-						<input name="name" value={name} type="text" className={`pure-input ${style.name_input}`} />
+						<input name="name" readOnly={recycle} value={name} type="text" className={`pure-input ${style.name_input}`} />
 					</Form>
 					<h2 className={style.sub_header}>Song Criteria</h2>
 					<QueryForm onSubmit={createPlaylist} tags={tags} options={options} submitText="Create!" />
@@ -44,7 +49,8 @@ const mapStateToProps = ({
 	},
 	createPlaylist: {
 		playlistData: {
-			name
+			name,
+			recycle
 		},
 		createdPlaylist,
 		loading
@@ -53,6 +59,7 @@ const mapStateToProps = ({
 	createdPlaylist,
 	loading,
 	name,
+	recycle,
 	tags
 });
 

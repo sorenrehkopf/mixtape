@@ -9,7 +9,8 @@ import {
 
 const initialState = {
 	playlistData: {
-		name: DateTime.local().toLocaleString()
+		name: DateTime.local().toLocaleString(),
+		recycle: true
 	},
 	createdPlaylist: null,
 	loading: false

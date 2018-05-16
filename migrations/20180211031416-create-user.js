@@ -14,6 +14,10 @@ module.exports = {
       displayPhoto: {
         type: Sequelize.STRING(500)
       },
+      settings: {
+        type: Sequelize.JSONB,
+        defaultValue: {}
+      },
       spotifyAccessToken: {
         type: Sequelize.STRING
       },

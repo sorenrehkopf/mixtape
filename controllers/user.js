@@ -21,11 +21,11 @@ router.get('/', (req, res) => {
 		res.send({
 			displayName,
 			displayPhoto,
-			Songs: Songs.map(song => {
+			Songs: (Songs || []).map(song => {
 				song.tags = SongFormatter.formatForClient(song.tags);
 				return song;
 			}),
-			Tags
+			Tags: Tags || []
 		});
 	});
 });

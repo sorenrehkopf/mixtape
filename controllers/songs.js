@@ -168,18 +168,27 @@ router.post('/bulkAddPlaylist', (req,res) => {
 				});
 
 				Song.bulkCreate(formattedTracks, {}).then((newSongs) => {
-					for (let song of newSongs) {
-						for (let name in tags) {
-							Tag.findOrCreate({
-								where: {
-									userId: req.user.id,
-									name
-								}
-							}).spread((tag, created) => {
-								song.addTag(tag, { through: { value: formattedTags[name] } });
-							})
+					const tagRecords = {};
+					const tagCreators = [];
+
+					for (let name in tags) {
+						tagCreators.push(Tag.findOrCreate({
+							where: {
+								userId: req.user.id,
+								name
+							}
+						}).spread((tag, created) => {
+							tagRecords[name] = tag;
+						}));
+					}
+
+					Promise.all(tagCreators).then(() => {
+						for (let song of newSongs) {
+							for (let name in tags) {
+								song.addTag(tagRecords[name], { through: { value: formattedTags[name] } });
+							}
 						}
-					};
+					});
 					res.send({ songs: formattedTracks.map(track => ({ ...track, tags })) });
 				}).catch(err => {
 					console.error('there was an error adding the songs!', err);

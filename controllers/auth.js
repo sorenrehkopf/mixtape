@@ -65,11 +65,11 @@ router.get('/handleauth', (req, res) => {
 	    		authToken, 
 	    		displayName, 
 	    		displayPhoto, 
-	    		Songs: Songs.map(song => {
+	    		Songs: (Songs || []).map(song => {
 						song.tags = SongFormatter.formatForClient(song.tags);
 						return song;
 					}), 
-	    		Tags 
+	    		Tags: Tags || []
 	    	});
 	    	const handleAuthPage = handleAuthSuccessCompiler({
 	    		data, 

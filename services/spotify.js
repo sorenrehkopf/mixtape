@@ -91,6 +91,14 @@ class SpotifyApi {
 		});
 	}
 
+	static replacePlaylistTracks({ user, playlistId, songUris }) {
+		return this.execute({
+			method: 'replaceTracksInPlaylist',
+			params: [user.spotifyId, playlistId, songUris],
+			user
+		});
+	}
+
 	static playPlaylist({ user, uri }) {
 		return this.execute({
 			method: 'play',

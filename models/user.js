@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     displayName: DataTypes.STRING,
     displayPhoto: DataTypes.STRING,
+    settings: DataTypes.JSONB,
     spotifyId: DataTypes.STRING,
     spotifyAccessToken: DataTypes.STRING,
     spotifyRefreshToken: DataTypes.STRING
