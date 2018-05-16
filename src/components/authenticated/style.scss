@@ -24,6 +24,7 @@
 		padding: 5px 10px;
 		flex: none;
 		max-height: none;
+		min-height: calc(100vh - 50px);
 		margin-top: 50px;
 	}
 }
