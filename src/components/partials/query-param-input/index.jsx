@@ -15,7 +15,6 @@ class QueryParamInput extends Component {
 	}
 
 	updateParamType(newType) {
-		console.log(newType);
 		if (newType && newType !== this.state.newParamType) {
 			this.setState({
 				newParamType: newType

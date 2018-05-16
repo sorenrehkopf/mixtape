@@ -40,3 +40,55 @@
 		cursor: pointer;
 	}
 }
+
+.mobile_toggle {
+	display: none;
+}
+
+@media (max-width: 800px) {
+	.main {
+		&__header {
+			display: none;
+		}
+		li > * {
+			border-top: 1px solid $pastel_green;
+			padding: 10px 20px;
+			font-size: $larger;
+		}
+	}
+
+	.menu {
+		z-index: 200;
+		position: fixed;
+		width: 100vw;
+		height: calc(100vh - 50px);
+		background-color: $jet;
+		top: 50px;
+		left: -100vw;
+		transition: 200ms ease;
+		&.open {
+			left: 0px;
+		}
+	}
+
+	.mobile_toggle {
+		position: fixed;
+		top: 0px;
+		left: 0px;
+		z-index: 200;
+		width: 100vw;
+		height: 50px;
+		display: block;
+		color: white;
+		background-color: $jet;
+		font-size: 35px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.toggle_icon, .mobile_logo {
+		margin: 0px 20px;
+		display: block;
+	}
+}

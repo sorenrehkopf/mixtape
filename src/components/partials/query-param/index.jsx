@@ -6,7 +6,7 @@ import { paramTypes } from '_/services/get-collections';
 class QueryParam extends Component {
 	render() {
 		const { name, remove, type, ...values } = this.props;
-		console.log(values);
+		
 		return (
 			<div className={style.main}>
 				<span className={style.name}>

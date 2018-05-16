@@ -24,6 +24,7 @@ class Form extends Component {
 	}
 
 	handleSubmit = (e) => {
+		console.log('submitting!!');
 		const { props: { clearOnSubmit, onSubmit }, state: { formData, nameElements } } = this;
 		e.preventDefault();
 
@@ -40,18 +41,25 @@ class Form extends Component {
 				formData: clearedFormData
 			});
 			for (let element of nameElements) {
+				// dispatch an input event so that any listeners will respond
+				if (element.type == 'text') {
+					nativeInputValueSetter.call(element, '');
+				}
+
+				if (element.type == 'number') {
+					element.value = '';
+				}
+
 				if (element.type != 'checkbox') {
-					const value = element.type === 'text' ? '' : null;
-					nativeInputValueSetter.call(element, value);
-					// dispatch an input event so that any listeners will respond
 					const event = new Event('input', { bubbles: true });
-	  	  	element.dispatchEvent(event);
+		  	 	element.dispatchEvent(event);
 				}
 			}
 		}
 	}
 
 	handleInput = ({ target }) => {
+		console.log('changing');
 		const { name, value, type } = target;
 		const { props: { onChange }, state: { formData } } = this;
 		const delta = {};

@@ -13,3 +13,17 @@
 	box-sizing: border-box;
 	padding: 30px 20px 0px;
 }
+
+@media (max-width: 800px) {
+	.main {
+		display: block;
+		height: auto;
+	}
+
+	.scene{
+		padding: 5px 10px;
+		flex: none;
+		max-height: none;
+		margin-top: 50px;
+	}
+}

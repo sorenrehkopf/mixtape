@@ -24,7 +24,7 @@ class CreatePlaylist extends Component {
 					<Form className={`pure-form`} onChange={updatePlaylistData}>
 						<label className={`pure-checkbox ${style.recycle_toggle}`}>
 							Recycle
-							<input className={style.recycle} type="checkbox" name="recycle" checked={recycle} />
+							<input className={style.recycle} type="checkbox" name="recycle" checked={recycle} onChange={() => null} />
 							<p className={style.recycle_explanation}>**Recycle means that your default mixtape playlist will be used. If you haven't used this option yet then it will be created for you.**</p>
 						</label>
 						<label>Name</label>

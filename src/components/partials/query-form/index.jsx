@@ -82,7 +82,7 @@ class QueryForm extends Component {
 			});
 		} catch (error) {
 			// the submit action couldn't complete for some reason
-			console.log(error);	
+			console.error(error);	
 		}
 	}
 

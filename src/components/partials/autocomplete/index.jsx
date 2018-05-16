@@ -34,10 +34,6 @@ class Autocomplete extends Component {
 			const value = matches[currentIdx].name;
 
 			this.select(value);
-		} else if (key == 'Enter') {
-			this.setState({
-				value: ''
-			});
 		} else if (key != 'Enter' && key != 'Tab' && hideOptions) {
 			this.setState({
 				hideOptions: false,
