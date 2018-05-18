@@ -73,7 +73,7 @@ router.get('/handleauth', (req, res) => {
 	    	});
 	    	const handleAuthPage = handleAuthSuccessCompiler({
 	    		data, 
-	    		targetOrigin: process.env.CLIENT_BASE_URL
+	    		targetOrigin: process.env.PORT || 3000
 	    	});
 	    	
 	    	res.set('Content-Type', 'text/html');

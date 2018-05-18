@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+case "$NODE_ENV" in
+  production) path = "/home/sorenrehkopf/mixtape" ;;
+  *) path = "~/projects/mixtape" ;;
+esac
+
+cd "$path"
+
+npm install
+sequelize db:migrate
+webpack build
+node index.js
