@@ -10,14 +10,13 @@ const login = () => (dispatch, getState) => {
 	dispatch({ type: LOGIN_START });
 
 	const loginWindow = new ChildWindow({
-		url: process.env.API_BASE_URL || 'http://localhost:3000/api/auth/login',
+		url: `${process.env.API_BASE_URL}api/auth/login`,
 		onMessage: ({ data: { authToken, ...more } }) => {
 			const payload = {
 				user: more
 			};
 
 			Api.setAuthToken(authToken);
-			console.log('the payload!1', payload);
 			dispatch({ type: LOGIN_FINISH, payload });
 			loginWindow.close();
 		}
