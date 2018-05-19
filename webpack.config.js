@@ -11,11 +11,13 @@ const config = {
 		filename:'bundle.js'
 	},
 	module:{
-		loaders:[
+		rules:[
 			{
 				test:/\.jsx?/,
 				include:appDir,
-				loader:'babel-loader'
+				use:[{
+                    loader: 'babel-loader'
+                }]
 			},
 			{
 	      test: /\.css$/,
@@ -25,7 +27,7 @@ const config = {
         	use: [
             {
               loader: 'css-loader',
-              query: {
+              options: {
                 modules: true,
                 localIdentName: '[name]__[local]___[hash:base64:5]'
               }
@@ -42,7 +44,7 @@ const config = {
           use: [
             {
               loader: 'css-loader',
-              query: {
+              options: {
                 modules: true,
                 sourceMap: true,
                 importLoaders: 2,
