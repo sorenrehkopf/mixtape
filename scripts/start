@@ -1,13 +1,9 @@
 #!/usr/bin/env node
+source scripts/set_env
 
-case "$NODE_ENV" in
-  production) path = "/home/sorenrehkopf/mixtape" ;;
-  *) path = "~/projects/mixtape" ;;
-esac
-
-cd "$path"
+cd "${BASE_PATH}"
 
 npm install
 sequelize db:migrate
-webpack build
+webpack
 node index.js
