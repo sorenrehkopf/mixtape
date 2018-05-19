@@ -1,6 +1,6 @@
 class Api {
 	static get baseUrl() {
-		return 'http://localhost:3000/api/';
+		return process.env.API_BASE_URL || 'http://localhost:3000/api/';
 	}
 
 	static get authToken() {
