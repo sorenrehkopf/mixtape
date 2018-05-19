@@ -10,7 +10,7 @@ const login = () => (dispatch, getState) => {
 	dispatch({ type: LOGIN_START });
 
 	const loginWindow = new ChildWindow({
-		url: process.env.API_BASE_URL || 'http://localhost:3000/api/auth/login',
+		url: 'https://www.myxtyp.com/api/auth/login',
 		onMessage: ({ data: { authToken, ...more } }) => {
 			const payload = {
 				user: more
