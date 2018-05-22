@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sorenrehkopf",
@@ -17,38 +17,12 @@
     "history": "^4.7.2",
     "jwt-simple": "^0.5.1",
     "lodash": "^4.17.5",
-    "luxon": "^1.2.0",
     "pg": "6.4.1",
     "pg-hstore": "^2.3.2",
-    "purecss": "^1.0.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2",
-    "react-router-redux": "^5.0.0-alpha.9",
-    "react-select": "^1.2.1",
-    "redux": "^3.7.2",
-    "redux-thunk": "^2.2.0",
     "sequelize": "^4.32.3",
     "spotify-web-api-node": "^2.5.0"
   },
   "devDependencies": {
-    "auto-prefixer": "^0.4.2",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "css-loader": "^0.28.11",
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "html-webpack-plugin": "^2.30.1",
-    "node-sass": "^4.9.0",
-    "nodemon": "^1.14.11",
-    "postcss-loader": "^2.1.5",
-    "sass-loader": "^7.0.1",
-    "style-loader": "^0.21.0",
-    "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.3"
+    "nodemon": "^1.14.11"
   }
 }
