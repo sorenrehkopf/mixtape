@@ -31,10 +31,6 @@ app.use('/api/user', userController);
 app.use('/api/spotify', spotifyController);
 app.use('/api/songs', songsController);
 
-app.get('*', (req, res) => {
-	res.sendFile(`${__dirname}/public/index.html`);
-});
-
 app.listen(process.env.PORT || 3000, () => {
 	console.log(`app listening on port ${process.env.PORT || '3000'}`);
 });
