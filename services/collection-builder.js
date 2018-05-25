@@ -20,7 +20,7 @@ class CollectionBuilder {
 			params
 		}).map(({ spotifyId }) => `spotify:track:${spotifyId}`);
 
-		return shuffle(songUris).slice(0, 24);
+		return shuffle(songUris).slice(0, 49);
 	}
 };
 

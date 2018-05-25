@@ -17,7 +17,6 @@ router.get('/', (req, res) => {
 			}],
 		order: [ [ Song, 'createdAt', 'DESC'] ]
 	}).then(({ displayName, displayPhoto, Songs, Tags }) => {
-		console.log('the songs!')
 		res.send({
 			displayName,
 			displayPhoto,

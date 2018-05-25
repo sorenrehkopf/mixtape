@@ -118,20 +118,28 @@ class SpotifyApi {
 	static getPlaylistTracks({ user, ownerId, playlistId, total }) {
 		const n = Math.ceil(total / 100);
 		const trackFetches = [];
-		let tracks = [];
+		const trackFetchResults = {};
 
 		for (let i = 0; i < n; i ++) {
 			trackFetches.push(this.execute({
 				method: 'getPlaylistTracks',
-				params: [ownerId, playlistId, { limit: 100, offset: 99 * i }],
+				params: [ownerId, playlistId, { limit: 100, offset: 100 * i }],
 				user
 			}).then(({ body }) => {
-				tracks = [...tracks, ...body.items];
+				trackFetchResults[i] = body.items;
 			}));
 		}
 
 		return new Promise(resolve => {
-			Promise.all(trackFetches).then(() => resolve(tracks));
+			Promise.all(trackFetches).then(() => {
+				let tracks = [];
+
+				for (let i = 0; i < n; i ++) {
+					tracks = [...tracks, ...trackFetchResults[i]];
+				}
+
+				resolve(tracks);
+			});
 		});
 	}
 }
