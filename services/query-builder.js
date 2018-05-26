@@ -4,10 +4,12 @@ const { Op } = require('sequelize');
 class QueryBuilder {
 	static get defaultTypes() {
 		return [
+			'acousticness',
 			'albumName',
 			'artistName',
 			'danceability',
 			'energy',
+			'instrumentalness',
 			'key',
 			'loudness',
 			'name',
@@ -71,39 +73,39 @@ class QueryBuilder {
 		const includeParamsOperator = include.paramsExclusive ? Op.and : Op.or;
 		const excludeTagsOperator = exclude.tagsExclusive ? Op.and : Op.or;
 		const excludeParamsOperator = exclude.paramsExclusive ? Op.and : Op.or;
+		const includeTagsAndParamsOperator = Op.and;
 		
-		const includeQuery = {};
-
-		if (Object.keys(include.params).length) {
-			includeQuery[includeParamsOperator] = {
-				tags: {
-					[includeParamsOperator]: {}
-				}
-			}
+		const includeQuery = {
+			[includeTagsAndParamsOperator]: {}
 		};
 
-		if (Object.keys(include.tags).length && !includeQuery[includeTagsOperator]){
-			includeQuery[includeTagsOperator] = {
-				tags: {
-					[includeTagsOperator]: {}
-				}
+		if (Object.keys(include.params).length) {
+			includeQuery[includeTagsAndParamsOperator][includeParamsOperator] = {}
+		};
+
+		if (Object.keys(include.tags).length){
+			includeQuery[includeTagsAndParamsOperator].tags = {
+				[includeTagsOperator]: {}
 			};
 		};
 
 		for (let param in include.params) {
 			const { type, value0, value1 } = include.params[param];
-			const defaultValue = defaultTypes.find(type => {
-				return new RegExp(`^${param}$`, 'i').test(type);
-			});
+			const defaultValue = defaultTypes.find(type => new RegExp(`^${param}$`, 'i').test(type));
 
 			const { operator, getValue } = operators[type];
 
 			if (defaultValue) {
-				includeQuery[includeParamsOperator][defaultValue] = {
+				includeQuery[includeTagsAndParamsOperator][includeParamsOperator][defaultValue] = {
 					[operator]: getValue(value0, value1)
 				};
 			} else{
-				includeQuery[includeParamsOperator].tags[includeParamsOperator][param] = {
+				if (!includeQuery[includeTagsAndParamsOperator].tags) {
+					includeQuery[includeTagsAndParamsOperator].tags = {
+						[includeParamsOperator]: {}
+					}
+				}
+				includeQuery[includeTagsAndParamsOperator].tags[includeParamsOperator][param] = {
 					numericValue: {
 						[operator]: getValue(value0, value1)
 					}
@@ -112,7 +114,7 @@ class QueryBuilder {
 		}
 
 		for (let tag in include.tags) {
-			includeQuery[includeTagsOperator].tags[includeTagsOperator][tag] = {
+			includeQuery[includeTagsAndParamsOperator].tags[includeTagsOperator][tag] = {
 				boolValue: true
 			};
 		};
