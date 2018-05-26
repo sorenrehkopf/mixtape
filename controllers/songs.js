@@ -20,6 +20,18 @@ const getUpdate = (data, song) => {
 	return update;
 }
 
+router.get('/', (req, res) => {
+	const { user: { id: userId } } = req;
+
+	Song.findAll({
+		where: {
+			userId
+		},
+		order: [ [ Song, 'createdAt', 'DESC'] ],
+		limit: 200
+	})
+});
+
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
 	const query = QueryBuilder.build({ params, user: req.user });
