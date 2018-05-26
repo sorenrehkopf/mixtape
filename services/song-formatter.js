@@ -89,11 +89,13 @@ class SongFormatter {
 			artists: [{
 				name: artistName
 			}],
+			acousticness,
 			danceability,
 			duration_ms,
 			duration_ms: duration,
 			energy,
 			id,
+			instrumentalness,
 			key,
 			loudness,
 			name,
@@ -104,6 +106,7 @@ class SongFormatter {
 		} = song;
 
 		return {
+			acousticness: round(acousticness * 10, 1),
 			albumName,
 			artistName,
 			danceability: round(danceability * 10, 1),
@@ -111,6 +114,7 @@ class SongFormatter {
 			durationMs: duration,
 			energy: round(energy * 10, 1),
 			imageUrl,
+			instrumentalness: round(instrumentalness * 10, 1),
 			key: this.keyMappings[key],
 			loudness: round(loudness, 1),
 			name,
