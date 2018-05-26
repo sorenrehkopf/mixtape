@@ -51,6 +51,7 @@ router.get('/search/:query', (req, res) => {
 
 router.post('/', (req, res) => {
 	const {
+		acousticness,
 		albumName,
 		artistName,
 		danceability,
@@ -61,6 +62,7 @@ router.post('/', (req, res) => {
 		energy,
 		spotifyId,
 		imageUrl,
+		instrumentalness,
 		key,
 		loudness,
 		name,
@@ -81,6 +83,7 @@ router.post('/', (req, res) => {
 		}
 	}).spread((song, created) => {
 		const data = {
+			acousticness,
 			albumName,
 			artistName,
 			danceability,
@@ -88,6 +91,7 @@ router.post('/', (req, res) => {
 			durationMs,
 			energy,
 			imageUrl,
+			instrumentalness,
 			key,
 			loudness,
 			name,

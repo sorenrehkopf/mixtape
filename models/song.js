@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Song = sequelize.define('Song', {
+    acousticness: DataTypes.FLOAT,
     albumName: DataTypes.STRING,
     artistName: DataTypes.STRING,
     danceability: DataTypes.FLOAT,
@@ -8,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     durationMs: DataTypes.INTEGER,
     energy: DataTypes.FLOAT,
     imageUrl: DataTypes.STRING,
+    instrumentalness: DataTypes.FLOAT,
     key: DataTypes.STRING,
     loudness: DataTypes.FLOAT,
     name: DataTypes.STRING,
