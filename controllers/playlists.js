@@ -30,6 +30,7 @@ router.post('/', (req, res) => {
 						external_urls: {
 							spotify: `http://open.spotify.com/user/${user.spotifyId}/playlist/${defaultPlaylistId}`
 						},
+						uri: `spotify:user:${user.spotifyId}:playlist:${defaultPlaylistId}`,
 						name: 'My Mixtape'
 					}
 				});
