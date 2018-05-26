@@ -79,6 +79,10 @@ class QueryBuilder {
 			[includeTagsAndParamsOperator]: {}
 		};
 
+		if (!Object.keys(include.params).length && !Object.keys(include.tags).length && !Object.keys(exclude.tags).length) {
+			return;
+		}
+
 		if (Object.keys(include.params).length) {
 			includeQuery[includeTagsAndParamsOperator][includeParamsOperator] = {}
 		};
@@ -128,10 +132,7 @@ class QueryBuilder {
 
 		console.log(query);
 
-		return {
-			where: query,	
-			raw: true
-		}
+		return query;
 	}
 };
 

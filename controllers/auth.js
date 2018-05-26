@@ -49,8 +49,7 @@ router.get('/handleauth', (req, res) => {
 	    		displayName,
 	    		displayPhoto: url,
 	    	},
-	    	include: [ Song, Tag ],
-				order: [ [ Song, 'createdAt', 'DESC'] ]
+	    	include: [ Tag ]
 	    }).spread(async(user, created) => {
 	    	const { displayName, displayPhoto, id, Songs, Tags, spotifyAccessToken, spotifyRefreshToken } = user;
 

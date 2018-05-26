@@ -27,16 +27,26 @@ router.get('/', (req, res) => {
 		where: {
 			userId
 		},
-		order: [ [ Song, 'createdAt', 'DESC'] ],
-		limit: 200
-	})
+		order: [ ['createdAt', 'DESC'] ],
+		limit: 100
+	}).then((songs) =>{
+		res.send({ songs });
+	});
 });
 
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
 	const query = QueryBuilder.build({ params, user: req.user });
 
-	Song.findAll(query).then(songs => {
+	if (!query) {
+		return res.send({songs: [] });
+	}
+
+	Song.findAll({
+		where: query,
+		raw: true,
+		limit: 100
+	}).then(songs => {
 		const filteredSongs = CollectionBuilder.filterResults({
 			songs,
 			params
