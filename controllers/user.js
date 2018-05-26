@@ -9,13 +9,7 @@ router.get('/', (req, res) => {
 		where: {
 			id
 		},
-		include: [{
-				model: Song
-			},
-			{
-				model: Tag
-			}],
-		order: [ [ Song, 'createdAt', 'DESC'] ]
+		include: [Tag]
 	}).then(({ displayName, displayPhoto, Songs, Tags }) => {
 		res.send({
 			displayName,

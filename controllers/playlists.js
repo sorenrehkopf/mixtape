@@ -13,7 +13,14 @@ router.post('/', (req, res) => {
 		user 
 	});
 
-	Song.findAll(query).then(songs => {
+	if (!query) {
+		return res.status(422).send();
+	}
+
+	Song.findAll({
+		where: query,
+		raw: true
+	}).then(songs => {
 		const songUris = CollectionBuilder.getPlaylistUris({
 			songs,
 			params: songCriteria
