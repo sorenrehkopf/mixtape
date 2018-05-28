@@ -63,11 +63,7 @@ router.get('/handleauth', (req, res) => {
 	    	const data = JSON.stringify({ 
 	    		authToken, 
 	    		displayName, 
-	    		displayPhoto, 
-	    		Songs: (Songs || []).map(song => {
-						song.tags = SongFormatter.formatForClient(song.tags);
-						return song;
-					}), 
+	    		displayPhoto,
 	    		Tags: Tags || []
 	    	});
 	    	const handleAuthPage = handleAuthSuccessCompiler({
