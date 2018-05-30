@@ -21,14 +21,22 @@ const getUpdate = (data, song) => {
 }
 
 router.get('/', (req, res) => {
-	const { user: { id: userId } } = req;
+	const { user: { id: userId }, query: { before } } = req;
+
+	const query = {
+		userId
+	};
+
+	if (before) {
+		query.id = {
+			[Op.lt]: before
+		};
+	}
 
 	Song.findAll({
-		where: {
-			userId
-		},
-		order: [ ['createdAt', 'DESC'] ],
-		limit: 100
+		where: query,
+		limit: 75,
+		order: [ ['id', 'DESC'] ]
 	}).then((songs) =>{
 		res.send({ songs });
 	});
@@ -45,7 +53,7 @@ router.get('/search/:query', (req, res) => {
 	Song.findAll({
 		where: query,
 		raw: true,
-		limit: 100
+		limit: 400
 	}).then(songs => {
 		const filteredSongs = CollectionBuilder.filterResults({
 			songs,
