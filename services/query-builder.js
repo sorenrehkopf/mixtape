@@ -59,12 +59,49 @@ class QueryBuilder {
 		];
 	}
 
-	static deriveValuesFromRange({value0, value1, inclusive, step = 0.1}) {
-		const values = inclusive ? [value0, value1] : [];
-		for (let i = value0; i < value1; i+=step) {
-			values.push(i);
-		}
-		return values;
+	static get friendlyText() {
+		return {
+			loose_equivalence:{
+				displayValue: 'is like (text)',
+				inputTypes: ['text']
+			},
+			loose_inequivalence:{
+				displayValue: 'is not like (text)',
+				inputTypes: ['text']
+			},
+			between:{
+				displayValue: 'is between',
+				inputTypes: ['number', 'number']
+			},
+			not_between:{
+				displayValue: 'is not between',
+				inputTypes: ['number', 'number']
+			},
+			greater_than:{
+				displayValue: 'is greater than',
+				inputTypes: ['number']
+			},
+			after: {
+				displayValue: 'since',
+				inputTypes: ['date']
+			},
+			before: {
+				displayValue: 'before',
+				inputTypes: ['date']
+			},
+			in_time_range: {
+				displayValue: 'in time range',
+				inputTypes: ['date', 'date']
+			},
+			less_than:{
+				displayValue: 'is less than',
+				inputTypes: ['number']
+			},
+			strict_equivalence_numeric:{
+				displayValue: 'is exactly (numeric)',
+				inputTypes: ['number']
+			}
+		};
 	}
 
 	static get operators() {
@@ -115,6 +152,26 @@ class QueryBuilder {
 				getValue: value0 => value0
 			}
 		}
+	}
+
+	static getQueryDescription(query) {
+		const { friendlyText } = this;
+		const includeTagNames = Object.keys(query.include.tags).join(', ');
+		const includeParamDescriptions = Object.keys(query.include.params).map(name => {
+			const param = query.include.params[name];
+			return `${name} ${friendlyText[param.type].displayValue} ${param.value0}${param.value1 ? ` and ${param.value1}` : ''}`;
+		}).join(', ');
+		const excludeTagNames = Object.keys(query.exclude.tags).join(', ');
+
+		return `${includeTagNames ? `${includeTagNames}. ` : ''}${includeParamDescriptions}${excludeTagNames? `. Not ${excludeTagNames}.`: ''}`;
+	}
+
+	static deriveValuesFromRange({value0, value1, inclusive, step = 0.1}) {
+		const values = inclusive ? [value0, value1] : [];
+		for (let i = value0; i < value1; i+=step) {
+			values.push(i);
+		}
+		return values;
 	}
 
 	// takes the given parameters and creates a sequelize

@@ -99,6 +99,14 @@ class SpotifyApi {
 		});
 	}
 
+	static updatePlaylistDetails({ user, playlistId, update }) {
+		return this.execute({
+			method: 'changePlaylistDetails',
+			params: [user.spotifyId, playlistId, update],
+			user
+		});
+	}
+
 	static playPlaylist({ user, uri }) {
 		return this.execute({
 			method: 'play',

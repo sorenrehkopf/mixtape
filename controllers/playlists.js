@@ -34,6 +34,7 @@ router.post('/', (req, res) => {
 			params: songCriteria,
 			order
 		});
+		const playlistDescription = QueryBuilder.getQueryDescription(songCriteria);
 
 		if (recycle && defaultPlaylistId) {
 			SpotifyApi.replacePlaylistTracks({
@@ -41,14 +42,23 @@ router.post('/', (req, res) => {
 				playlistId: defaultPlaylistId,
 				songUris
 			}).then(() => {
+				SpotifyApi.updatePlaylistDetails({
+					user,
+					playlistId: defaultPlaylistId,
+					update: {
+						description: playlistDescription
+					}
+				});
+
 				res.send({
 					playlist: {
 						external_urls: {
 							spotify: `http://open.spotify.com/user/${user.spotifyId}/playlist/${defaultPlaylistId}`
 						},
 						uri: `spotify:user:${user.spotifyId}:playlist:${defaultPlaylistId}`,
-						name: 'My Mixtape'
-					}
+						name: 'My Mixtape',
+						description: playlistDescription
+					}	
 				});
 			});
 		} else {
@@ -56,6 +66,14 @@ router.post('/', (req, res) => {
 
 			SpotifyApi.createPlaylist({ user, name: playlistName }).then(({ body: playlist }) => {
 				const { id: playlistId } = playlist;
+
+				SpotifyApi.updatePlaylistDetails({
+					user,
+					playlistId: playlistId,
+					update: {
+						description: playlistDescription
+					}
+				});
 
 				if (recycle) {
 					User.findById(user.id).then(user => {
