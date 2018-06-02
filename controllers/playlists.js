@@ -6,7 +6,7 @@ const CollectionBuilder = require('../services/collection-builder.js');
 const QueryBuilder = require('../services/query-builder.js');
 
 router.post('/', (req, res) => {
-	const { user, body: { songCriteria, playlistData: { name, recycle } } } = req;
+	const { user, body: { songCriteria, playlistData: { name, order, recycle } } } = req;
 	const { settings: { defaultPlaylistId } } = user;
 	const query = QueryBuilder.build({
 		params: songCriteria, 
@@ -17,13 +17,17 @@ router.post('/', (req, res) => {
 		return res.status(422).send();
 	}
 
+	const ageOrder = order == 'oldest_first' ? 'ASC' : 'DESC';
+	
 	Song.findAll({
 		where: query,
-		raw: true
+		raw: true,
+		order: [ ['id', ageOrder] ]
 	}).then(songs => {
 		const songUris = CollectionBuilder.getPlaylistUris({
 			songs,
-			params: songCriteria
+			params: songCriteria,
+			order
 		});
 
 		if (recycle && defaultPlaylistId) {

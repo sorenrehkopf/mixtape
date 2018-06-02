@@ -46,14 +46,13 @@ router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
 	const query = QueryBuilder.build({ params, user: req.user });
 
-	if (!query) {
-		return res.send({songs: [] });
-	}
+	const limit = query ? 400 : 40;
 
 	Song.findAll({
 		where: query,
 		raw: true,
-		limit: 400
+		limit,
+		order: [ ['id', 'DESC'] ]
 	}).then(songs => {
 		const filteredSongs = CollectionBuilder.filterResults({
 			songs,
