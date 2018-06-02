@@ -44,14 +44,19 @@ router.get('/', (req, res) => {
 
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
+	
+	//if there are no values given to search for.
+	if (!Object.keys(params.include.params).length && !Object.keys(params.include.tags).length && !Object.keys(params.exclude.tags).length) {
+		return res.send({songs: [] });
+	}
+
 	const query = QueryBuilder.build({ params, user: req.user });
 
-	const limit = query ? 400 : 40;
 
 	Song.findAll({
 		where: query,
 		raw: true,
-		limit,
+		limit: 400,
 		order: [ ['id', 'DESC'] ]
 	}).then(songs => {
 		const filteredSongs = CollectionBuilder.filterResults({

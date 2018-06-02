@@ -13,15 +13,20 @@ router.post('/', (req, res) => {
 		user 
 	});
 
-	if (!query) {
-		return res.status(422).send();
-	}
+	// if there are no given params to query by, only pull the 100 most recent songs
+	// otherwise cap at a thousand cause that's plenty
+	const limit = (
+		!Object.keys(songCriteria.include.params).length && 
+		!Object.keys(songCriteria.include.tags).length && 
+		!Object.keys(songCriteria.exclude.tags).length
+	) ? 100 : 1000;
 
 	const ageOrder = order == 'oldest_first' ? 'ASC' : 'DESC';
 	
 	Song.findAll({
 		where: query,
 		raw: true,
+		limit,
 		order: [ ['id', ageOrder] ]
 	}).then(songs => {
 		const songUris = CollectionBuilder.getPlaylistUris({

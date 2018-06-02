@@ -4,18 +4,58 @@ const { Op } = require('sequelize');
 class QueryBuilder {
 	static get defaultTypes() {
 		return [
-			'acousticness',
-			'albumName',
-			'artistName',
-			'danceability',
-			'energy',
-			'instrumentalness',
-			'key',
-			'loudness',
-			'name',
-			'spotifyId',
-			'tempo',
-			'valence'
+			{
+				tagName: 'ACOUSTICNESS',
+				dbName: 'acousticness',
+			},
+			{
+				tagName: 'ALBUM NAME',
+				dbName: 'albumName',
+			},
+			{
+				tagName: 'ARTIST NAME',
+				dbName: 'artistName',
+			},
+			{
+				tagName: 'ADDED',
+				dbName: 'createdAt',
+			},
+			{
+				tagName: 'DANCEABILITY',
+				dbName: 'danceability',
+			},
+			{
+				tagName: 'ENERGY',
+				dbName: 'energy',
+			},
+			{
+				tagName: 'INSTRUMENTALNESS',
+				dbName: 'instrumentalness',
+			},
+			{
+				tagName: 'KEY',
+				dbName: 'key',
+			},
+			{
+				tagName: 'LOUDNESS',
+				dbName: 'loudness',
+			},
+			{
+				tagName: 'NAME',
+				dbName: 'name',
+			},
+			{
+				tagName: 'SPOTIFYID',
+				dbName: 'spotifyId',
+			},
+			{
+				tagName: 'TEMPO',
+				dbName: 'tempo',
+			},
+			{
+				tagName: 'VALENCE',
+				dbName: 'valence',
+			},
 		];
 	}
 
@@ -58,6 +98,18 @@ class QueryBuilder {
 				operator: Op.lt,
 				getValue: value0 => value0
 			},
+			after: {
+				operator: Op.gt,
+				getValue: value0 => value0
+			},
+			before: {
+				operator: Op.lt,
+				getValue: value0 => value0
+			},
+			in_time_range: {
+				operator: Op.between,
+				getValue: (value0, value1)=> ([value0, value1])
+			},
 			strict_equivalence_numeric: {
 				operator: Op.eq,
 				getValue: value0 => value0
@@ -80,7 +132,9 @@ class QueryBuilder {
 		};
 
 		if (!Object.keys(include.params).length && !Object.keys(include.tags).length && !Object.keys(exclude.tags).length) {
-			return;
+			return {
+				userId: user.id
+			};
 		}
 
 		if (Object.keys(include.params).length) {
@@ -95,12 +149,11 @@ class QueryBuilder {
 
 		for (let param in include.params) {
 			const { type, value0, value1 } = include.params[param];
-			const defaultValue = defaultTypes.find(type => new RegExp(`^${param}$`, 'i').test(type));
+			const defaultValue = defaultTypes.find(type => new RegExp(`^${param}$`, 'i').test(type.tagName));
 
 			const { operator, getValue } = operators[type];
-
 			if (defaultValue) {
-				includeQuery[includeTagsAndParamsOperator][includeParamsOperator][defaultValue] = {
+				includeQuery[includeTagsAndParamsOperator][includeParamsOperator][defaultValue.dbName] = {
 					[operator]: getValue(value0, value1)
 				};
 			} else{
