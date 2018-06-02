@@ -163,7 +163,7 @@ class QueryBuilder {
 		}).join(', ');
 		const excludeTagNames = Object.keys(query.exclude.tags).join(', ');
 
-		return `${includeTagNames ? `${includeTagNames}. ` : ''}${includeParamDescriptions}${excludeTagNames? `. Not ${excludeTagNames}.`: ''}`;
+		return `${includeTagNames ? `${includeTagNames}. ` : ''}${includeParamDescriptions ? `${includeParamDescriptions}. ` : ''}${excludeTagNames? `Not ${excludeTagNames}.`: ''}`;
 	}
 
 	static deriveValuesFromRange({value0, value1, inclusive, step = 0.1}) {
