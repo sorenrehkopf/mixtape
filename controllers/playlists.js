@@ -64,16 +64,12 @@ router.post('/', (req, res) => {
 		} else {
 			const playlistName = recycle ? 'My Mixtape' : name;
 
-			SpotifyApi.createPlaylist({ user, name: playlistName }).then(({ body: playlist }) => {
+			SpotifyApi.createPlaylist({ 
+				user, 
+				name: playlistName,
+				description: playlistDescription
+			}).then(({ body: playlist }) => {
 				const { id: playlistId } = playlist;
-
-				SpotifyApi.updatePlaylistDetails({
-					user,
-					playlistId: playlistId,
-					update: {
-						description: playlistDescription
-					}
-				});
 
 				if (recycle) {
 					User.findById(user.id).then(user => {
@@ -86,7 +82,7 @@ router.post('/', (req, res) => {
 				}
 
 				SpotifyApi.addTracksToPlaylist({ user, playlistId, songUris }).then(() => {
-					res.send({ playlist });
+					res.send({ playlist: { ...playlist, description: playlistDescription } });
 				});
 			});
 		}

@@ -75,10 +75,10 @@ class SpotifyApi {
 		});
 	}
 
-	static createPlaylist({ user, name }) {
+	static createPlaylist({ user, name, description }) {
 		return this.execute({
 			method: 'createPlaylist',
-			params: [user.spotifyId, name],
+			params: [user.spotifyId, name, { description }],
 			user
 		});
 	}
