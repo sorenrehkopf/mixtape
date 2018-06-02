@@ -14,13 +14,17 @@ class CollectionBuilder {
 		});	
 	}
 
-	static getPlaylistUris({ songs, params }) {
+	static getPlaylistUris({ songs, params, order }) {
 		const songUris = this.filterResults({
 			songs,
 			params
 		}).map(({ spotifyId }) => `spotify:track:${spotifyId}`);
 
-		return shuffle(songUris).slice(0, 49);
+		if (order == 'shuffle') {
+			return shuffle(songUris).slice(0, 40);
+		}
+
+		return songUris.slice(0,40);
 	}
 };
 

@@ -130,8 +130,6 @@ class QueryBuilder {
 			}
 		};
 
-		console.log(query);
-
 		return query;
 	}
 };
