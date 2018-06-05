@@ -45,6 +45,14 @@ class SpotifyApi {
 		});
 	};
 
+	static async getSong({ id, user }) {
+		return await this.execute({
+			method: 'getTrack',
+			params: [id],
+			user
+		});
+	};
+
 	static async getSongData({ id, user }) {
 		return await this.execute({
 			method: 'getAudioFeaturesForTrack',

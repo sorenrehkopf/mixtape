@@ -2,14 +2,21 @@ const express = require('express');
 const router = express.Router();
 const SpotifyApi = require('../services/spotify.js');
 
-router.get('/songs', async(req, res) => {
+router.get('/songs', (req, res) => {
 	const { query: { searchterm }, user } = req;
 	
 	try {
-		const { body: { tracks: { items: songs } }, error } = await SpotifyApi.searchSongs({ searchTerm: searchterm, user });
-		const payload = { songs, error };
+		SpotifyApi.searchSongs({ searchTerm: searchterm, user }).then(({ 
+			body: { 
+				tracks: { 
+					items: songs 
+				} 
+			}, 
+			error }) => {
+				const payload = { songs, error };
 
-		res.send(payload);
+				res.send(payload);
+		});
 	} catch(error) {
 		res.send({ songs: [], error });
 	}
@@ -34,14 +41,35 @@ router.get('/playlistTracks', (req,res) => {
 	});
 });
 
-router.get('/song/:id', async(req, res) => {
+router.get('/songData/:id', (req, res) => {
 	const { params: { id }, user } = req;
 
 	try {
-		const { body: song, error } = await SpotifyApi.getSongData({ id, user });
-		const payload = { song, error };
+		SpotifyApi.getSongData({ id, user }).then(({ body: song, error }) => {
+			const payload = { song, error };
 
-		res.send(payload);
+			res.send(payload);
+		});
+	} catch(error) {
+		res.send({ error });
+	}
+});
+
+router.get('/songWithData/:id', async(req, res) => {
+	const { params: { id }, user } = req;
+
+	try {
+		Promise.all([
+			SpotifyApi.getSong({ id, user }),
+			SpotifyApi.getSongData({ id, user })
+		]).then(([
+			{ body: song },
+			{ body: songData }
+		]) => {
+			const payload = { song, songData };
+
+			res.send(payload);
+		});
 	} catch(error) {
 		res.send({ error });
 	}
