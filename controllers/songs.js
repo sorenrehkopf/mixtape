@@ -68,6 +68,9 @@ router.get('/search/:query', (req, res) => {
 		}));
 
 		res.send({ songs: filteredSongs });
+	}).catch(err => {
+		console.log(`Error with the query: ${err}`)
+		res.status(422).send();
 	});
 });
 
@@ -147,6 +150,9 @@ router.post('/', (req, res) => {
 		}
 
 		res.send(song);
+	}).catch(err => {
+		console.log(`Something went wrong adding the song: ${err}`)
+		res.status(422).send();
 	});
 });
 
@@ -230,6 +236,7 @@ router.post('/bulkAddPlaylist', (req,res) => {
 					res.send({ songs: formattedTracks.map(track => ({ ...track, tags })) });
 				}).catch(err => {
 					console.error('there was an error adding the songs!', err);
+					res.status(422).send();
 				});
 			});
 		});

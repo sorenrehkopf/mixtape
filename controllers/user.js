@@ -16,6 +16,9 @@ router.get('/', (req, res) => {
 			displayPhoto,
 			Tags: Tags || []
 		});
+	}).catch(err => {
+		console.log(`Error finding the user: ${err}`);
+		res.status(404).send();
 	});
 });
 
