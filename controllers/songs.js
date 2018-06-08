@@ -42,6 +42,23 @@ router.get('/', (req, res) => {
 	});
 });
 
+router.delete('/:id', (req, res) => {
+	const { user: { id: userId }, params: { id } } = req;
+
+	Song.find({
+		where: {
+			userId,
+			id
+		}
+	}).then(song => {
+		return song.destroy()
+	}).then(() => {
+		res.status(200).send();
+	}).catch(err => {
+		res.status(404).send();
+	})
+});
+
 router.get('/search/:query', (req, res) => {
 	const params = JSON.parse(decodeURIComponent(req.params.query));
 	

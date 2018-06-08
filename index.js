@@ -11,9 +11,17 @@ const app = express();
 // load environment variables from .env file
 dotEnv.load();
 
+const corsOptions = process.env.NODE_ENV === 'production' ? { 
+	origin: 'https://www.myxtape.io',
+	optionsSuccessStatus: 200
+} : {
+	origin: 'https://www.myxtape-dev.io',
+	optionsSuccessStatus: 200
+};
+
 // apply middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.static('public'));
 
 app.use(authenticate);
