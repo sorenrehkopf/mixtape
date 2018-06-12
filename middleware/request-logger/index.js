@@ -1,12 +1,12 @@
 const logger = require('../../services/logger.js');
 
 const requestLogger = (req, res, next) => {
-	const { user: { id: userId, displayName: userName }, path } = req;
+	const { user, path } = req;
 
 	logger.info(`Handling request to route "${path}"`, {
 		path,
-		userId,
-		userName
+		userId: user && user.id,
+		userName: user && user.displayName
 	});
 
 	next();
