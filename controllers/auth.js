@@ -4,6 +4,7 @@ const { Song, Tag, User } = require('../models/index.js');
 const template = require('lodash/template');
 const fs = require('fs');
 const jwtSimple = require('jwt-simple');
+const logger = require('../services/logger.js');
 
 const handleauthSuccessHTML = fs.readFileSync('./templates/handleauthSuccess.html');
 const handleAuthSuccessCompiler = template(handleauthSuccessHTML);
@@ -38,42 +39,49 @@ router.get('/handleauth', (req, res) => {
 			spotifyApi.setAccessToken(access_token);
 		  spotifyApi.setRefreshToken(refresh_token);
 
-	    const { body: { display_name: displayName, id, images: [{ url }] } } = await spotifyApi.getMe();
-	    User.findOrCreate({
-	    	where: {
-	    		spotifyId: id
-	    	},
-	    	defaults: {
-	    		spotifyAccessToken: access_token,
-	    		spotifyRefreshToken: refresh_token,
-	    		displayName,
-	    		displayPhoto: url,
-	    	},
-	    	include: [ Tag ]
-	    }).spread(async(user, created) => {
-	    	const { displayName, displayPhoto, id, Songs, Tags, spotifyAccessToken, spotifyRefreshToken } = user;
+	    spotifyApi.getMe().then(({ body: { display_name: displayName, id, images: [{ url }] } }) => {
+		    User.findOrCreate({
+		    	where: {
+		    		spotifyId: id
+		    	},
+		    	defaults: {
+		    		spotifyAccessToken: access_token,
+		    		spotifyRefreshToken: refresh_token,
+		    		displayName,
+		    		displayPhoto: url,
+		    	},
+		    	include: [ Tag ]
+		    }).spread(async(user, created) => {
+		    	const { displayName, displayPhoto, id, Songs, Tags, spotifyAccessToken, spotifyRefreshToken } = user;
 
-	    	if (spotifyAccessToken !== access_token) {
-	    		user.spotifyAccessToken = access_token;
-	    		user.spotifyRefreshToken = refresh_token;
-	    		user.save().catch(err => console.log(err));
-	    	}
-	    	
-	    	const authToken = jwtSimple.encode({ id }, process.env.AUTH_TOKEN_SECRET);
-	    	const data = JSON.stringify({ 
-	    		authToken, 
-	    		displayName, 
-	    		displayPhoto,
-	    		Tags: Tags || []
-	    	});
-	    	const handleAuthPage = handleAuthSuccessCompiler({
-	    		data, 
-	    		targetOrigin: process.env.CLIENT_BASE_URL
-	    	});
-	    	
-	    	res.set('Content-Type', 'text/html');
-	    	res.send(handleAuthPage);
-		  });
+		    	if (spotifyAccessToken !== access_token) {
+		    		user.spotifyAccessToken = access_token;
+		    		user.spotifyRefreshToken = refresh_token;
+		    		user.save().catch(err => {
+		    			logger.error('Something went wrong setting the spotify tokens for the user', { 
+								error: err,
+								userId: id, 
+								userName: displayName 
+							});
+		    		});
+		    	}
+		    	
+		    	const authToken = jwtSimple.encode({ id }, process.env.AUTH_TOKEN_SECRET);
+		    	const data = JSON.stringify({ 
+		    		authToken, 
+		    		displayName, 
+		    		displayPhoto,
+		    		Tags: Tags || []
+		    	});
+		    	const handleAuthPage = handleAuthSuccessCompiler({
+		    		data, 
+		    		targetOrigin: process.env.CLIENT_BASE_URL
+		    	});
+		    	
+		    	res.set('Content-Type', 'text/html');
+		    	res.send(handleAuthPage);
+			  });
+	    });
 		}).catch(authErrorHandler);
 	}else{
 		authErrorHandler('Did not get query from spotify redirect.');
@@ -81,7 +89,9 @@ router.get('/handleauth', (req, res) => {
 });
 
 const authErrorHandler = error => {
-	console.log(`There was an error: ${error}`);
+	logger.error(error, { 
+		error
+	});
 	res.set('Content-Type', 'text/html');
 	res.send(handleauthFailureHTML);
 }

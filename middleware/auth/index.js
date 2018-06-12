@@ -1,6 +1,7 @@
 const jwtSimple = require('jwt-simple');
 const { restrictedRoutes } = require('./routes.js');
 const { User } = require('../../models/index.js');
+const logger = require('../../services/logger.js');
 
 const authenticate = async(req, res, next) => {
 	const { headers: { authtoken}, path } = req;
@@ -17,13 +18,16 @@ const authenticate = async(req, res, next) => {
 
 	try {
 		const { id } = jwtSimple.decode(authtoken, process.env.AUTH_TOKEN_SECRET);
-		const user = await User.findById(id);
+		User.findById(id).then(user => {
 
-		req.user = user.dataValues;
+			req.user = user.dataValues;
 
-		next();
+			next();
+		});
 	} catch(error) {
-		console.log('Error: Could not get user from headers.');
+		logger.error('Could not find the user from the headers', { 
+			error
+		});
 		res.status(403).send('You are not authorized to access that resource');
 	}
 };

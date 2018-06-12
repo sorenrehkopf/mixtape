@@ -1,5 +1,6 @@
 const { User } = require('../models/index.js');
 const SpotifyWebApi = require('spotify-web-api-node');
+const logger = require('./logger.js');
 
 const spotifyApi = new SpotifyWebApi({
 	clientId:process.env.SPOTIFY_CLIENT_ID,
@@ -7,59 +8,76 @@ const spotifyApi = new SpotifyWebApi({
 });
 
 class SpotifyApi {
-	static async execute({ method, params= [], user: { spotifyAccessToken, spotifyRefreshToken, id } }) {
+	static execute({ method, params= [], user: { spotifyAccessToken, spotifyRefreshToken, id, displayName } }) {
 		spotifyApi.setAccessToken(spotifyAccessToken);
 		spotifyApi.setRefreshToken(spotifyRefreshToken);
 
-		const { body } = await spotifyApi[method](...params).catch(async(error) => {
-			if (error.statusCode === 401) {
-				console.log('refreshing the access token!');
-				try {
-					const { body: { access_token } } = await spotifyApi.refreshAccessToken();
-					const user = await User.findById(id);
-					
-					user.spotifyAccessToken = access_token;
-					await user.save();
+		return new Promise((resolve, reject) => {
+			spotifyApi[method](...params).then(({ body }) => {
+				resolve({ body, error: null });
+			}).catch(async(error) => {
+				if (error.statusCode === 401) {
+					logger.info('refreshing the spotify access token!', {
+						userId: id,
+						userName: displayName
+					});
+					try {
+						spotifyApi.refreshAccessToken().then(({ body: { access_token } }) => {
+							User.findById(id).then(user => {
+								user.spotifyAccessToken = access_token;
+								user.save();
 
-					spotifyApi.setAccessToken(access_token);
+								spotifyApi.setAccessToken(access_token);
+								spotifyApi[method](...params).then(({ body }) => {
+									resolve({ body , error: null });
+								});
+							});
+						});
+					} catch (error) {
+						logger.error('Error with the spotify request', {
+							error,
+							userId: id,
+							userName: displayName
+						});
 
-					const { body } = await spotifyApi[method](...params);
-					return { body , error: null }; 
-				} catch (error) {
-					console.log('there was an error!', error);
-					return { body: null, error };
+						reject(error);
+					}
 				}
-			}
-
-			return { body: null, error };
+			});
 		});
-
-		return { body, error: null }
 	}
 
-	static async searchSongs({ searchTerm, user }) {
-		return await this.execute({
+	static searchSongs({ searchTerm, user }) {
+		return this.execute({
 			method: 'searchTracks',
 			params: [searchTerm],
 			user
 		});
 	};
 
-	static async getSong({ id, user }) {
-		return await this.execute({
+	static getSong({ id, user }) {
+		return this.execute({
 			method: 'getTrack',
 			params: [id],
 			user
 		});
 	};
 
-	static async getSongData({ id, user }) {
-		return await this.execute({
+	static getSongData({ id, user }) {
+		return this.execute({
 			method: 'getAudioFeaturesForTrack',
 			params: [id],
 			user
 		});
 	};
+
+	static saveSong({ id, user }) {
+		return this.execute({
+			method: 'addToMySavedTracks',
+			params: [id],
+			user
+		})
+	}
 
 	static getDataForSongs({ user, trackIds, total }) {
 		const n = Math.ceil(total / 100);
@@ -68,7 +86,6 @@ class SpotifyApi {
 
 		for (let i = 0; i < n; i ++) {
 			const count = 99 * i;
-			console.log(trackIds.slice(0 + count, 99 + count))
 			trackFetches.push(this.execute({
 				method: 'getAudioFeaturesForTracks',
 				params: [trackIds.slice(0 + count, 99 + count)],

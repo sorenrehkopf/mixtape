@@ -7,6 +7,7 @@ const SongFormatter = require('../services/song-formatter');
 const SpotifyApi = require('../services/spotify');
 const { isEqual } = require('lodash');
 const { Op } = require('sequelize');
+const logger = require('../services/logger.js');
 
 const getUpdate = (data, song) => {
 	const update  = {};
@@ -39,6 +40,14 @@ router.get('/', (req, res) => {
 		order: [ ['id', 'DESC'] ]
 	}).then((songs) =>{
 		res.send({ songs });
+	}).catch(err => {
+		logger.error('Something went wrong getting the songs for the user', { 
+			error: err,
+			userId: req.user.id, 
+			userName: req.user.displayName 
+		});
+		
+		res.status(500).send()
 	});
 });
 
@@ -86,7 +95,11 @@ router.get('/search/:query', (req, res) => {
 
 		res.send({ songs: filteredSongs });
 	}).catch(err => {
-		console.log(`Error with the query: ${err}`)
+		logger.error('Something went wrong with that query', { 
+			error: err,
+			userId: req.user.id, 
+			userName: req.user.displayName 
+		});
 		res.status(422).send();
 	});
 });
@@ -166,9 +179,17 @@ router.post('/', (req, res) => {
 			}
 		}
 
+		if (created) {
+			spotifyApi.saveSong({ id: spotifyId, user: req.user });
+		}
+
 		res.send(song);
 	}).catch(err => {
-		console.log(`Something went wrong adding the song: ${err}`)
+		logger.error('Something went wrong while adding that song', { 
+			error: err,
+			userId: req.user.id, 
+			userName: req.user.displayName 
+		});
 		res.status(422).send();
 	});
 });
@@ -252,11 +273,24 @@ router.post('/bulkAddPlaylist', (req,res) => {
 					});
 					res.send({ songs: formattedTracks.map(track => ({ ...track, tags })) });
 				}).catch(err => {
-					console.error('there was an error adding the songs!', err);
+					logger.error('Something went wrong getting the songs for the user', { 
+						error: err,
+						userId: req.user.id, 
+						userName: req.user.displayName 
+					});
+
 					res.status(422).send();
 				});
 			});
-		});
+		}).catch(error=> {
+			logger.error('Something went wrong getting the songs for the user', { 
+				error,
+				userId: req.user.id, 
+				userName: req.user.displayName 
+			});
+			
+			res.status(422).send();
+		})
 	});
 });
 

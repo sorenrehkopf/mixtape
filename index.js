@@ -1,15 +1,15 @@
 #!/usr/bin/env node
+const dotEnv = require('dotenv');
+dotEnv.load();
 
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const dotEnv = require('dotenv');
 const express = require('express');
 const authenticate = require('./middleware/auth/index.js');
+const requestLogger = require('./middleware/request-logger/index.js');
+
 
 const app = express();
-
-// load environment variables from .env file
-dotEnv.load();
 
 const corsOptions = process.env.NODE_ENV === 'production' ? { 
 	origin: 'https://www.myxtape.io',
@@ -25,6 +25,7 @@ app.use(cors(corsOptions));
 app.use(express.static('public'));
 
 app.use(authenticate);
+app.use(requestLogger);
 
 const authController = require('./controllers/auth.js');
 const playlistsController = require('./controllers/playlists.js');

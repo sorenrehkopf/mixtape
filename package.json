@@ -20,7 +20,9 @@
     "pg": "6.4.1",
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.32.3",
-    "spotify-web-api-node": "^2.5.0"
+    "spotify-web-api-node": "^2.5.0",
+    "winston": "^2.4.2",
+    "winston-logsene": "^1.2.4"
   },
   "devDependencies": {
     "nodemon": "^1.14.11"

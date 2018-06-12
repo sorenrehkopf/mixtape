@@ -4,6 +4,7 @@ const { Song, User } = require('../models/index.js');
 const SpotifyApi = require('../services/spotify.js');
 const CollectionBuilder = require('../services/collection-builder.js');
 const QueryBuilder = require('../services/query-builder.js');
+const logger = require('../services/logger.js');
 
 router.post('/', (req, res) => {
 	const { user, body: { songCriteria, playlistData: { name, order, recycle } } } = req;
@@ -86,8 +87,12 @@ router.post('/', (req, res) => {
 				});
 			});
 		}
-	}).catch(err => {
-		console.log(`Error with the query: ${err}`)
+	}).catch(error => {
+		logger.error(`Something went wrong creating the playlist`, { 
+			error,
+			userId: req.user.id, 
+			userName: req.user.displayName 
+		});
 		res.status(422).send();
 	});
 });
