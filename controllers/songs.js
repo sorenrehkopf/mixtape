@@ -180,7 +180,7 @@ router.post('/', (req, res) => {
 		}
 
 		if (created) {
-			spotifyApi.saveSong({ id: spotifyId, user: req.user });
+			SpotifyApi.saveSong({ id: spotifyId, user: req.user });
 		}
 
 		res.send(song);
