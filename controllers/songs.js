@@ -60,7 +60,7 @@ router.delete('/:id', (req, res) => {
 			id
 		}
 	}).then(song => {
-		return song.destroy()
+		return song.destroy();
 	}).then(() => {
 		res.status(200).send();
 	}).catch(err => {

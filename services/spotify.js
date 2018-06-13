@@ -74,7 +74,7 @@ class SpotifyApi {
 	static saveSong({ id, user }) {
 		return this.execute({
 			method: 'addToMySavedTracks',
-			params: [id],
+			params: [[id]],
 			user
 		})
 	}
