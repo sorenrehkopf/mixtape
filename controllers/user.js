@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
 		include: [Tag]
 	}).then(({ displayName, displayPhoto, Songs, Tags }) => {
 		res.send({
+			id,
 			displayName,
 			displayPhoto,
 			Tags: Tags || []

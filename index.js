@@ -8,7 +8,6 @@ const express = require('express');
 const authenticate = require('./middleware/auth/index.js');
 const requestLogger = require('./middleware/request-logger/index.js');
 
-
 const app = express();
 
 const corsOptions = process.env.NODE_ENV === 'production' ? { 
