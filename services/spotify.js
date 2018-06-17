@@ -42,6 +42,14 @@ class SpotifyApi {
 
 						reject(error);
 					}
+				} else {
+					logger.error('Error with the spotify request', {
+						error,
+						userId: id,
+						userName: displayName
+					});
+
+					reject(error);
 				}
 			});
 		});

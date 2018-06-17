@@ -20,6 +20,7 @@ const SongFormatter = require('../services/song-formatter');
 
 
 const scopes = [
+	'user-library-modify',
 	'user-modify-playback-state',
 	'playlist-modify-private',
 	'playlist-modify-public',

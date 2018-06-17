@@ -23,7 +23,13 @@ router.get('/songs', (req, res) => {
 });
 
 router.get('/playlists', (req,res) => {
-	SpotifyApi.getPlaylists({ user: req.user }).then(({ body }) => {
+	const { user } = req;
+
+	SpotifyApi.getPlaylists({ user }).then(({ body }) => {
+		if (user.settings.defaultPlaylistId) {
+			body.items = body.items.filter(p => p.id != user.settings.defaultPlaylistId);
+		}
+
 		res.send(body);
 	});
 });
