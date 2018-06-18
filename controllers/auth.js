@@ -40,7 +40,8 @@ router.get('/handleauth', (req, res) => {
 			spotifyApi.setAccessToken(access_token);
 		  spotifyApi.setRefreshToken(refresh_token);
 
-	    spotifyApi.getMe().then(({ body: { display_name: displayName, id, images: [{ url }] } }) => {
+	    spotifyApi.getMe().then(({ body: { display_name: displayName, id, images } }) => {
+	    	const { url } = images[0] || {};
 		    User.findOrCreate({
 		    	where: {
 		    		spotifyId: id
