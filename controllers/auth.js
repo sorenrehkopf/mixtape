@@ -33,6 +33,14 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/handleauth', (req, res) => {
+	const authErrorHandler = error => {
+		logger.error(error, { 
+			error
+		});
+		res.set('Content-Type', 'text/html');
+		res.send(handleauthFailureHTML);
+	}
+	
 	if (req.query) {
 		const code = req.query.code;
 		spotifyApi.authorizationCodeGrant(code).then(async({ body: { access_token, refresh_token } }) => {
@@ -89,13 +97,5 @@ router.get('/handleauth', (req, res) => {
 		authErrorHandler('Did not get query from spotify redirect.');
 	}
 });
-
-const authErrorHandler = error => {
-	logger.error(error, { 
-		error
-	});
-	res.set('Content-Type', 'text/html');
-	res.send(handleauthFailureHTML);
-}
 
 module.exports = router;
