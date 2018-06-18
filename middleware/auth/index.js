@@ -25,9 +25,6 @@ const authenticate = async(req, res, next) => {
 			next();
 		});
 	} catch(error) {
-		logger.error('Could not find the user from the headers', { 
-			error
-		});
 		res.status(403).send('You are not authorized to access that resource');
 	}
 };
