@@ -14,7 +14,7 @@ const corsOptions = process.env.NODE_ENV === 'production' ? {
 	origin: 'https://www.myxtape.io',
 	optionsSuccessStatus: 200
 } : {
-	origin: 'https://www.myxtape-dev.io',
+	origin: ['https://www.myxtape-dev.io', 'http://localhost:3030'],
 	optionsSuccessStatus: 200
 };
 

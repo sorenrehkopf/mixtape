@@ -74,9 +74,9 @@ router.get('/handleauth', (req, res) => {
 		    		user.displayPhoto = photoUrl;
 		    		user.spotifyAccessToken = access_token;
 		    		user.spotifyRefreshToken = refresh_token;
-		    		
+
 		    		user.save().catch(err => {
-		    			logger.error('Something went wrong setting the spotify tokens for the user', { 
+		    			logger.error('Something went wrong updating data for the user', { 
 								error: err,
 								userId: id, 
 								userName: displayName 
