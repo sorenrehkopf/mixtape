@@ -48,25 +48,33 @@ router.get('/handleauth', (req, res) => {
 			spotifyApi.setAccessToken(access_token);
 		  spotifyApi.setRefreshToken(refresh_token);
 
-	    spotifyApi.getMe().then(({ body: { display_name: displayName, id, images } }) => {
-	    	const { url } = images[0] || {};
+	    spotifyApi.getMe().then(({ body: { display_name, id, images } }) => {
+	    	const { url: photoUrl } = images[0] || {};
+
 		    User.findOrCreate({
 		    	where: {
 		    		spotifyId: id
 		    	},
 		    	defaults: {
+		    		displayName: display_name,
+		    		displayPhoto: photoUrl,
 		    		spotifyAccessToken: access_token,
 		    		spotifyRefreshToken: refresh_token,
-		    		displayName,
-		    		displayPhoto: url,
 		    	},
 		    	include: [ Tag ]
 		    }).spread(async(user, created) => {
 		    	const { displayName, displayPhoto, id, Songs, Tags, spotifyAccessToken, spotifyRefreshToken } = user;
 
-		    	if (spotifyAccessToken !== access_token) {
+		    	if (
+	    			spotifyAccessToken !== access_token
+	    			|| displayName !== display_name
+	    			|| displayPhoto !== photoUrl 
+		    	) {
+		    		user.displayName = display_name;
+		    		user.displayPhoto = photoUrl;
 		    		user.spotifyAccessToken = access_token;
 		    		user.spotifyRefreshToken = refresh_token;
+		    		
 		    		user.save().catch(err => {
 		    			logger.error('Something went wrong setting the spotify tokens for the user', { 
 								error: err,
@@ -79,8 +87,8 @@ router.get('/handleauth', (req, res) => {
 		    	const authToken = jwtSimple.encode({ id }, process.env.AUTH_TOKEN_SECRET);
 		    	const data = JSON.stringify({ 
 		    		authToken, 
-		    		displayName, 
-		    		displayPhoto,
+		    		displayName: display_name, 
+		    		displayPhoto: photoUrl,
 		    		Tags: Tags || []
 		    	});
 		    	const handleAuthPage = handleAuthSuccessCompiler({
