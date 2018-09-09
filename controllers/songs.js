@@ -105,6 +105,7 @@ router.get('/search/:query', (req, res) => {
 });
 
 router.post('/', (req, res) => {
+	const { settings: { dontSaveAddedSongs } } = req.user;
 	const {
 		acousticness,
 		albumName,
@@ -179,7 +180,7 @@ router.post('/', (req, res) => {
 			}
 		}
 
-		if (created) {
+		if (created && !dontSaveAddedSongs) {
 			SpotifyApi.saveSong({ id: spotifyId, user: req.user });
 		}
 

@@ -63,7 +63,7 @@ router.get('/handleauth', (req, res) => {
 		    	},
 		    	include: [ Tag ]
 		    }).spread(async(user, created) => {
-		    	const { displayName, displayPhoto, id, Songs, Tags, spotifyAccessToken, spotifyRefreshToken } = user;
+		    	const { displayName, displayPhoto, id, settings, Songs, Tags, spotifyAccessToken, spotifyRefreshToken } = user;
 
 		    	if (
 	    			spotifyAccessToken !== access_token
@@ -89,6 +89,7 @@ router.get('/handleauth', (req, res) => {
 		    		authToken, 
 		    		displayName: display_name, 
 		    		displayPhoto: photoUrl,
+		    		settings,
 		    		Tags: Tags || []
 		    	});
 		    	const handleAuthPage = handleAuthSuccessCompiler({

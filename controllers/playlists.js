@@ -8,7 +8,7 @@ const logger = require('../services/logger.js');
 
 router.post('/', (req, res) => {
 	const { user, body: { songCriteria, playlistData: { name, order, recycle } } } = req;
-	const { settings: { defaultPlaylistId } } = user;
+	const { settings: { defaultPlaylistId, defaultPlaylistName } } = user;
 	const query = QueryBuilder.build({
 		params: songCriteria, 
 		user 
@@ -36,6 +36,7 @@ router.post('/', (req, res) => {
 			order
 		});
 		const playlistDescription = QueryBuilder.getQueryDescription(songCriteria);
+		const playlistName = recycle ? defaultPlaylistName || 'My Mixtape' : name;
 
 		if (recycle && defaultPlaylistId) {
 			SpotifyApi.replacePlaylistTracks({
@@ -47,6 +48,7 @@ router.post('/', (req, res) => {
 					user,
 					playlistId: defaultPlaylistId,
 					update: {
+						name: playlistName,
 						description: playlistDescription
 					}
 				});
@@ -61,10 +63,23 @@ router.post('/', (req, res) => {
 						description: playlistDescription
 					}	
 				});
+			}).catch(err => {
+				User.findById(user.id).then(user => {
+					user.settings = {
+						...user.settings,
+						defaultPlaylistId: null
+					}
+					user.save();
+				});
+
+				logger.error(`Could not find the default playlist`, { 
+					error,
+					userId: req.user.id, 
+					userName: req.user.displayName 
+				});
+				res.status(500).send();
 			});
 		} else {
-			const playlistName = recycle ? 'My Mixtape' : name;
-
 			SpotifyApi.createPlaylist({ 
 				user, 
 				name: playlistName,
