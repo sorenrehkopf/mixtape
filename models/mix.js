@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Mix.associate = function(models) {
-    Song.belongsTo(models.User, { foreignKey: 'userId' });
+    Mix.belongsTo(models.User, { foreignKey: 'userId' });
   };
 
   return Mix;

@@ -4,6 +4,9 @@ const routes = {
 			controller: 'user'
 		},
 		{
+			controller: 'mixes'
+		},
+		{
 			controller: 'songs'
 		},
 		{

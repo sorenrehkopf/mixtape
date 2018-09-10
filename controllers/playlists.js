@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
 							spotify: `http://open.spotify.com/user/${user.spotifyId}/playlist/${defaultPlaylistId}`
 						},
 						uri: `spotify:user:${user.spotifyId}:playlist:${defaultPlaylistId}`,
-						name: 'My Mixtape',
+						name: playlistName,
 						description: playlistDescription
 					}	
 				});

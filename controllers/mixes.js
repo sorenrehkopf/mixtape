@@ -6,7 +6,7 @@ const logger = require('../services/logger.js');
 router.get('/', (req, res) => {
 	const { user: { id: userId } } = req;
 
-	Song.findAll({
+	Mix.findAll({
 		where: {
 			userId
 		},
@@ -42,8 +42,8 @@ router.delete('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-	const { user: userId, body: { name, parameters, order} } = req;
-	console.log(body);
+	const { user: { id: userId }, body: { name, parameters, order } } = req;
+
 	Mix.create({
 		name,
 		order,
@@ -63,8 +63,8 @@ router.post('/', (req, res) => {
 });
 
 router.put('/', (req, res) => {
-	const { user: userId, body: { id, name, parameters, order} } = req;
-
+	const { user: { id: userId }, body: { id, name, parameters, order } } = req;
+	
 	Mix.find({
 		where: {
 			id,
@@ -75,9 +75,9 @@ router.put('/', (req, res) => {
 			name,
 			parameters,
 			order
-		}).then(mix => {
-			res.send(mix)
 		});
+	}).then(mix => {
+		res.send(mix)
 	}).catch(err => {
 		logger.error('Something went wrong while updating that mix', { 
 			error: err,
