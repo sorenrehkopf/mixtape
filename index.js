@@ -27,6 +27,7 @@ app.use(authenticate);
 app.use(requestLogger);
 
 const authController = require('./controllers/auth.js');
+const mixesController = require('./controllers/mixes.js');
 const playlistsController = require('./controllers/playlists.js');
 const userController = require('./controllers/user.js');
 const spotifyController = require('./controllers/spotify.js');
@@ -34,6 +35,7 @@ const songsController = require('./controllers/songs.js');
 
 
 app.use('/api/auth', authController);
+app.use('/api/mixes', mixesController)
 app.use('/api/playlists', playlistsController);
 app.use('/api/user', userController);
 app.use('/api/spotify', spotifyController);
