@@ -1,6 +1,17 @@
 const shuffle = require('lodash/shuffle');
 
 class CollectionBuilder {
+	static get distributionFunctions() {
+		return {
+			alternate: ({ songs, params }) => {
+				return songs;
+			},
+			spread: ({ songs, params }) => {
+				return songs;
+			}
+		};
+	}
+
 	static filterResults({ songs, params: { exclude } }) {
 		const excludeTags = Object.keys(exclude.tags);
 		return songs.filter(({ tags }) => {
@@ -14,17 +25,23 @@ class CollectionBuilder {
 		});	
 	}
 
-	static getPlaylistUris({ songs, params, order }) {
-		const songUris = this.filterResults({
+	static getPlaylistUris({ songs, params, order, distribution, limit = 40 }) {
+		songs = this.filterResults({
 			songs,
 			params
-		}).map(({ spotifyId }) => `spotify:track:${spotifyId}`);
+		});
 
 		if (order == 'shuffle') {
-			return shuffle(songUris).slice(0, 40);
+			songs = shuffle(songs);
+	
+			if (distribution && this.distributionFunctions[distribution]) {
+				songs = this.distributionFunctions[distribution]({ songs, params });
+			}
 		}
 
-		return songUris.slice(0,40);
+		const uris = songs.map(({ spotifyId }) => `spotify:track:${spotifyId}`);
+
+		return uris.slice(0, limit);
 	}
 };
 
