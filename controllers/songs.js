@@ -39,7 +39,13 @@ router.get('/', (req, res) => {
 		limit: 75,
 		order: [ ['id', 'DESC'] ]
 	}).then((songs) =>{
-		res.send({ songs });
+		return Song.count({
+			where: {
+				userId
+			}
+		}).then(total => {
+			res.send({ songs, total });
+		});
 	}).catch(err => {
 		logger.error('Something went wrong getting the songs for the user', { 
 			error: err,
